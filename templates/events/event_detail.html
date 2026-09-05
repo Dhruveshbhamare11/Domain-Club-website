@@ -1,0 +1,6 @@
+{% extends 'base.html' %}
+{% block title %}{{ event.title }} | Mathematics Club{% endblock %}
+{% block meta_description %}{{ event.description|truncatechars:155 }}{% endblock %}
+{% block content %}<article class="page max-w-3xl"><p class="text-cyan-300">{{ event.date }} · {{ event.time|time:'g:i A' }} · {{ event.location }}</p>
+    <h1>{{ event.title }}</h1><div class="mt-6 whitespace-pre-line text-slate-300">{{ event.description }}</div>
+    {% if event.registration_link %}<a class="btn mt-8" href="{{ event.registration_link }}">Register</a>{% endif %}</article>{% endblock %}

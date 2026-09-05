@@ -1,0 +1,12 @@
+.env
+db.sqlite3
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+media/profile_pics/*
+!media/profile_pics/.gitkeep
+staticfiles/
+.idea/
+.vscode/
+.DS_Store

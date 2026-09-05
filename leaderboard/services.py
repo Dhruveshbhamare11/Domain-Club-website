@@ -1,0 +1,34 @@
+from django.db.models import F
+from accounts.models import StudentProfile
+from .models import MonthlyScore, MonthlyWinner
+from badges.services import award_badge
+
+
+def update_monthly_score(submission):
+    date = submission.puzzle.end_time
+    score, _ = MonthlyScore.objects.get_or_create(user=submission.user, year=date.year, month=date.month)
+    score.puzzles_participated += 1
+    if submission.is_correct:
+        score.points += 10
+        score.correct_answers += 1
+    score.best_streak = max(score.best_streak, submission.user.profile.current_streak)
+    score.save()
+
+
+def recalculate_ranks():
+    profiles = StudentProfile.objects.select_related("user").order_by("-points", "-best_streak", "user__username")
+    for rank, profile in enumerate(profiles, 1):
+        profile.cached_rank = rank
+        profile.save(update_fields=("cached_rank",))
+
+
+def record_monthly_winner(year, month):
+    score = MonthlyScore.objects.filter(year=year, month=month).first()
+    if not score:
+        return None
+    winner, created = MonthlyWinner.objects.get_or_create(year=year, month=month, defaults={
+        "user": score.user, "points": score.points, "correct_answers": score.correct_answers,
+        "puzzles_participated": score.puzzles_participated, "best_streak": score.best_streak,
+    })
+    if created: award_badge(winner.user, "MONTHLY_WINNER")
+    return winner

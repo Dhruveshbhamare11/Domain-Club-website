@@ -1,0 +1,13 @@
+{% extends 'base.html' %}{% block title %}Our Team | Mathematics Club{% endblock %}{% block content %}<section class="page">
+    <h1>Meet the team</h1>
+    <div class="grid gap-5 md:grid-cols-3">
+        {% for member in team %}
+        <article class="card"><h2>{{ member.name }}
+
+        </h2><p class="text-cyan-300">{{ member.role }}
+        </p><p>{{ member.branch_year }}</p>
+        
+        <p class="text-slate-400">{{ member.bio }}</p>
+    </article>{% empty %}<p>Team members will be announced soon.</p>{% endfor %}</div>
+
+</section>{% endblock %}

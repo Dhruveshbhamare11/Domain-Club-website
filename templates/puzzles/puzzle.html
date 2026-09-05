@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% load static %}{% block title %}
+{% if puzzle %}{{ puzzle.title }}
+ | Mathematics Club{% else %}Weekly Mathematics Puzzles | Mathematics Club
+{% endif %}
+{% endblock %}{% block content %}<section class="page max-w-3xl">
+    {% if not puzzle %}<h1>No puzzle is live right now</h1><p class="mt-3 text-slate-400">Check the archive for solved challenges.
+
+    </p>{% else %}<p class="text-cyan-300">Weekly Mathematics Puzzle</p><h1>{{ puzzle.title }}
+
+    </h1><article class="card mt-6 whitespace-pre-line">{{ puzzle.content }}</article>{% if puzzle.is_active %}
+    <div class="mt-6 rounded border border-cyan-700 p-5"><p class="text-sm text-slate-400">Time remaining</p>
+        <p id="countdown" class="text-3xl font-bold" data-end-time="{{ puzzle.end_time|date:'c' }}">Loading…</p>
+    </div>{% if user.is_authenticated %}{% if submission %}
+    <div class="card mt-6">You submitted <strong>{{ submission.submitted_value }}</strong>. Results are revealed when the puzzle closes.
+    </div>{% else %}<form id="submission-form" method="post" action="{% url 'puzzles:submit' puzzle.pk %}" class="card mt-6 space-y-4">
+        {% csrf_token %}{{ form.as_p }}
+        <button class="btn">Submit answer</button>
+        <p class="text-xs text-slate-400">One numerical submission only. The server decides eligibility.</p></form>{% endif %}
+        {% else %}<a class="btn mt-6" href="{% url 'accounts:login' %}?next={{ request.path|urlencode }}">Log In to Solve</a>
+        {% endif %}{% else %}<section class="mt-6 card"><h2 class="text-2xl font-bold">Solution</h2>{% if submission %}
+            <p class="mt-3">Your answer: <strong>{{ submission.submitted_value }}</strong> — {% if submission.is_correct %}
+                <span class="text-green-300">correct</span>{% else %}<span class="text-red-300">incorrect</span>{% endif %}
+            </p>{% endif %}<p class="mt-4">Correct answer: <strong>{{ puzzle.correct_answer }}</strong>
+            </p><div class="mt-4 whitespace-pre-line text-slate-300">{{ puzzle.solution }}</div>{% if puzzle.winner %}
+            <p class="mt-5">First correct solver: <strong>{{ puzzle.winner.get_full_name|default:puzzle.winner.username }}
+
+            </strong></p>{% endif %}<p class="mt-3 text-sm text-slate-400">{{ puzzle.submissions.count }} submissions
+                
+            </p></section>{% endif %}{% endif %}</section>{% endblock %}{% block extra_js %}{% if puzzle and puzzle.is_active %}<script src="{% static 'js/countdown.js' %}"></script>{% endif %}{% endblock %}
