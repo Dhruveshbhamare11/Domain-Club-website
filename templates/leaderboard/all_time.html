@@ -1,12 +1,1 @@
-{% extends 'base.html' %}
-{% block title %}Math Club Leaderboard | DBIT {% endblock %}
-{% block content %}<section class="page">
-    <div class="flex justify-between">
-        <h1>All-time leaderboard</h1>
-        <a class="text-cyan-300" href="{% url 'leaderboard:monthly' %}">Monthly results →</a></div>
-        <div class="mt-6 overflow-hidden rounded-xl border border-slate-800">
-            {% for profile in profiles %}
-            {% include 'partials/leaderboard_row.html' with rank=forloop.counter %}
-            {% empty %}<p class="p-5 text-slate-400">Be the first to make the board.
-                
-            </p>{% endfor %}</div></section>{% endblock %}
+{% extends 'base.html' %}{% block title %}Math Club Leaderboard | DBIT{% endblock %}{% block content %}<section class="page"><div class="page-heading"><div><p class="eyebrow">Every puzzle counts</p><h1>Ranked<br>By Grit.</h1></div><a class="btn" href="{% url 'leaderboard:monthly' %}">Monthly board →</a></div><div class="rank-podium">{% for profile in profiles|slice:':3' %}<article class="scale-in"><p class="rank-number">#0{{ forloop.counter }}</p><p class="mt-4 text-xl font-bold">{{ profile.user.get_full_name|default:profile.user.username }}</p><p>{{ profile.branch }} · {{ profile.year }}</p><p class="mt-4 font-black">🔥 {{ profile.current_streak }} streak</p><p class="text-2xl font-black">{{ profile.points }} points</p></article>{% endfor %}</div><div class="leaderboard-list">{% for profile in profiles|slice:'3:' %}{% include 'partials/leaderboard_row.html' with rank=forloop.counter|add:3 %}{% empty %}{% if not profiles %}<p class="py-8 text-lg">Be the first name on the board.</p>{% endif %}{% endfor %}</div></section>{% endblock %}

@@ -1,1 +1,3 @@
-<div class="grid grid-cols-[2rem_1fr_auto] gap-3 border-b border-slate-800 px-2 py-3"><span>{{ rank }}</span><div><strong>{{ profile.user.get_full_name|default:profile.user.username }}</strong><p class="text-xs text-slate-400">{{ profile.branch }} · Year {{ profile.year }}</p></div><div class="text-right"><strong>{{ profile.points }}</strong><p class="text-xs text-orange-300">🔥 {{ profile.current_streak }}</p></div></div>
+<article class="leaderboard-row stagger-item"><span class="leaderboard-rank">#{{ rank|stringformat:"02d" }}</span>
+    <div><strong class="text-lg">{{ profile.user.get_full_name|default:profile.user.username }}</strong>
+        <p class="text-sm">{{ profile.branch }} · {{ profile.year }} · 🔥 {{ profile.current_streak }} streak</p></div><div class="leaderboard-points">{{ profile.points }}<span class="block text-xs tracking-widest">PTS</span></div></article>

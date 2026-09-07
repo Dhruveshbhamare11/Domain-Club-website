@@ -2,12 +2,12 @@ from django.db import migrations
 
 
 DEFAULT_BADGES = (
-    ("FIRST_WIN", "Speed Demon", "Fastest correct solver of a puzzle.", "bolt"),
-    ("STREAK_3", "On Fire", "Solve three puzzles correctly in a row.", "flame"),
-    ("STREAK_5", "Unstoppable", "Solve five puzzles correctly in a row.", "rocket"),
-    ("STREAK_10", "Mathematical Machine", "Solve ten puzzles correctly in a row.", "trophy"),
-    ("MONTHLY_WINNER", "Math Champion", "Finish first in a completed monthly competition.", "crown"),
-    ("PERFECT_MONTH", "Perfect Month", "Correctly solve every processed puzzle in a month.", "star"),
+    ("FIRST_WIN", "Speed Demon", "Fastest correct solver of a puzzle.", "⚡"),
+    ("STREAK_3", "On Fire", "Solve three puzzles correctly in a row.", "🔥"),
+    ("STREAK_5", "Unstoppable", "Solve five puzzles correctly in a row.", "🚀"),
+    ("STREAK_10", "Mathematical Machine", "Solve ten puzzles correctly in a row.", "🏆"),
+    ("MONTHLY_WINNER", "Math Champion", "Finish first in a completed monthly competition.", "👑"),
+    ("PERFECT_MONTH", "Perfect Month", "Correctly solve every processed puzzle in a month.", "⭐"),
 )
 
 

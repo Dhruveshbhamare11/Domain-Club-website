@@ -1,1 +1,5 @@
-{% extends 'base.html' %}{% block title %}Join Domain Club{% endblock %}{% block content %}<section class="page max-w-xl"><h1>Join the club</h1><p class="mb-6 text-slate-400">Use your email to sign in — no username or profile picture required.</p><form method="post" class="card space-y-4">{% csrf_token %}{{ form.as_p }}<button class="btn">Create account</button></form></section>{% endblock %}
+{% extends 'base.html' %}{% block title %}Join Domain Club{% endblock %}
+{% block content %}<section class="page max-w-2xl"><p class="eyebrow">Your seat at the table</p>
+    <h1>Join<br>The club.</h1><p class="mt-6 text-lg">Use your email to sign in. No username and no profile picture required.</p>
+    <form method="post" class="form-poster mt-10">{% csrf_token %}{{ form.as_p }}<button class="btn mt-2">Create account →</button></form>
+</section>{% endblock %}

@@ -29,12 +29,12 @@ class Puzzle(models.Model):
         except (InvalidOperation, TypeError):
             raise ValidationError({"correct_answer": "Enter a valid integer or decimal."})
 
-    # def save(self, *args, **kwargs):
-    #     """Guarantee production puzzles last 24 hours; allow local short-window tests."""
-    #     if self.end_time is None or not settings.DEBUG:
-    #         self.end_time = self.start_time + timedelta(hours=24)
-    #     self.full_clean()
-    #     super().save(*args, **kwargs)
+    def save(self, *args, **kwargs):
+        """Provide the normal duration, but keep a custom local test end time."""
+        if self.end_time is None or not settings.DEBUG:
+            self.end_time = self.start_time + timedelta(hours=24)
+        self.full_clean()
+        super().save(*args, **kwargs)
 
     @property
     def is_active(self):

@@ -1,6 +1,1 @@
-{% extends 'base.html' %}
-{% block title %}{{ event.title }} | Mathematics Club{% endblock %}
-{% block meta_description %}{{ event.description|truncatechars:155 }}{% endblock %}
-{% block content %}<article class="page max-w-3xl"><p class="text-cyan-300">{{ event.date }} · {{ event.time|time:'g:i A' }} · {{ event.location }}</p>
-    <h1>{{ event.title }}</h1><div class="mt-6 whitespace-pre-line text-slate-300">{{ event.description }}</div>
-    {% if event.registration_link %}<a class="btn mt-8" href="{{ event.registration_link }}">Register</a>{% endif %}</article>{% endblock %}
+{% extends 'base.html' %}{% block title %}{{ event.title }} | Mathematics Club{% endblock %}{% block meta_description %}{{ event.description|truncatechars:155 }}{% endblock %}{% block content %}<article class="page max-w-5xl"><div class="grid gap-10 lg:grid-cols-2 items-start"><div><p class="eyebrow">{{ event.date|date:'d M Y' }} · {{ event.time|time:'g:i A' }}</p><h1>{{ event.title }}</h1><p class="marker mt-6">{{ event.location }}</p>{% if event.registration_link %}<a class="btn mt-8" href="{{ event.registration_link }}">Register now →</a>{% endif %}</div>{% if event.image %}<figure class="image-cutout alt h-[22rem]"><img src="{{ event.image.url }}" alt="{{ event.title }} event"></figure>{% endif %}</div><div class="paper-card mt-12 max-w-3xl whitespace-pre-line text-lg">{{ event.description }}</div></article>{% endblock %}

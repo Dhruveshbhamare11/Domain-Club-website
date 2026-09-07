@@ -12,3 +12,4 @@ class Command(BaseCommand):
         for result in results:
             winner = result["winner"].username if result["winner"] else "None"
             self.stdout.write(self.style.SUCCESS(f"Processed {result['puzzle'].title}: winner={winner}, correct={result['correct']}, points awarded={result['points']}"))
+
