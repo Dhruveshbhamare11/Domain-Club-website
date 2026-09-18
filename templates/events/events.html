@@ -1,1 +1,74 @@
-{% extends 'base.html' %}{% block title %}Mathematics Club Events | DBIT{% endblock %}{% block content %}<section class="page"><div class="page-heading"><div><p class="eyebrow">Save the date</p><h1>Come<br>Curious.</h1></div><p class="marker">Talks · Workshops · Games</p></div><div class="mt-12 grid gap-7 md:grid-cols-2">{% for event in events %}{% include 'partials/event_card.html' %}{% empty %}<p class="marker">No events currently scheduled.</p>{% endfor %}</div></section>{% endblock %}
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Events & Photo Gallery | DBIT Domain Math Club{% endblock %}
+{% block meta_description %}Explore upcoming events, workshops, calculus showdowns and captured photo memories of DBIT Domain Math Club.{% endblock %}
+
+{% block content %}
+<section class="page max-w-6xl">
+  <!-- Events Page Heading -->
+  <div class="page-heading">
+    <div>
+      <div class="events-hero-badge">
+        <span>🎪</span> GATHERINGS, WORKSHOPS & CONCLAVES
+      </div>
+      <p class="eyebrow mt-2">Save the date & explore memories</p>
+      <h1>Moments &<br><span class="accent">Gatherings.</span></h1>
+    </div>
+    <div class="flex flex-col items-end gap-1">
+      <p class="marker">Curiosity in Full Swing 📐⚡</p>
+      <span class="text-xs font-bold text-ink-soft opacity-75">Workshops · Competitions · Hackathons</span>
+    </div>
+  </div>
+
+  <!-- Events Photo Gallery Grid -->
+  <div class="events-gallery-grid mt-10">
+    {% for event in events %}
+      {% include 'partials/event_card.html' %}
+    {% empty %}
+      <div class="col-span-full paper-card text-center p-12">
+        <div class="text-6xl mb-4">🎪</div>
+        <h2 class="text-3xl font-bold">No Events Scheduled Yet</h2>
+        <p class="marker mt-3">The crew is crafting the next mathematical showdown. Stay tuned!</p>
+        <a class="btn mt-6" href="{% url 'puzzles:current' %}">Solve Live Puzzles Instead →</a>
+      </div>
+    {% endfor %}
+  </div>
+
+  <!-- Fullscreen Photo Lightbox Modal -->
+  <div id="event-lightbox" class="event-lightbox-backdrop" onclick="closeEventLightbox(event)">
+    <div class="event-lightbox-container" onclick="event.stopPropagation()">
+      <button type="button" class="event-lightbox-close" onclick="closeEventLightbox(event)" title="Close Photo">✖</button>
+      <img id="lightbox-img" class="event-lightbox-img" src="" alt="Event Photo Preview">
+      <div id="lightbox-caption" class="event-lightbox-caption"></div>
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  function openEventLightbox(imgUrl, caption) {
+    const lb = document.getElementById('event-lightbox');
+    const img = document.getElementById('lightbox-img');
+    const cap = document.getElementById('lightbox-caption');
+    if (!lb || !img) return;
+
+    img.src = imgUrl;
+    if (cap) cap.textContent = caption || '';
+    lb.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeEventLightbox(e) {
+    const lb = document.getElementById('event-lightbox');
+    if (!lb) return;
+    lb.classList.remove('active');
+    document.body.style.overflow = '';
+  }
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeEventLightbox();
+  });
+</script>
+{% endblock %}

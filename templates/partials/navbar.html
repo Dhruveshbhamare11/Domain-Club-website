@@ -1,6 +1,10 @@
+{% load static %}
 <header class="site-nav">
   <nav class="nav-inner" aria-label="Main navigation">
-    <a class="wordmark" href="{% url 'core:home' %}" aria-label="DBIT Mathematics Club home">Math<br>Club</a>
+    <a class="nav-brand-wrap" href="{% url 'core:home' %}" aria-label="DBIT Domain Math Club home" style="display: flex; align-items: center; gap: 0.6rem; text-decoration: none; flex-shrink: 0;">
+      <img src="{% static 'images/domain_logo.png' %}" alt="Domain Math Club Logo" class="nav-logo-img" width="40" height="40" style="width: 40px; height: 40px; max-width: 40px; max-height: 40px; object-fit: contain; border-radius: 50%; border: 2px solid #1c150c; background: #ffffff; flex-shrink: 0; box-shadow: 2px 2px 0 rgba(0,0,0,0.15);">
+      <span class="wordmark" style="font-size: 1.25rem; line-height: 0.9; margin: 0;">Domain<br>Math Club</span>
+    </a>
     <button class="nav-toggle" type="button" data-nav-toggle aria-expanded="false" aria-controls="site-menu">Menu</button>
     <div class="nav-links" id="site-menu" data-nav-menu>
       <a href="{% url 'core:home' %}">Home</a><a href="{% url 'puzzles:current' %}">Puzzles</a><a href="{% url 'leaderboard:all_time' %}">Leaderboard</a><a href="{% url 'events:list' %}">Events</a><a href="{% url 'blog:list' %}">Blog</a><a href="{% url 'core:team' %}">Team</a>

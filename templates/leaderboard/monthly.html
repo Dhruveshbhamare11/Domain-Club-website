@@ -1,1 +1,170 @@
-{% extends 'base.html' %}{% block title %}Monthly Math Leaderboard | DBIT{% endblock %}{% block content %}<section class="page"><div class="page-heading"><div><p class="eyebrow">This month, this energy</p><h1>Monthly<br>Board.</h1></div><p class="sticker-label">{{ month }}/{{ year }}</p></div><div class="leaderboard-list">{% for score in scores %}<article class="leaderboard-row"><span class="leaderboard-rank">#{{ forloop.counter|stringformat:'02d' }}</span><div><strong class="text-lg">{{ score.user.get_full_name|default:score.user.username }}</strong><p>{{ score.user.profile.branch }} · {{ score.user.profile.year }} · {{ score.correct_answers }} correct</p></div><div class="leaderboard-points">{{ score.points }}<span class="block text-xs tracking-widest">PTS</span></div></article>{% empty %}<p class="py-8 marker">No scores recorded for this month.</p>{% endfor %}</div><h2 class="mt-16 text-6xl leading-[.7]">Past<br>Champions.</h2><div class="mt-8 grid gap-4 md:grid-cols-2">{% for winner in winners %}<article class="paper-card"><span class="sticker-label">{{ winner.month }}/{{ winner.year }}</span><h3 class="mt-5 text-4xl">{{ winner.user.get_full_name|default:winner.user.username }}</h3><p class="mt-2">{{ winner.points }} points · {{ winner.correct_answers }} correct</p></article>{% empty %}<p class="marker">Champions will appear after the first completed month.</p>{% endfor %}</div></section>{% endblock %}
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Monthly Realm | Minecraft Math Leaderboard{% endblock %}
+{% block meta_description %}Monthly Mathematics Club DBIT leaderboard, champion awards and quest scores.{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/minecraft_theme.css' %}?v=1.0">
+{% endblock %}
+
+{% block content %}
+<div class="mc-realm-page">
+  <div class="mc-container">
+
+    <!-- ════════ MINECRAFT HERO BANNER ════════ -->
+    <header class="mc-hero-banner">
+      <div class="mc-hero-img-bg" style="background-image: url('{% static 'images/minecraft/mc_leaderboard_hero.jpg' %}');">
+        <div class="mc-hero-gradient-overlay"></div>
+        <div class="mc-hero-content">
+          <div>
+            <div class="mc-badge-tag">
+              <span>🌟</span> MONTHLY QUEST SEASON · {{ month }}/{{ year }}
+            </div>
+            <h1 class="mc-hero-title">
+              MONTHLY<br><span style="color: var(--mc-gold);">EXPEDITION.</span>
+            </h1>
+            <p class="mc-hero-subtitle">
+              Reset every season. Every student starts fresh for the Champion Trophy!
+            </p>
+          </div>
+
+          <div class="mc-hero-actions">
+            <button type="button" class="mc-sound-toggle" title="Toggle 8-bit Minecraft Sound FX">
+              <span>🔊 AUDIO: ON</span>
+            </button>
+            <a class="mc-btn mc-btn-diamond" href="{% url 'leaderboard:all_time' %}">
+              <span>👑 ALL-TIME REALM →</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- ════════ MONTHLY SCORES BOARD ════════ -->
+    <section class="mc-leaderboard-panel mb-16">
+      <div class="mc-panel-head">
+        <div>RANK</div>
+        <div>ADVENTURER & GUILD</div>
+        <div class="hidden md:block">SOLVED / STREAK</div>
+        <div class="text-right">SCORE</div>
+      </div>
+
+      <div class="mc-table-body">
+        {% for score in scores %}
+        <article class="mc-row-item stagger-item">
+          <div class="flex items-center">
+            <span class="mc-rank-box {% if forloop.counter <= 3 %}rank-top10{% endif %}">
+              #{{ forloop.counter|stringformat:"02d" }}
+            </span>
+          </div>
+
+          <div class="mc-player-cell">
+            <div class="mc-mini-head">
+              {% if forloop.counter == 1 %}
+                👑
+              {% elif forloop.counter == 2 %}
+                🥈
+              {% elif forloop.counter == 3 %}
+                🥉
+              {% else %}
+                ⛏️
+              {% endif %}
+            </div>
+
+            <div class="mc-player-details">
+              <div class="mc-row-name">
+                {{ score.user.get_full_name|default:score.user.username }}
+              </div>
+              <div class="mc-row-tags">
+                {% if score.user.profile.branch %}
+                  <span class="mc-tag-branch">{{ score.user.profile.branch }}</span>
+                {% endif %}
+                {% if score.user.profile.year %}
+                  <span class="mc-tag-year">{{ score.user.profile.year }}</span>
+                {% endif %}
+                <span class="text-xs text-emerald-400 font-mono">{{ score.correct_answers }} Correct Solves</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="mc-stats-cell">
+            <div class="mc-streak-pill">
+              <span>🔥</span>
+              <span>{{ score.best_streak }} BEST STREAK</span>
+            </div>
+            <div class="text-xs text-slate-400 font-mono">
+              {{ score.puzzles_participated }} Quests Attempted
+            </div>
+          </div>
+
+          <div class="mc-score-cell">
+            <div class="mc-score-val">
+              <span>🟢</span>
+              <span>{{ score.points }}</span>
+            </div>
+            <span class="mc-score-unit">EMERALDS</span>
+          </div>
+        </article>
+        {% empty %}
+        <div class="p-12 text-center">
+          <div class="text-5xl mb-3">📜</div>
+          <p class="font-mono text-xl text-slate-300">No scores recorded for {{ month }}/{{ year }} yet.</p>
+          <a href="{% url 'puzzles:current' %}" class="mc-btn mc-btn-green mt-5">
+            <span>START CURRENT QUEST →</span>
+          </a>
+        </div>
+        {% endfor %}
+      </div>
+    </section>
+
+    <!-- ════════ PAST CHAMPIONS (HALL OF ETERNAL GLORY) ════════ -->
+    <section class="mc-champion-showcase">
+      <div class="flex items-center gap-3 mb-6">
+        <span class="text-3xl">⭐</span>
+        <div>
+          <h2 class="font-bold text-3xl font-mono text-white tracking-wide" style="font-family: var(--font-mc-pixel); font-size: 1.4rem;">
+            PAST CHAMPIONS
+          </h2>
+          <p class="text-slate-400 font-mono text-sm mt-1">Hall of Fame winners across previous seasons</p>
+        </div>
+      </div>
+
+      <div class="mc-archive-grid">
+        {% for winner in winners %}
+        <article class="mc-archive-card stagger-item" style="border-color: var(--mc-gold);">
+          <div class="flex items-center justify-between gap-3">
+            <span class="mc-badge-tag" style="background: rgba(252, 238, 75, 0.15); border-color: var(--mc-gold); color: var(--mc-gold);">
+              🌟 SEASON {{ winner.month }}/{{ winner.year }}
+            </span>
+            <span class="text-2xl">🏆</span>
+          </div>
+
+          <div class="my-4">
+            <h3 class="text-2xl font-black text-white" style="font-family: var(--font-mc-body);">
+              {{ winner.user.get_full_name|default:winner.user.username }}
+            </h3>
+            <p class="text-sm text-slate-300 mt-2 font-mono">
+              🟢 {{ winner.points }} Emeralds · 🎯 {{ winner.correct_answers }} Solved Quests · 🔥 {{ winner.best_streak }} Streak
+            </p>
+          </div>
+
+          <div class="text-xs font-mono text-yellow-400 uppercase tracking-wider">
+            ★ Crowned Monthly Sovereign ★
+          </div>
+        </article>
+        {% empty %}
+        <div class="p-8 text-center col-span-full border-2 border-dashed border-slate-700 rounded-lg">
+          <p class="font-mono text-slate-400">Champions will appear here after the first completed month season.</p>
+        </div>
+        {% endfor %}
+      </div>
+    </section>
+
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/minecraft_effects.js' %}?v=1.0"></script>
+{% endblock %}

@@ -1,9 +1,64 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block title %}Mathematics Club | DBIT{% endblock %}
 {% block content %}
-<section class="hero"><div class="hero-inner"><div class="hero-grid" aria-hidden="true"></div><span class="doodle hero-doodle-one">π</span><span class="doodle hero-doodle-two">∑</span><p class="eyebrow reveal">DBIT Mathematics Club</p><h1 class="reveal-left">Where<br><span class="accent">Numbers</span><br>Get<br>Interesting.</h1><p class="hero-copy reveal">Challenges. Puzzles. Events. Ideas. A college club for the curious, the competitive, and the gloriously stuck.</p><div class="mt-8 flex flex-wrap gap-4"><a class="btn" href="{% url 'puzzles:current' %}">Try this week's puzzle →</a><a class="text-link self-center" href="{% url 'core:about' %}">Explore the club</a></div><p class="hero-stamp">THINK<br>LOUDER.</p></div></section>
-<section class="page"><div class="page-heading"><div><p class="eyebrow">Outside the textbook</p>
-    <h2 class="text-6xl md:text-8xl leading-[.7]">Meet us<br>there.</h2>
+<section class="hero"><div class="hero-inner">
+  <div class="hero-grid" aria-hidden="true"></div>
+  <span class="doodle hero-doodle-one">π</span>
+  <span class="doodle hero-doodle-two">∑</span>
+  
+  <div class="hero-text-col">
+    <p class="eyebrow reveal">DBIT Mathematics Club</p>
+    <h1 class="reveal-left">Where<br><span class="accent">Numbers</span><br>Get<br>Interesting.</h1>
+    <p class="hero-copy reveal">Challenges. Puzzles. Events. Ideas. A college club for the curious, the competitive, and the gloriously stuck.</p>
+    <div class="mt-8 flex flex-wrap gap-4">
+      <a class="btn" href="{% url 'puzzles:current' %}">Try this week's puzzle →</a>
+      <a class="text-link self-center" href="{% url 'core:about' %}">Explore the club</a>
+    </div>
+    <p class="hero-stamp">THINK<br>LOUDER.</p>
+  </div>
+
+  <!-- 3D HERO MASCOT ARENA: Characters playing with math icons in 3D -->
+  <div class="hero-mascot-arena" id="hero-mascot-arena">
+    <div class="hero-mascot-board" id="hero-mascot-board">
+      <span class="hero-board-badge">✨ 3D MATH PLAYGROUND</span>
+      
+      <!-- Interactive Math Toys -->
+      <div class="floating-math-toy toy-pi-orbit" id="toy-pi" title="Click to spin π!">π</div>
+      <div class="floating-math-toy toy-apple-bounce" id="toy-apple" title="Click Newton's apple!">🍎</div>
+      <div class="floating-math-toy toy-infinity-spin" id="toy-infinity" title="Click infinity!">∞</div>
+
+      <!-- Mascot Character 1: Einstein juggling pi & infinity -->
+      <div class="mascot-character mascot-einstein" id="mascot-einstein" title="Click Albert!">
+        <div class="mascot-speech">E = mc²! Time is relative! ⚡</div>
+        <img src="{% static 'images/mathematicians/einstein.jpg' %}" alt="Albert Einstein">
+        <span class="mascot-character-name">Einstein (E=mc²)</span>
+      </div>
+
+      <!-- Mascot Character 2: Newton dodging his falling apple -->
+      <div class="mascot-character mascot-newton" id="mascot-newton" title="Click Sir Isaac!">
+        <div class="mascot-speech">Gravity strikes! Calculus rises! 🍎</div>
+        <img src="{% static 'images/mathematicians/newton.jpg' %}" alt="Sir Isaac Newton">
+        <span class="mascot-character-name">Newton (Calculus)</span>
+      </div>
+
+      <span class="hero-board-hint">🎮 Hover to tilt 3D · Click us!</span>
+    </div>
+  </div>
+</div></section>
+
+<section class="page"><div class="page-heading"><div>
+  <div class="section-mascot-badge" style="margin-bottom: 0.8rem; transform: rotate(1deg);">
+    <div class="section-mascot-thumb">
+      <img src="{% static 'images/mathematicians/euler.jpg' %}" alt="Leonhard Euler">
+    </div>
+    <div class="section-mascot-text">
+      <strong>Euler's Navigation Tip:</strong>
+      "Every bridge connects a path — join our next workshop!"
+    </div>
+  </div>
+  <p class="eyebrow">Outside the textbook</p>
+  <h2 class="text-6xl md:text-8xl leading-[.7]">Meet us<br>there.</h2>
 </div><a class="text-link" href="{% url 'events:list' %}">All events →</a></div>
 <div class="mt-10 grid gap-6 md:grid-cols-2">
     {% for event in events %}
@@ -12,7 +67,29 @@
     {% endfor %}</div>
 </section>
 
-<section class="page grid gap-10 items-center lg:grid-cols-[1.15fr_.85fr]"><div>{% include 'partials/puzzle_card.html' %}</div><div class="reveal-right"><p class="eyebrow">Do the math</p><h2 class="mt-2 text-5xl leading-[.78]">One question.<br>24 hours.<br>Infinite bragging rights.</h2><p class="mt-6 max-w-md text-lg">Every week, a fresh problem lands. One answer per student. The clock, the score, and the glory are all real.</p><a class="text-link inline-block mt-7" href="{% url 'puzzles:current' %}">See all active puzzles →</a></div></section>
-{% comment %} <section class="poster-panel py-16 px-5"><div class="mx-auto max-w-6xl relative z-[1]"><div class="flex flex-wrap items-end justify-between gap-4"><div><p class="eyebrow" style="color:var(--lime)">The numbers don't lie</p><h2 class="text-6xl md:text-8xl leading-[.7]">Top<br>Solvers.</h2></div><a class="btn" href="{% url 'leaderboard:all_time' %}">Full leaderboard →</a></div><div class="rank-podium">{% for profile in leaders|slice:':3' %}<article class="scale-in"><p class="rank-number">#0{{ forloop.counter }}</p><p class="mt-4 font-bold text-xl">{{ profile.user.get_full_name|default:profile.user.username }}</p><p>{{ profile.branch }} · {{ profile.year }}</p><p class="mt-4 font-black">🔥 {{ profile.current_streak }} STREAK</p><p class="text-2xl font-black">{{ profile.points }} POINTS</p></article>{% empty %}<p class="col-span-3 py-8 text-xl">The first name on the board could be yours.</p>{% endfor %}</div></div></section> {% endcomment %}
-<section class="page"><div class="page-heading"><div><p class="eyebrow">From the margins</p><h2 class="text-6xl md:text-8xl leading-[.7]">Ideas,<br>unboxed.</h2></div><a class="text-link" href="{% url 'blog:list' %}">Club journal →</a></div><div class="editorial-grid mt-10">{% for post in posts %}{% include 'partials/blog_card.html' %}{% empty %}<p class="marker">Fresh thinking is on its way.</p>{% endfor %}</div></section>
+<section class="page grid gap-10 items-center lg:grid-cols-[1.15fr_.85fr]"><div>
+  <div class="section-mascot-badge">
+    <div class="section-mascot-thumb">
+      <img src="{% static 'images/mathematicians/pythagoras.jpg' %}" alt="Pythagoras">
+    </div>
+    <div class="section-mascot-text">
+      <strong>Pythagoras Challenges You:</strong>
+      "Prove your mettle on this problem! a² + b² = c²!"
+    </div>
+  </div>
+  {% include 'partials/puzzle_card.html' %}
+</div><div class="reveal-right"><p class="eyebrow">Do the math</p><h2 class="mt-2 text-5xl leading-[.78]">One question.<br>24 hours.<br>Infinite bragging rights.</h2><p class="mt-6 max-w-md text-lg">Every week, a fresh problem lands. One answer per student. The clock, the score, and the glory are all real.</p><a class="text-link inline-block mt-7" href="{% url 'puzzles:current' %}">See all active puzzles →</a></div></section>
+
+<section class="page"><div class="page-heading"><div>
+  <div class="section-mascot-badge" style="margin-bottom: 0.8rem; transform: rotate(-1.5deg);">
+    <div class="section-mascot-thumb">
+      <img src="{% static 'images/mathematicians/ramanujan.jpg' %}" alt="Srinivasa Ramanujan">
+    </div>
+    <div class="section-mascot-text">
+      <strong>Ramanujan's Notebook:</strong>
+      "Infinite formulas, deep explorations, and wild ideas unboxed."
+    </div>
+  </div>
+  <p class="eyebrow">From the margins</p><h2 class="text-6xl md:text-8xl leading-[.7]">Ideas,<br>unboxed.</h2></div><a class="text-link" href="{% url 'blog:list' %}">Club journal →</a></div><div class="editorial-grid mt-10">{% for post in posts %}{% include 'partials/blog_card.html' %}{% empty %}<p class="marker">Fresh thinking is on its way.</p>{% endfor %}</div></section>
 {% endblock %}
+

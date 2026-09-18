@@ -1,1 +1,53 @@
-<article class="article-card stagger-item">{% if post.featured_image %}<a class="article-image image-cutout" href="{{ post.get_absolute_url }}"><img src="{{ post.featured_image.url }}" alt="{{ post.title }}"></a>{% endif %}<p class="section-kicker">{{ post.published_at|date:'d M Y' }} · Club journal</p><h2 class="mt-3"><a href="{{ post.get_absolute_url }}">{{ post.title }}</a></h2><p class="mt-4 max-w-md">{{ post.excerpt }}</p><a class="text-link inline-block mt-5 text-sm" href="{{ post.get_absolute_url }}">Read article →</a></article>
+<article class="blog-article-card stagger-item">
+  <!-- Top Washi Tape -->
+  <div class="blog-card-tape" aria-hidden="true"></div>
+
+  <!-- Featured Cover Image or Doodle Placeholder -->
+  {% if post.featured_image %}
+    <a class="blog-card-cover" href="{{ post.get_absolute_url }}" title="Read {{ post.title }}">
+      <img class="blog-card-img" src="{{ post.featured_image.url }}" alt="{{ post.title }}">
+    </a>
+  {% else %}
+    <a class="blog-card-cover text-decoration-none" href="{{ post.get_absolute_url }}">
+      <div class="blog-card-placeholder">
+        <span class="text-4xl">📖</span>
+        <span>DOMAIN CHRONICLES</span>
+      </div>
+    </a>
+  {% endif %}
+
+  <!-- Blog Details & Content Body -->
+  <div class="blog-card-body">
+    <div>
+      <div class="blog-meta-tags">
+        <span class="blog-tag-pill">
+          <span>📚</span> JOURNAL
+        </span>
+        <span class="blog-date-text">
+          {{ post.published_at|default:post.created_at|date:'d M Y' }}
+        </span>
+      </div>
+
+      <h2 class="blog-card-title">
+        <a class="text-decoration-none text-inherit" href="{{ post.get_absolute_url }}">
+          {{ post.title }}
+        </a>
+      </h2>
+
+      <p class="blog-card-snippet">
+        {{ post.excerpt|truncatechars:130 }}
+      </p>
+    </div>
+
+    <!-- Card Action Footer -->
+    <div class="blog-card-footer">
+      <div class="text-xs font-bold text-ink-soft font-mono flex items-center gap-1">
+        <span>✍️</span> {{ post.author.get_full_name|default:post.author.username|default:"Domain Squad" }}
+      </div>
+
+      <a class="btn-read-article" href="{{ post.get_absolute_url }}">
+        <span>Read Article →</span>
+      </a>
+    </div>
+  </div>
+</article>

@@ -1,1 +1,122 @@
-{% extends 'base.html' %}{% block title %}Weekly Mathematics Puzzles | Mathematics Club{% endblock %}{% block meta_description %}Solve every currently active DBIT Mathematics Club puzzle.{% endblock %}{% block content %}<section class="page"><div class="page-heading"><div><p class="eyebrow">Solve something strange</p><h1>Live<br>Puzzles.</h1></div><p class="marker">One answer. 24 hours.</p></div><div class="mt-12 grid gap-7 md:grid-cols-2">{% for puzzle in puzzles %}<article class="puzzle-poster puzzle-card stagger-item"><p class="puzzle-meta">Open now · closes {{ puzzle.end_time|date:'M j, g:i A' }}</p><p class="puzzle-number">#{{ puzzle.pk|stringformat:"02d" }}</p><h2 class="puzzle-title">{{ puzzle.title }}</h2><p class="mt-6 max-w-md text-lg">{{ puzzle.content|truncatechars:190 }}</p><a class="btn mt-7" href="{% url 'puzzles:detail' puzzle.pk %}">Open puzzle →</a></article>{% empty %}<article class="closed-poster md:col-span-2"><p class="eyebrow">Nothing on the board</p><h2>No puzzle<br>is live.</h2><a class="btn mt-6" href="{% url 'puzzles:archive' %}">Puzzle archive →</a></article>{% endfor %}</div></section>{% endblock %}
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Live Quests & Puzzles | Minecraft Math Club{% endblock %}
+{% block meta_description %}Solve live Minecraft-themed Mathematics Club challenges. Embark on quests, mine emeralds, and conquer the leaderboard.{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/minecraft_theme.css' %}?v=1.0">
+{% endblock %}
+
+{% block content %}
+<div class="mc-realm-page">
+  <div class="mc-container">
+
+    <!-- ════════ MINECRAFT HERO BANNER ════════ -->
+    <header class="mc-hero-banner">
+      <div class="mc-hero-img-bg" style="background-image: url('{% static 'images/minecraft/mc_puzzles_hero.jpg' %}');">
+        <div class="mc-hero-gradient-overlay"></div>
+        <div class="mc-hero-content">
+          <div>
+            <div class="mc-badge-tag">
+              <span>⚔️</span> ACTIVE BOUNTIES · MATHEMATICAL GUILD
+            </div>
+            <h1 class="mc-hero-title">
+              QUEST BOARD &<br><span style="color: var(--mc-diamond);">ENCHANTMENTS.</span>
+            </h1>
+            <p class="mc-hero-subtitle">
+              Decode ancient runes and submit your solution to forge rank XP!
+            </p>
+          </div>
+
+          <div class="mc-hero-actions">
+            <button type="button" class="mc-sound-toggle" title="Toggle 8-bit Minecraft Sound FX">
+              <span>🔊 AUDIO: ON</span>
+            </button>
+            <a class="mc-btn mc-btn-portal" href="{% url 'puzzles:archive' %}">
+              <span>📚 STRONGHOLD ARCHIVE →</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- ════════ LIVE QUESTS GRID ════════ -->
+    <div class="flex items-center justify-between gap-4 mb-6">
+      <div>
+        <h2 class="font-bold text-2xl text-white font-mono" style="font-family: var(--font-mc-pixel); font-size: 1.25rem;">
+          ACTIVE EXPEDITIONS
+        </h2>
+        <p class="text-slate-400 font-mono text-sm mt-1">One attempt per adventurer. Time is ticking.</p>
+      </div>
+
+      <div class="mc-badge-tag" style="border-color: var(--mc-xp-green); color: var(--mc-xp-green);">
+        <span>⚡</span> LIVE NOW
+      </div>
+    </div>
+
+    <div class="mc-quest-grid">
+      {% for puzzle in puzzles %}
+      <article class="mc-quest-card stagger-item">
+        <div>
+          <!-- Quest Ribbon -->
+          <div class="mc-quest-ribbon">
+            <span class="mc-quest-num">QUEST #{{ puzzle.pk|stringformat:"02d" }}</span>
+            <span class="mc-quest-difficulty diff-hardcore">
+              ⚔️ ELITE CHALLENGE
+            </span>
+          </div>
+
+          <!-- Quest Title -->
+          <h3 class="mc-quest-title">
+            {{ puzzle.title }}
+          </h3>
+
+          <!-- Description / Excerpt -->
+          <p class="mc-quest-desc">
+            {{ puzzle.content|truncatechars:180 }}
+          </p>
+
+          <!-- Boss Health Bar Countdown -->
+          <div class="mc-boss-bar-wrap">
+            <div class="mc-boss-bar-header">
+              <span>⏳ CLOSES {{ puzzle.end_time|date:'M j, g:i A' }}</span>
+              <span>EXPIRING SOON</span>
+            </div>
+            <div class="mc-boss-bar-fill"></div>
+          </div>
+        </div>
+
+        <!-- Action Button -->
+        <div class="mt-4 pt-4 border-t border-yellow-900/40 flex items-center justify-between gap-4">
+          <div class="text-xs font-mono text-emerald-400 flex items-center gap-1">
+            <span>💎</span> REWARD: +50 XP & EMERALDS
+          </div>
+          <a class="mc-btn mc-btn-green" href="{% url 'puzzles:detail' puzzle.pk %}">
+            <span>EMBARK ON QUEST →</span>
+          </a>
+        </div>
+      </article>
+      {% empty %}
+      <div class="col-span-full p-16 text-center bg-[#181c26] border-4 border-[#363e52] rounded-xl shadow-2xl">
+        <div class="text-6xl mb-4">🛡️</div>
+        <h3 class="text-2xl font-mono text-white mb-2" style="font-family: var(--font-mc-pixel);">
+          ALL ACTIVE QUESTS CONQUERED!
+        </h3>
+        <p class="text-slate-300 font-mono text-base max-w-lg mx-auto">
+          The Guild Masters are crafting new mathematical puzzles in the forge. Explore completed trials in the library!
+        </p>
+        <a class="mc-btn mc-btn-diamond mt-6" href="{% url 'puzzles:archive' %}">
+          <span>VISIT STRONGHOLD ARCHIVE →</span>
+        </a>
+      </div>
+      {% endfor %}
+    </div>
+
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/minecraft_effects.js' %}?v=1.0"></script>
+{% endblock %}

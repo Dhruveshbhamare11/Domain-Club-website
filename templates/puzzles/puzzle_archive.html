@@ -1,1 +1,111 @@
-{% extends 'base.html' %}{% block title %}Puzzle Archive | Mathematics Club{% endblock %}{% block content %}<section class="page"><div class="page-heading"><div><p class="eyebrow">Old questions. New angles.</p><h1>Puzzle<br>Archive.</h1></div><p class="marker">Solutions included</p></div><div class="mt-12 grid gap-5 md:grid-cols-2">{% for puzzle in puzzles %}<a class="paper-card hover-lift stagger-item" href="{% url 'puzzles:detail' puzzle.pk %}"><p class="section-kicker">Closed {{ puzzle.end_time|date:'M j, Y' }}</p><h2 class="mt-4 text-4xl leading-[.8]">{{ puzzle.title }}</h2><p class="text-link inline-block mt-6 text-sm">Open solution →</p></a>{% empty %}<p class="marker">There are no completed puzzles yet.</p>{% endfor %}</div></section>{% endblock %}
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Stronghold Puzzle Archive | Minecraft Math Club{% endblock %}
+{% block meta_description %}Explore past mathematics puzzles and complete solutions in the Minecraft Stronghold Archive.{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/minecraft_theme.css' %}?v=1.0">
+{% endblock %}
+
+{% block content %}
+<div class="mc-realm-page">
+  <div class="mc-container">
+
+    <!-- ════════ MINECRAFT HERO BANNER ════════ -->
+    <header class="mc-hero-banner">
+      <div class="mc-hero-img-bg" style="background-image: url('{% static 'images/minecraft/mc_puzzles_hero.jpg' %}');">
+        <div class="mc-hero-gradient-overlay"></div>
+        <div class="mc-hero-content">
+          <div>
+            <div class="mc-badge-tag">
+              <span>📚</span> ANCIENT ARCHIVES · STRONGHOLD LIBRARY
+            </div>
+            <h1 class="mc-hero-title">
+              STRONGHOLD<br><span style="color: var(--mc-gold);">ARCHIVES.</span>
+            </h1>
+            <p class="mc-hero-subtitle">
+              Study the solutions to past mathematical trials to sharpen your skills!
+            </p>
+          </div>
+
+          <div class="mc-hero-actions">
+            <button type="button" class="mc-sound-toggle" title="Toggle 8-bit Minecraft Sound FX">
+              <span>🔊 AUDIO: ON</span>
+            </button>
+            <a class="mc-btn mc-btn-green" href="{% url 'puzzles:current' %}">
+              <span>⚔️ LIVE QUEST BOARD →</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- ════════ COMPLETED QUESTS GRID ════════ -->
+    <div class="flex items-center justify-between gap-4 mb-6">
+      <div>
+        <h2 class="font-bold text-2xl text-white font-mono" style="font-family: var(--font-mc-pixel); font-size: 1.25rem;">
+          RESOLVED EXPEDITIONS
+        </h2>
+        <p class="text-slate-400 font-mono text-sm mt-1">Detailed mathematical proofs and solver records included.</p>
+      </div>
+
+      <div class="mc-badge-tag" style="border-color: var(--mc-gold); color: var(--mc-gold);">
+        <span>📖</span> SOLUTIONS INCLUDED
+      </div>
+    </div>
+
+    <div class="mc-archive-grid">
+      {% for puzzle in puzzles %}
+      <a class="mc-archive-card stagger-item" href="{% url 'puzzles:detail' puzzle.pk %}">
+        <div>
+          <div class="flex items-center justify-between gap-2">
+            <span class="mc-badge-tag" style="font-size: 0.55rem; padding: 0.25rem 0.5rem;">
+              📜 QUEST #{{ puzzle.pk|stringformat:"02d" }}
+            </span>
+            <span class="text-xs font-mono text-slate-400">
+              Concluded {{ puzzle.end_time|date:'M j, Y' }}
+            </span>
+          </div>
+
+          <h3 class="text-2xl font-bold text-white mt-4" style="font-family: var(--font-mc-body);">
+            {{ puzzle.title }}
+          </h3>
+
+          <p class="text-slate-300 font-mono text-sm mt-3 leading-relaxed">
+            {{ puzzle.content|truncatechars:140 }}
+          </p>
+        </div>
+
+        <div class="mt-6 pt-4 border-t border-slate-700/60 flex items-center justify-between gap-2">
+          <span class="text-xs font-mono text-cyan-400 flex items-center gap-1 font-bold">
+            <span>🔍</span> READ COMPLETE SOLUTION →
+          </span>
+          <span class="text-xs font-mono text-slate-400">
+            {{ puzzle.submissions.count }} Solvers
+          </span>
+        </div>
+      </a>
+      {% empty %}
+      <div class="col-span-full p-16 text-center bg-[#181c26] border-4 border-[#363e52] rounded-xl shadow-2xl">
+        <div class="text-6xl mb-4">📜</div>
+        <h3 class="text-2xl font-mono text-white mb-2" style="font-family: var(--font-mc-pixel);">
+          NO ARCHIVED QUESTS YET
+        </h3>
+        <p class="text-slate-300 font-mono text-base max-w-lg mx-auto">
+          Completed trials will automatically be filed into the Stronghold Library once their timers expire.
+        </p>
+        <a class="mc-btn mc-btn-green mt-6" href="{% url 'puzzles:current' %}">
+          <span>GO TO LIVE QUEST BOARD →</span>
+        </a>
+      </div>
+      {% endfor %}
+    </div>
+
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/minecraft_effects.js' %}?v=1.0"></script>
+{% endblock %}

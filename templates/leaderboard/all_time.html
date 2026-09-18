@@ -1,1 +1,226 @@
-{% extends 'base.html' %}{% block title %}Math Club Leaderboard | DBIT{% endblock %}{% block content %}<section class="page"><div class="page-heading"><div><p class="eyebrow">Every puzzle counts</p><h1>Ranked<br>By Grit.</h1></div><a class="btn" href="{% url 'leaderboard:monthly' %}">Monthly board →</a></div><div class="rank-podium">{% for profile in profiles|slice:':3' %}<article class="scale-in"><p class="rank-number">#0{{ forloop.counter }}</p><p class="mt-4 text-xl font-bold">{{ profile.user.get_full_name|default:profile.user.username }}</p><p>{{ profile.branch }} · {{ profile.year }}</p><p class="mt-4 font-black">🔥 {{ profile.current_streak }} streak</p><p class="text-2xl font-black">{{ profile.points }} points</p></article>{% endfor %}</div><div class="leaderboard-list">{% for profile in profiles|slice:'3:' %}{% include 'partials/leaderboard_row.html' with rank=forloop.counter|add:3 %}{% empty %}{% if not profiles %}<p class="py-8 text-lg">Be the first name on the board.</p>{% endif %}{% endfor %}</div></section>{% endblock %}
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Hall of Legends | Minecraft Math Leaderboard{% endblock %}
+{% block meta_description %}Explore the all-time Minecraft Leaderboard of Mathematics Club DBIT. Top problem solvers and math champions.{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/minecraft_theme.css' %}?v=1.0">
+{% endblock %}
+
+{% block content %}
+<div class="mc-realm-page">
+  <div class="mc-container">
+
+    <!-- ════════ MINECRAFT HERO BANNER ════════ -->
+    <header class="mc-hero-banner">
+      <div class="mc-hero-img-bg" style="background-image: url('{% static 'images/minecraft/mc_leaderboard_hero.jpg' %}');">
+        <div class="mc-hero-gradient-overlay"></div>
+        <div class="mc-hero-content">
+          <div>
+            <div class="mc-badge-tag">
+              <span>⛏️</span> S-RANK VOXEL GUILD · ALL-TIME REALM
+            </div>
+            <h1 class="mc-hero-title">
+              HALL OF<br><span style="color: var(--mc-diamond);">CHAMPIONS.</span>
+            </h1>
+            <p class="mc-hero-subtitle">
+              Every solved equation mines raw diamonds & mathematical glory.
+            </p>
+          </div>
+
+          <div class="mc-hero-actions">
+            <button type="button" class="mc-sound-toggle" title="Toggle 8-bit Minecraft Sound FX">
+              <span>🔊 AUDIO: ON</span>
+            </button>
+            <a class="mc-btn mc-btn-gold" href="{% url 'leaderboard:monthly' %}">
+              <span>🗓️ MONTHLY BOARD →</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- ════════ 3D PODIUM OF CHAMPIONS (TOP 3) ════════ -->
+    {% if profiles %}
+    <section class="mc-podium-arena">
+      <div class="mc-podium-header">
+        <div class="mc-badge-tag" style="border-color: var(--mc-diamond); color: var(--mc-diamond);">
+          <span>🏆</span> THE TOP ALCHEMISTS
+        </div>
+        <h2 class="mc-podium-title mt-3">PODIUM OF LEGENDS</h2>
+      </div>
+
+      <div class="mc-podium-grid">
+        {% for profile in profiles|slice:':3' %}
+          {% if forloop.counter == 1 %}
+            <!-- 🥇 #1 DIAMOND THRONE -->
+            <article class="mc-pedestal-card mc-pedestal-first">
+              <div class="mc-trophy-crown">👑</div>
+              <div class="mc-rank-ribbon">#01 DIAMOND TIER</div>
+              
+              <div class="mc-avatar-frame">
+                <span class="mc-avatar-icon">💎</span>
+              </div>
+
+              <h3 class="mc-player-name" title="{{ profile.user.get_full_name|default:profile.user.username }}">
+                {{ profile.user.get_full_name|default:profile.user.username }}
+              </h3>
+
+              <p class="mc-player-meta">
+                {{ profile.branch|default:"COMPS" }} · {{ profile.year|default:"CORE" }}
+              </p>
+
+              <div class="mc-player-hud">
+                <div class="mc-streak-fire">
+                  <span>🔥</span>
+                  <span>{{ profile.current_streak }} STREAK</span>
+                </div>
+                <div class="text-xs font-mono text-emerald-400">
+                  LVL MAX
+                </div>
+              </div>
+
+              <div class="mc-points-box">
+                <span>🟢</span>
+                <span class="mc-points-val">{{ profile.points }}</span>
+                <span class="mc-points-label">EMERALDS</span>
+              </div>
+
+              <div class="mc-pedestal-voxel-base"></div>
+            </article>
+
+          {% elif forloop.counter == 2 %}
+            <!-- 🥈 #2 GOLD PEDESTAL -->
+            <article class="mc-pedestal-card mc-pedestal-second">
+              <div class="mc-rank-ribbon">#02 GOLD TIER</div>
+              
+              <div class="mc-avatar-frame">
+                <span class="mc-avatar-icon">🪙</span>
+              </div>
+
+              <h3 class="mc-player-name" title="{{ profile.user.get_full_name|default:profile.user.username }}">
+                {{ profile.user.get_full_name|default:profile.user.username }}
+              </h3>
+
+              <p class="mc-player-meta">
+                {{ profile.branch|default:"IT" }} · {{ profile.year|default:"CORE" }}
+              </p>
+
+              <div class="mc-player-hud">
+                <div class="mc-streak-fire">
+                  <span>🔥</span>
+                  <span>{{ profile.current_streak }} STREAK</span>
+                </div>
+                <div class="text-xs font-mono text-yellow-400">
+                  LVL 85
+                </div>
+              </div>
+
+              <div class="mc-points-box">
+                <span>🟢</span>
+                <span class="mc-points-val">{{ profile.points }}</span>
+                <span class="mc-points-label">EMERALDS</span>
+              </div>
+
+              <div class="mc-pedestal-voxel-base"></div>
+            </article>
+
+          {% elif forloop.counter == 3 %}
+            <!-- 🥉 #3 COPPER PEDESTAL -->
+            <article class="mc-pedestal-card mc-pedestal-third">
+              <div class="mc-rank-ribbon">#03 COPPER TIER</div>
+              
+              <div class="mc-avatar-frame">
+                <span class="mc-avatar-icon">🛡️</span>
+              </div>
+
+              <h3 class="mc-player-name" title="{{ profile.user.get_full_name|default:profile.user.username }}">
+                {{ profile.user.get_full_name|default:profile.user.username }}
+              </h3>
+
+              <p class="mc-player-meta">
+                {{ profile.branch|default:"EXTC" }} · {{ profile.year|default:"CORE" }}
+              </p>
+
+              <div class="mc-player-hud">
+                <div class="mc-streak-fire">
+                  <span>🔥</span>
+                  <span>{{ profile.current_streak }} STREAK</span>
+                </div>
+                <div class="text-xs font-mono text-amber-500">
+                  LVL 70
+                </div>
+              </div>
+
+              <div class="mc-points-box">
+                <span>🟢</span>
+                <span class="mc-points-val">{{ profile.points }}</span>
+                <span class="mc-points-label">EMERALDS</span>
+              </div>
+
+              <div class="mc-pedestal-voxel-base"></div>
+            </article>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </section>
+    {% endif %}
+
+    <!-- ════════ HOTBAR BRANCH FILTERS & ANVIL SEARCH ════════ -->
+    <div class="mc-control-bar">
+      <!-- Search Box -->
+      <div class="mc-search-box">
+        <span class="mc-search-icon">🔍</span>
+        <input 
+          type="text" 
+          id="mc-student-search" 
+          class="mc-search-input" 
+          placeholder="SEARCH ADVENTURER OR BRANCH..." 
+          autocomplete="off"
+        >
+      </div>
+
+      <!-- Hotbar Branch Selector -->
+      <div class="mc-hotbar">
+        <button type="button" class="mc-hotbar-slot active" data-branch="ALL">ALL REALMS</button>
+        <button type="button" class="mc-hotbar-slot" data-branch="COMPS">COMPS</button>
+        <button type="button" class="mc-hotbar-slot" data-branch="IT">IT</button>
+        <button type="button" class="mc-hotbar-slot" data-branch="EXTC">EXTC</button>
+        <button type="button" class="mc-hotbar-slot" data-branch="MECH">MECH</button>
+      </div>
+    </div>
+
+    <!-- ════════ LEADERBOARD ROSTER TABLE ════════ -->
+    <section class="mc-leaderboard-panel">
+      <div class="mc-panel-head">
+        <div>RANK</div>
+        <div>ADVENTURER & GUILD</div>
+        <div class="hidden md:block">STREAK & STATS</div>
+        <div class="text-right">SCORE</div>
+      </div>
+
+      <div class="mc-table-body" id="mc-leaderboard-rows">
+        {% for profile in profiles|slice:'3:' %}
+          {% include 'partials/leaderboard_row.html' with rank=forloop.counter|add:3 %}
+        {% empty %}
+          {% if not profiles %}
+            <div class="p-12 text-center">
+              <div class="text-5xl mb-3">⛏️</div>
+              <p class="font-mono text-xl text-slate-300">The Leaderboard realm awaits its first solver.</p>
+              <a href="{% url 'puzzles:current' %}" class="mc-btn mc-btn-green mt-5">
+                <span>SOLVE LIVE PUZZLE NOW →</span>
+              </a>
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </section>
+
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/minecraft_effects.js' %}?v=1.0"></script>
+{% endblock %}

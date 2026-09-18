@@ -1,3 +1,231 @@
-{% extends 'base.html' %}{% load static %}
-{% block title %}{% if puzzle %}{{ puzzle.title }} | Mathematics Club{% else %}Weekly Mathematics Puzzles | Mathematics Club{% endif %}{% endblock %}
-{% block content %}<section class="page max-w-5xl">{% if not puzzle %}<div class="closed-poster"><p class="eyebrow">Hold that thought</p><h1>No puzzle<br>is live.</h1><a class="btn mt-6" href="{% url 'puzzles:archive' %}">Browse the archive →</a></div>{% else %}<div class="grid gap-8 lg:grid-cols-[1.2fr_.8fr]"><article class="puzzle-poster"><p class="puzzle-meta">{% if puzzle.is_active %}This week's challenge{% else %}Puzzle solved{% endif %}</p><p class="puzzle-number">#{{ puzzle.pk|stringformat:"02d" }}</p><h1 class="puzzle-title">{{ puzzle.title }}</h1><div class="mt-8 whitespace-pre-line text-lg max-w-xl">{{ puzzle.content }}</div></article><aside class="paper-card self-start reveal-right">{% if puzzle.is_active %}<p class="section-kicker">The clock is ticking</p><p id="countdown" class="display mt-3 text-6xl leading-none" data-end-time="{{ puzzle.end_time|date:'c' }}">Loading…</p><p class="marker mt-4">One answer only. Make it count.</p>{% if user.is_authenticated %}{% if submission %}<p class="mt-7 border-t-[3px] border-[var(--ink)] pt-5 font-bold">ANSWER LOCKED IN<br><span class="text-2xl">{{ submission.submitted_value }}</span></p><p class="mt-2">Results arrive when the puzzle closes.</p>{% else %}<form id="submission-form" method="post" action="{% url 'puzzles:submit' puzzle.pk %}" class="form-poster mt-6">{% csrf_token %}{{ form.as_p }}<button class="btn mt-2" type="submit">Submit answer →</button></form>{% endif %}{% else %}<a class="btn mt-7" href="{% url 'accounts:login' %}?next={{ request.path|urlencode }}">Log in to solve →</a>{% endif %}{% else %}<div class="closed-poster"><p class="eyebrow">The answer is out</p><h2>Puzzle<br>Solved.</h2></div>{% if submission %}<p class="mt-6 font-bold">Your answer: {{ submission.submitted_value }} — {% if submission.is_correct %}Correct!{% else %}Not this time.{% endif %}</p>{% endif %}<p class="mt-6 section-kicker">Correct answer</p><p class="display text-5xl">{{ puzzle.correct_answer }}</p>{% if puzzle.winner %}<p class="mt-6"><span class="sticker-label">First correct solver</span><br><strong class="text-xl">{{ puzzle.winner.get_full_name|default:puzzle.winner.username }}</strong></p>{% endif %}<p class="mt-6 font-bold">{{ puzzle.submissions.count }} submissions</p>{% endif %}</aside></div>{% if not puzzle.is_active %}<article class="paper-card mt-10 max-w-4xl"><p class="eyebrow">How it works</p><h2 class="text-5xl leading-[.75]">The<br>Solution.</h2><div class="mt-7 whitespace-pre-line text-lg">{{ puzzle.solution }}</div></article>{% endif %}{% endif %}</section>{% endblock %}{% block extra_js %}{% if puzzle and puzzle.is_active %}<script src="{% static 'js/countdown.js' %}"></script>{% endif %}{% endblock %}
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{% if puzzle %}{{ puzzle.title }} | Minecraft Math Club{% else %}Weekly Mathematics Puzzles{% endif %}{% endblock %}
+{% block meta_description %}Solve weekly mathematical puzzles, earn XP and claim bounties at DBIT Mathematics Club.{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/minecraft_theme.css' %}?v=1.0">
+{% endblock %}
+
+{% block content %}
+<div class="mc-realm-page">
+  <div class="mc-container">
+
+    <!-- Top Navigation Breadcrumb -->
+    <div class="flex items-center justify-between gap-4 mb-6">
+      <a href="{% url 'puzzles:current' %}" class="mc-btn" style="padding: 0.6rem 1rem; font-size: 0.65rem;">
+        <span>← BACK TO QUEST BOARD</span>
+      </a>
+      <button type="button" class="mc-sound-toggle" title="Toggle 8-bit Minecraft Sound FX">
+        <span>🔊 AUDIO: ON</span>
+      </button>
+    </div>
+
+    {% if not puzzle %}
+      <div class="p-16 text-center bg-[#181c26] border-4 border-[#363e52] rounded-xl shadow-2xl">
+        <div class="text-6xl mb-4">🛡️</div>
+        <h1 class="text-3xl font-mono text-white mb-2" style="font-family: var(--font-mc-pixel);">
+          NO ACTIVE QUEST FOUND
+        </h1>
+        <p class="text-slate-300 font-mono text-base max-w-lg mx-auto">
+          This mathematical expedition has either expired or returned to the ancient library.
+        </p>
+        <a class="mc-btn mc-btn-portal mt-6" href="{% url 'puzzles:archive' %}">
+          <span>BROWSE STRONGHOLD ARCHIVE →</span>
+        </a>
+      </div>
+    {% else %}
+
+      <div class="mc-solver-grid">
+
+        <!-- ════════ LEFT COLUMN: ANCIENT ENCHANTED QUEST SCROLL ════════ -->
+        <article class="mc-enchanted-scroll">
+          <div class="mc-scroll-seal">
+            <span>📜</span> QUEST #{{ puzzle.pk|stringformat:"02d" }} · {% if puzzle.is_active %}ACTIVE TRIAL{% else %}RESOLVED QUEST{% endif %}
+          </div>
+
+          <h1 class="mc-hero-title" style="font-size: 1.75rem; margin-top: 0.5rem; text-shadow: 2px 2px 0 #000;">
+            {{ puzzle.title }}
+          </h1>
+
+          <div class="mc-scroll-content">
+            {{ puzzle.content }}
+          </div>
+
+          <!-- Quest Reward Loot Box -->
+          <div class="mt-8 p-4 bg-black/50 border-2 border-yellow-700/60 rounded-lg flex items-center justify-between flex-wrap gap-4">
+            <div class="flex items-center gap-3">
+              <span class="text-3xl">💎</span>
+              <div>
+                <div class="font-mono text-xs text-yellow-400 font-bold uppercase">EXPEDITION REWARDS</div>
+                <div class="text-white text-sm font-mono">+50 XP & Emeralds on correct solution</div>
+              </div>
+            </div>
+            <div class="mc-badge-tag" style="border-color: var(--mc-gold); color: var(--mc-gold);">
+              <span>⭐</span> FIRST SOLVER: +100 BONUS XP
+            </div>
+          </div>
+        </article>
+
+
+        <!-- ════════ RIGHT COLUMN: CRAFTING TABLE & ANVIL CHAMBER ════════ -->
+        <aside class="mc-crafting-chamber self-start">
+          {% if puzzle.is_active %}
+            <!-- Boss Timer HUD -->
+            <div class="mc-boss-bar-wrap mb-5" style="border-color: var(--mc-redstone);">
+              <div class="mc-boss-bar-header" style="color: #ff8585;">
+                <span>⏳ REDSTONE TIME REMAINING</span>
+                <span class="pulse-icon">⚡</span>
+              </div>
+              <p id="countdown" class="text-center font-mono text-3xl font-black my-2 text-white" data-end-time="{{ puzzle.end_time|date:'c' }}" style="letter-spacing: 2px; text-shadow: 0 0 10px rgba(255, 43, 43, 0.5);">
+                Loading…
+              </p>
+              <div class="mc-boss-bar-fill" style="background: repeating-linear-gradient(90deg, #ff2b2b, #ff2b2b 12px, #b31414 12px, #b31414 14px);"></div>
+            </div>
+
+            <div class="mc-chamber-title">
+              <span>⚒️</span>
+              <span>ANVIL & CRAFTING SOLVER</span>
+            </div>
+
+            <p class="font-mono text-xs text-slate-300 mb-4 leading-relaxed">
+              Carefully enter your numerical solution. Once forged, answers cannot be re-crafted!
+            </p>
+
+            {% if user.is_authenticated %}
+              {% if submission %}
+                <div class="p-5 bg-black/60 border-2 border-emerald-500/80 rounded-lg text-center my-4">
+                  <div class="text-3xl mb-2">🔒</div>
+                  <div class="font-mono text-xs text-emerald-400 font-bold uppercase tracking-wider">
+                    ANSWER SEALED IN OBSIDIAN
+                  </div>
+                  <div class="text-3xl font-mono text-white font-black my-2" style="font-family: var(--font-mc-pixel);">
+                    {{ submission.submitted_value }}
+                  </div>
+                  <p class="text-xs text-slate-400 font-mono">
+                    Results & XP will be distributed when this quest expires.
+                  </p>
+                </div>
+              {% else %}
+                <form id="submission-form" method="post" action="{% url 'puzzles:submit' puzzle.pk %}" class="mt-4">
+                  {% csrf_token %}
+                  
+                  <div class="mc-crafting-slot">
+                    <label for="id_answer" class="block font-mono text-xs text-black font-bold uppercase mb-2">
+                      INVENTORY INPUT SLOT (NUMERICAL ANSWER):
+                    </label>
+                    <input 
+                      type="text" 
+                      name="answer" 
+                      id="id_answer" 
+                      class="mc-answer-input" 
+                      placeholder="ENTER NUMBER..." 
+                      required 
+                      autocomplete="off"
+                    >
+                  </div>
+
+                  {% if form.errors %}
+                    <div class="p-3 bg-red-950/80 border border-red-500 text-red-200 text-xs font-mono rounded mb-4">
+                      {{ form.answer.errors }}
+                    </div>
+                  {% endif %}
+
+                  <button class="mc-btn mc-btn-green w-full mt-3 py-4 text-sm" type="submit" onclick="if(window.McAudio) window.McAudio.playCraft();">
+                    <span>⚒️ CRAFT & SUBMIT ANSWER →</span>
+                  </button>
+                </form>
+              {% endif %}
+            {% else %}
+              <div class="p-5 bg-black/60 border-2 border-yellow-600/80 rounded-lg text-center my-4">
+                <div class="text-3xl mb-2">🛡️</div>
+                <div class="font-mono text-xs text-yellow-400 font-bold uppercase mb-2">
+                  ADVENTURER LOGIN REQUIRED
+                </div>
+                <p class="text-xs text-slate-300 font-mono mb-4">
+                  Log in to DBIT Mathematics Club to submit your answers and gain Leaderboard rank points.
+                </p>
+                <a class="mc-btn mc-btn-diamond w-full" href="{% url 'accounts:login' %}?next={{ request.path|urlencode }}">
+                  <span>LOG IN TO SOLVE →</span>
+                </a>
+              </div>
+            {% endif %}
+
+          {% else %}
+            <!-- Closed Quest Results Chamber -->
+            <div class="p-4 bg-black/60 border-2 border-slate-600 rounded-lg text-center mb-5">
+              <span class="text-3xl">🏁</span>
+              <h2 class="font-mono text-lg text-white font-bold mt-1" style="font-family: var(--font-mc-pixel); font-size: 0.95rem;">
+                QUEST CONCLUDED
+              </h2>
+            </div>
+
+            {% if submission %}
+              <div class="p-4 bg-black/50 border-2 {% if submission.is_correct %}border-emerald-500{% else %}border-red-500{% endif %} rounded-lg my-3">
+                <div class="font-mono text-xs uppercase text-slate-400">Your Submitted Answer</div>
+                <div class="text-xl font-bold font-mono text-white mt-1">
+                  {{ submission.submitted_value }} — 
+                  {% if submission.is_correct %}
+                    <span class="text-emerald-400">🎯 Correct! (+50 XP)</span>
+                  {% else %}
+                    <span class="text-red-400">❌ Not this time.</span>
+                  {% endif %}
+                </div>
+              </div>
+            {% endif %}
+
+            <div class="p-4 bg-black/60 border-2 border-emerald-500/60 rounded-lg my-4 text-center">
+              <div class="font-mono text-xs text-emerald-400 font-bold uppercase">CORRECT ANSWER</div>
+              <div class="text-3xl font-mono text-white font-black mt-2" style="font-family: var(--font-mc-pixel);">
+                {{ puzzle.correct_answer }}
+              </div>
+            </div>
+
+            {% if puzzle.winner %}
+              <div class="p-4 bg-gradient-to-b from-yellow-950/60 to-black/60 border-2 border-yellow-500 rounded-lg my-4 text-center">
+                <div class="text-2xl mb-1">⭐</div>
+                <div class="font-mono text-xs text-yellow-400 font-bold uppercase">FIRST SOLVER SOVEREIGN</div>
+                <div class="text-lg font-bold text-white mt-1">
+                  {{ puzzle.winner.get_full_name|default:puzzle.winner.username }}
+                </div>
+              </div>
+            {% endif %}
+
+            <div class="text-center font-mono text-xs text-slate-400 mt-4">
+              ⚔️ Total Adventurers Participated: <strong class="text-white">{{ puzzle.submissions.count }}</strong>
+            </div>
+          {% endif %}
+        </aside>
+
+      </div>
+
+      <!-- ════════ REVEALED SOLUTION SCROLL (FOR CLOSED QUESTS) ════════ -->
+      {% if not puzzle.is_active %}
+        <article class="mc-enchanted-scroll mt-10" style="border-color: var(--mc-gold);">
+          <div class="mc-scroll-seal" style="border-color: var(--mc-gold); color: var(--mc-gold);">
+            <span>📖</span> THE SCROLL OF WISDOM · COMPLETE SOLUTION
+          </div>
+
+          <h2 class="text-2xl font-mono text-white font-bold mt-2" style="font-family: var(--font-mc-pixel); font-size: 1.3rem;">
+            HOW THE TRIAL WAS SOLVED
+          </h2>
+
+          <div class="mc-scroll-content">
+            {{ puzzle.solution }}
+          </div>
+        </article>
+      {% endif %}
+
+    {% endif %}
+
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/minecraft_effects.js' %}?v=1.0"></script>
+{% if puzzle and puzzle.is_active %}
+  <script src="{% static 'js/countdown.js' %}"></script>
+{% endif %}
+{% endblock %}

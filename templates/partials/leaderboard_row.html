@@ -1,3 +1,69 @@
-<article class="leaderboard-row stagger-item"><span class="leaderboard-rank">#{{ rank|stringformat:"02d" }}</span>
-    <div><strong class="text-lg">{{ profile.user.get_full_name|default:profile.user.username }}</strong>
-        <p class="text-sm">{{ profile.branch }} · {{ profile.year }} · 🔥 {{ profile.current_streak }} streak</p></div><div class="leaderboard-points">{{ profile.points }}<span class="block text-xs tracking-widest">PTS</span></div></article>
+{% load static %}
+<article class="mc-row-item stagger-item" data-name="{{ profile.user.get_full_name|default:profile.user.username|escape }}" data-branch="{{ profile.branch|default:'CORE' }}">
+  <!-- Rank Column -->
+  <div class="flex items-center">
+    <span class="mc-rank-box {% if rank <= 10 %}rank-top10{% endif %}">
+      #{{ rank|stringformat:"02d" }}
+    </span>
+  </div>
+
+  <!-- Player Info Column -->
+  <div class="mc-player-cell">
+    <div class="mc-mini-head" title="Ranked Adventurer">
+      {% if rank <= 5 %}
+        👑
+      {% elif rank <= 10 %}
+        ⚔️
+      {% elif forloop.counter|divisibleby:4 %}
+        🏹
+      {% elif forloop.counter|divisibleby:3 %}
+        🛡️
+      {% elif forloop.counter|divisibleby:2 %}
+        ⛏️
+      {% else %}
+        🧙
+      {% endif %}
+    </div>
+
+    <div class="mc-player-details">
+      <div class="mc-row-name">
+        <span>{{ profile.user.get_full_name|default:profile.user.username }}</span>
+        {% if rank <= 5 %}
+          <span title="Diamond Tier Member" style="font-size: 0.8rem;">💎</span>
+        {% elif rank <= 10 %}
+          <span title="Gold Tier Member" style="font-size: 0.8rem;">🪙</span>
+        {% endif %}
+      </div>
+
+      <div class="mc-row-tags">
+        {% if profile.branch %}
+          <span class="mc-tag-branch">{{ profile.branch }}</span>
+        {% endif %}
+        {% if profile.year %}
+          <span class="mc-tag-year">{{ profile.year }}</span>
+        {% endif %}
+        <span class="text-xs opacity-75 font-mono">LVL {{ profile.points|default:0|divisibleby:10|yesno:"10+,1+" }}</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stats / Streak Column -->
+  <div class="mc-stats-cell">
+    <div class="mc-streak-pill">
+      <span>🔥</span>
+      <span>{{ profile.current_streak }} STREAK</span>
+    </div>
+    <div class="text-xs text-slate-400 font-mono">
+      BEST: {{ profile.best_streak }} 🔥
+    </div>
+  </div>
+
+  <!-- Score / Points Column -->
+  <div class="mc-score-cell">
+    <div class="mc-score-val">
+      <span>🟢</span>
+      <span>{{ profile.points }}</span>
+    </div>
+    <span class="mc-score-unit">EMERALDS</span>
+  </div>
+</article>

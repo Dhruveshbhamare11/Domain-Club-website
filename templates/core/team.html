@@ -1,1 +1,248 @@
-{% extends 'base.html' %}{% block title %}Our Team | Mathematics Club{% endblock %}{% block content %}<section class="page"><div class="page-heading"><div><p class="eyebrow">The people behind the problems</p><h1>Meet<br>The Crew.</h1></div><p class="marker">Powered by curiosity</p></div><div class="mt-12 grid gap-10 sm:grid-cols-2 lg:grid-cols-3">{% for member in team %}<article class="stagger-item">{% if member.photo %}<figure class="image-cutout h-72"><img src="{{ member.photo.url }}" alt="{{ member.name }}"></figure>{% else %}<div class="image-cutout h-72 flex items-center justify-center text-8xl">∑</div>{% endif %}<div class="paper-card mt-4"><p class="section-kicker">{{ member.role }}</p><h2 class="mt-2 text-4xl leading-[.8]">{{ member.name }}</h2><p class="mt-3 font-bold">{{ member.branch_year }}</p><p class="mt-3">{{ member.bio }}</p></div></article>{% empty %}<p class="marker">The crew will be announced soon.</p>{% endfor %}</div></section>{% endblock %}
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Our Crew | Mathematics Club DBIT{% endblock %}
+
+{% block content %}
+<section class="page">
+  <!-- Team Header -->
+  <div class="page-heading">
+    <div>
+      <div class="team-header-badge">
+        <span class="pulse-icon">⚡</span> S-RANK MATH SQUAD & ANIME GUILD
+      </div>
+      <p class="eyebrow mt-2">The architects of mathematical mischief</p>
+      <h1>Meet<br><span class="accent">The Crew.</span></h1>
+    </div>
+    <div class="flex flex-col items-end gap-2">
+      <p class="marker">Tap Pokéballs to Summon The Crew! 🔴⚡</p>
+      <span class="text-sm font-bold text-ink-soft opacity-75">3D Interactive Poké-Capsules & Battle Cards ⚡</span>
+    </div>
+  </div>
+
+  <!-- Team Grid with 3D Flip Cards -->
+  <div class="team-grid mt-12">
+    {% for member in team %}
+    <article class="team-flip-card stagger-item" data-member-id="{{ member.id }}" data-member-name="{{ member.name|escapejs }}" data-member-power="{{ member.special_power|default:'Domain Expansion: Infinite Logic'|escapejs }}">
+      <div class="team-flip-inner">
+
+        <!-- ════════ FRONT FACE: Standalone 3D Animated Pokéball ════════ -->
+        <div class="team-card-face team-card-front pokeball-chamber" onclick="summonPokeballMember(this, event)">
+
+          <!-- Standalone 3D Pokéball Arena -->
+          <div class="pokeball-stage">
+            <div class="pokeball-shadow-disc"></div>
+
+            <!-- Pokéball 3D Sphere Object -->
+            <div class="pokeball-sphere {% if 'chair' in member.role|lower or 'president' in member.role|lower or 'head' in member.role|lower %}ball-master{% elif forloop.counter|divisibleby:3 %}ball-ultra{% elif forloop.counter|divisibleby:2 %}ball-great{% else %}ball-classic{% endif %}">
+              <!-- Top Hemisphere -->
+              <div class="pokeball-dome-top">
+                <div class="dome-specular-light"></div>
+                <div class="dome-rim-glow"></div>
+                {% if 'chair' in member.role|lower or 'president' in member.role|lower or 'head' in member.role|lower %}
+                  <div class="masterball-m">M</div>
+                  <div class="masterball-node node-left"></div>
+                  <div class="masterball-node node-right"></div>
+                {% elif forloop.counter|divisibleby:3 %}
+                  <div class="ultraball-stripe stripe-left"></div>
+                  <div class="ultraball-stripe stripe-right"></div>
+                {% elif forloop.counter|divisibleby:2 %}
+                  <div class="greatball-accent accent-left"></div>
+                  <div class="greatball-accent accent-right"></div>
+                {% endif %}
+              </div>
+
+              <!-- Black Equator Belt -->
+              <div class="pokeball-belt"></div>
+
+              <!-- Center Push-Button Assembly -->
+              <div class="pokeball-center-latch">
+                <div class="latch-housing">
+                  <div class="latch-metal-bevel">
+                    <div class="latch-push-button">
+                      <span class="latch-indicator-core"></span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Bottom Hemisphere -->
+              <div class="pokeball-dome-bottom">
+                <div class="dome-bottom-shade"></div>
+              </div>
+
+              <!-- Energy Burst Light Cone (triggers on tap) -->
+              <div class="pokeball-energy-burst"></div>
+              <div class="pokeball-beam-pillar"></div>
+            </div>
+          </div>
+
+          <!-- Clean Member Label & Open Prompt Below Pokéball -->
+          <div class="pokeball-pod-footer">
+            <div class="pokeball-target-info">
+              <span class="pokeball-rarity-pill">
+                {% if 'chair' in member.role|lower or 'president' in member.role|lower or 'head' in member.role|lower %}
+                  ★ MASTER BALL
+                {% elif forloop.counter|divisibleby:3 %}
+                  ★ ULTRA BALL
+                {% elif forloop.counter|divisibleby:2 %}
+                  ★ GREAT BALL
+                {% else %}
+                  ★ POKÉ BALL
+                {% endif %}
+              </span>
+              <h3 class="pokeball-role-name">THE {{ member.role|upper }}</h3>
+              {% if member.branch_year %}
+                <span class="pokeball-branch-tag">{{ member.branch_year }}</span>
+              {% else %}
+                <span class="pokeball-branch-tag">CORE CREW</span>
+              {% endif %}
+            </div>
+
+            <div class="pokeball-tap-prompt">
+              <span class="tap-hand-icon">⚡</span>
+              <span>TAP POKÉBALL TO OPEN</span>
+              <span class="tap-sparkle">✨</span>
+            </div>
+          </div>
+        </div>
+
+
+        <!-- ════════ BACK FACE: Full Revealed Anime Battle Interface ════════ -->
+        <div class="team-card-face team-card-back anime-revealed-face">
+          <!-- Holographic Card Glare Overlay -->
+          <div class="card-holo-glare" aria-hidden="true"></div>
+
+          <!-- Top Bar: Rarity, Sound FX & Conceal Button -->
+          <div class="team-card-top-bar">
+            <span class="anime-rank-pill">
+              ★ SSR SUMMONED
+            </span>
+            <span class="manga-sound-fx" title="Manga Sound FX: Menacing!">
+              ゴゴゴゴ
+            </span>
+            <button type="button" class="flip-back-pill" onclick="recallPokeballMember(this, event)" title="Recall back to Pokéball">
+              🔴 RECALL
+            </button>
+          </div>
+
+          <!-- Anime Companion Floating Figure / Action Badge -->
+          <div class="anime-action-figure" title="Companion: {{ member.anime_character|default:'Gojo Satoru' }}">
+            <div class="figure-bubble">
+              {% if member.anime_character and member.anime_character != 'None' %}
+                {{ member.anime_character }}
+              {% elif forloop.counter|divisibleby:3 %}
+                Roronoa Zoro ⚔️
+              {% elif forloop.counter|divisibleby:2 %}
+                Monkey D. Luffy 🍖
+              {% else %}
+                Gojo Satoru ⚡
+              {% endif %}
+            </div>
+            <div class="figure-avatar-wrap">
+              {% if member.anime_character and 'luffy' in member.anime_character|lower %}
+                <img src="{% static 'images/anime/luffy.jpg' %}" alt="Luffy">
+              {% elif member.anime_character and 'zoro' in member.anime_character|lower %}
+                <img src="{% static 'images/anime/zoro.jpg' %}" alt="Zoro">
+              {% elif member.anime_character and 'nami' in member.anime_character|lower %}
+                <img src="{% static 'images/anime/nami.jpg' %}" alt="Nami">
+              {% elif forloop.counter|divisibleby:2 %}
+                <img src="{% static 'images/anime/luffy.jpg' %}" alt="Luffy">
+              {% elif forloop.counter|divisibleby:3 %}
+                <img src="{% static 'images/anime/zoro.jpg' %}" alt="Zoro">
+              {% else %}
+                <img src="{% static 'images/mathematicians/einstein.jpg' %}" alt="Einstein" style="mix-blend-mode: multiply;">
+              {% endif %}
+            </div>
+          </div>
+
+          <!-- Full Anime Poster Frame with Meet Our Team Banner -->
+          <div class="anime-poster-frame">
+            <div class="poster-club-badge">DOMAIN MATH CLUB</div>
+            <div class="poster-header-text">
+              <span class="poster-meet">Meet</span> <span class="poster-team">Our Team</span>
+            </div>
+            <div class="poster-photo-inner">
+              {% if member.photo %}
+                <img class="team-member-img" src="{{ member.photo.url }}" alt="{{ member.name }}">
+              {% else %}
+                <div class="team-member-placeholder">
+                  <span class="placeholder-glyph">∑</span>
+                  <span class="placeholder-caption">MATH ALCHEMIST</span>
+                </div>
+              {% endif %}
+              <div class="poster-bounty-tag">
+                {{ member.bounty_or_power|default:"Bounty: ฿2,500,000,000" }}
+              </div>
+            </div>
+          </div>
+
+          <!-- Anime Dialogue Quote Bubble -->
+          <div class="anime-dialogue-bubble mt-2">
+            <div class="dialogue-icon">💬</div>
+            <div class="dialogue-content">
+              <p class="dialogue-text">
+                {% if member.anime_quote %}
+                  "{{ member.anime_quote }}"
+                {% elif forloop.counter|divisibleby:3 %}
+                  "I don't care if it's the right choice or not. I'll make sure it is." ⚔️
+                {% elif forloop.counter|divisibleby:2 %}
+                  "If you don't take risks, you can't create a future!" 🍖
+                {% else %}
+                  "Throughout heaven and earth, I alone am the honored one. ⚡ Domain Expansion: Infinite Code!"
+                {% endif %}
+              </p>
+            </div>
+          </div>
+
+          <!-- Role Badge & Department -->
+          <div class="flex items-center justify-between gap-2 mt-2">
+            <span class="team-role-badge">
+              <span class="role-icon">⚡</span> {{ member.role }}
+            </span>
+            {% if member.branch_year %}
+              <span class="team-branch-pill">{{ member.branch_year }}</span>
+            {% else %}
+              <span class="team-branch-pill">CORE CREW</span>
+            {% endif %}
+          </div>
+
+          <!-- Member Name -->
+          <h2 class="team-member-name mt-1">{{ member.name }}</h2>
+
+          <!-- Special Power / Domain Ability HUD -->
+          <div class="team-ability-hud mt-2">
+            <div class="ability-header">
+              <span class="ability-title">🔮 SPECIAL ABILITY</span>
+              <span class="ability-cost">MANA: 100%</span>
+            </div>
+            <div class="ability-name">
+              {{ member.special_power|default:"Domain Expansion: Infinite Syntax & Zero Bugs" }}
+            </div>
+          </div>
+
+          <!-- Interactive Aura Button -->
+          <button type="button" class="team-unleash-btn mt-3" onclick="unleashAnimeAura(this, '{{ member.name|escapejs }}', '{{ member.special_power|default:"Domain Expansion: Infinite Logic"|escapejs }}', event)">
+            <span>⚡ UNLEASH AURA ⚡</span>
+          </button>
+
+          {% if member.social_link %}
+            <div class="mt-1 text-center">
+              <a class="text-link text-xs uppercase" href="{{ member.social_link }}" target="_blank" rel="noopener" onclick="event.stopPropagation()">Connect on Social →</a>
+            </div>
+          {% endif %}
+
+          <div class="card-flip-back-hint mt-2 text-center" onclick="recallPokeballMember(this, event)">
+            <span>🔴 Tap to return to Pokéball</span>
+          </div>
+        </div>
+
+      </div>
+    </article>
+    {% empty %}
+    <div class="empty-crew-banner">
+      <p class="marker">The mathematical anime squad will assemble soon!</p>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

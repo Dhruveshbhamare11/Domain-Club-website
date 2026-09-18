@@ -1,1 +1,18 @@
-<footer class="footer-poster"><div class="footer-inner"><span class="footer-doodle doodle">∞</span><p class="eyebrow" style="color:var(--yellow)">DBIT Mathematics Club</p><h2 class="footer-title">Keep<br>Thinking.</h2><div class="footer-links"><p>Mathematics Club<br>DBIT</p><div class="flex flex-wrap gap-4 font-bold uppercase text-sm"><a href="{% url 'puzzles:current' %}">Puzzle</a><a href="{% url 'events:list' %}">Events</a><a href="{% url 'core:contact' %}">Email</a><a href="{% url 'badges:list' %}">Badges</a></div></div></div></footer>
+<footer class="footer-poster">
+  <div class="footer-inner">
+    <span class="footer-doodle doodle" aria-hidden="true">∞</span>
+    <p class="eyebrow" style="color: var(--yellow); margin-bottom: 0.35rem;">DBIT Domain Mathematics Club</p>
+    <h2 class="footer-title">Keep<br>Thinking.</h2>
+    <div class="footer-links">
+      <p class="text-sm font-bold opacity-80">Domain Mathematics Club<br>Don Bosco Institute of Technology</p>
+      <div class="flex flex-wrap items-center gap-4 font-bold uppercase text-sm">
+        <a href="{% url 'puzzles:current' %}">Puzzles</a>
+        <a href="{% url 'events:list' %}">Events</a>
+        <a href="{% url 'leaderboard:all_time' %}">Leaderboard</a>
+        <a href="{% url 'core:team' %}">Team</a>
+        <a href="{% url 'core:contact' %}">Email</a>
+        <a href="{% url 'badges:list' %}">Badges</a>
+      </div>
+    </div>
+  </div>
+</footer>

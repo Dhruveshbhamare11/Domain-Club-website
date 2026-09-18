@@ -1,1 +1,125 @@
-{% extends 'base.html' %}{% block title %}{{ event.title }} | Mathematics Club{% endblock %}{% block meta_description %}{{ event.description|truncatechars:155 }}{% endblock %}{% block content %}<article class="page max-w-5xl"><div class="grid gap-10 lg:grid-cols-2 items-start"><div><p class="eyebrow">{{ event.date|date:'d M Y' }} · {{ event.time|time:'g:i A' }}</p><h1>{{ event.title }}</h1><p class="marker mt-6">{{ event.location }}</p>{% if event.registration_link %}<a class="btn mt-8" href="{{ event.registration_link }}">Register now →</a>{% endif %}</div>{% if event.image %}<figure class="image-cutout alt h-[22rem]"><img src="{{ event.image.url }}" alt="{{ event.title }} event"></figure>{% endif %}</div><div class="paper-card mt-12 max-w-3xl whitespace-pre-line text-lg">{{ event.description }}</div></article>{% endblock %}
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ event.title }} | DBIT Domain Math Club Events{% endblock %}
+{% block meta_description %}{{ event.description|truncatechars:155 }}{% endblock %}
+
+{% block content %}
+<article class="page max-w-5xl">
+  <!-- Back Breadcrumb -->
+  <div class="mb-8">
+    <a href="{% url 'events:list' %}" class="link-event-detail" style="font-size: 0.95rem;">
+      <span>← Back to All Events & Gallery</span>
+    </a>
+  </div>
+
+  <div class="grid gap-10 lg:grid-cols-2 items-start">
+    <!-- Left: Event Information & Registration -->
+    <div>
+      <div class="events-hero-badge mb-4">
+        <span>📅</span> {{ event.date|date:'l, F j, Y' }}
+      </div>
+
+      <h1 class="leading-none text-4xl lg:text-5xl font-black">{{ event.title }}</h1>
+
+      <!-- Meta Pill HUD -->
+      <div class="mt-6 flex flex-wrap gap-3">
+        <div class="event-tag-pill" style="font-size: 0.95rem; padding: 0.4rem 0.85rem; border: 2px solid var(--ink);">
+          <span>⏰</span> {{ event.time|time:'g:i A' }}
+        </div>
+        <div class="event-tag-pill" style="font-size: 0.95rem; padding: 0.4rem 0.85rem; border: 2px solid var(--ink);">
+          <span>📍</span> {{ event.location }}
+        </div>
+      </div>
+
+      {% if event.registration_link %}
+        <div class="mt-8">
+          <a class="btn" href="{{ event.registration_link }}" target="_blank" rel="noopener" style="padding: 0.9rem 2rem; font-size: 1.1rem; box-shadow: 5px 5px 0 var(--ink);">
+            <span>🚀 Register For This Event →</span>
+          </a>
+          <p class="text-xs font-bold text-ink-soft mt-2">Opens in a new tab</p>
+        </div>
+      {% endif %}
+    </div>
+
+    <!-- Right: High-Resolution Event Photo with Polaroid Frame -->
+    <div>
+      {% if event.image %}
+        <div class="event-photo-card" style="padding: 1.25rem;">
+          <div class="event-card-tape" aria-hidden="true"></div>
+          
+          <div class="event-photo-frame" style="height: 340px;" onclick="openEventLightbox('{{ event.image.url|escapejs }}', '{{ event.title|escapejs }}')">
+            <div class="event-date-leaf">
+              <div class="event-date-month">{{ event.date|date:'M' }}</div>
+              <div class="event-date-day">{{ event.date|date:'d' }}</div>
+            </div>
+
+            <img class="event-photo-img" src="{{ event.image.url }}" alt="{{ event.title }} event photo">
+
+            <div class="event-zoom-badge">
+              <span>🔍</span>
+              <span>Click to Expand Full Photo</span>
+            </div>
+          </div>
+
+          <p class="text-center font-bold text-xs text-ink-soft mt-3 font-mono">
+            📸 Captured Moments from {{ event.title }}
+          </p>
+        </div>
+      {% else %}
+        <div class="event-photo-card text-center p-12">
+          <div class="event-card-tape" aria-hidden="true"></div>
+          <div class="text-6xl mb-3">📐</div>
+          <p class="font-bold text-lg font-mono">Event Photos Coming Soon</p>
+          <p class="text-xs text-ink-soft mt-1">Photos will be uploaded after the conclave.</p>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- Event Story & Full Description -->
+  <div class="paper-card mt-12 max-w-4xl">
+    <p class="eyebrow" style="color: var(--coral);">Event Overview & Intel</p>
+    <h2 class="text-3xl font-black mt-2">What It's All About</h2>
+    <div class="mt-6 whitespace-pre-line text-lg leading-relaxed text-ink">
+      {{ event.description }}
+    </div>
+  </div>
+
+  <!-- Fullscreen Photo Lightbox Modal -->
+  <div id="event-lightbox" class="event-lightbox-backdrop" onclick="closeEventLightbox(event)">
+    <div class="event-lightbox-container" onclick="event.stopPropagation()">
+      <button type="button" class="event-lightbox-close" onclick="closeEventLightbox(event)" title="Close Photo">✖</button>
+      <img id="lightbox-img" class="event-lightbox-img" src="" alt="Event Photo Preview">
+      <div id="lightbox-caption" class="event-lightbox-caption"></div>
+    </div>
+  </div>
+</article>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  function openEventLightbox(imgUrl, caption) {
+    const lb = document.getElementById('event-lightbox');
+    const img = document.getElementById('lightbox-img');
+    const cap = document.getElementById('lightbox-caption');
+    if (!lb || !img) return;
+
+    img.src = imgUrl;
+    if (cap) cap.textContent = caption || '';
+    lb.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeEventLightbox(e) {
+    const lb = document.getElementById('event-lightbox');
+    if (!lb) return;
+    lb.classList.remove('active');
+    document.body.style.overflow = '';
+  }
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeEventLightbox();
+  });
+</script>
+{% endblock %}

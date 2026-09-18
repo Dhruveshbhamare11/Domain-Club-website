@@ -1,1 +1,158 @@
-{% extends 'base.html' %}{% block title %}Mathematics Club Blog | DBIT{% endblock %}{% block content %}<section class="page"><div class="page-heading"><div><p class="eyebrow">Club journal</p><h1>Math,<br>Unboxed.</h1></div><p class="marker">Beyond the classroom</p></div><div class="editorial-grid mt-12">{% for post in posts %}{% include 'partials/blog_card.html' %}{% empty %}<p class="marker">No posts yet. Watch this space.</p>{% endfor %}</div></section>{% endblock %}
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}The Multiverse Chronicles & Blog | DBIT Domain Math Club{% endblock %}
+{% block meta_description %}Funny, colorful, and brilliant math essays, paradoxes, and cartoon scientist chronicles from DBIT Domain Math Club.{% endblock %}
+
+{% block content %}
+<section class="page max-w-6xl">
+  <!-- Page Header with Multicolour Title -->
+  <div class="page-heading">
+    <div>
+      <div class="blog-hero-badge" style="background: var(--yellow); transform: rotate(-2deg);">
+        <span>🤪</span> 100% GEEK WISDOM & MATHEMATICAL MADHOUSE
+      </div>
+      <p class="eyebrow mt-3" style="color: var(--coral);">Beyond the classroom chalkboard</p>
+      <h1 class="text-4xl sm:text-6xl lg:text-7xl font-black mt-2">
+        <span class="multicolor-word-1">MATH,</span> 
+        <span class="multicolor-word-2">CHAOS</span> & 
+        <span class="multicolor-word-3">GENIUS.</span>
+      </h1>
+      <p class="mt-3 text-lg font-bold text-ink-soft max-w-2xl font-mono">
+        Where Euler brews turbo coffee, Newton ducks from falling apples, and Ramanujan chats with infinity! ☕🍎📐
+      </p>
+    </div>
+    
+    <div class="flex flex-col items-end gap-2">
+      <div class="fun-tag-pill p-2 bg-pink-100 border-2 border-ink rounded-xl shadow-[3px_3px_0_var(--ink)] text-xs font-bold font-mono rotate-2">
+        <span>✨ 5 Legends On Duty ✨</span>
+      </div>
+      <span class="text-xs font-bold text-ink-soft opacity-75">Click professors to hear jokes!</span>
+    </div>
+  </div>
+
+  <!-- ════════ CARTOON PROFESSORS' LOUNGE & COMIC OBSERVATORY ════════ -->
+  <section class="professors-lounge-box">
+    <div class="professors-header">
+      <div class="professors-title-pill">
+        <span>☕</span>
+        <span>THE PROFESSORS' LOUNGE · COMIC OBSERVATORY</span>
+      </div>
+      <span class="text-xs font-bold font-mono text-ink-soft">
+        ⚡ TAP A GENIUS TO READ THEIR QUIRK ⚡
+      </span>
+    </div>
+
+    <div class="professors-grid">
+      <!-- 1. Albert Einstein -->
+      <article class="prof-card prof-card-einstein" onclick="playProfJiggle(this)">
+        <div class="prof-img-wrap">
+          <div class="prof-toy-badge">π</div>
+          <img class="prof-img" src="{% static 'images/mathematicians/einstein.jpg' %}" alt="Albert Einstein">
+        </div>
+        <h3 class="prof-name">Einstein</h3>
+        <p class="prof-quirk">Speed of Light Nomad</p>
+        <div class="prof-speech">
+          "Why cross the Möbius strip? To get to the same side! 🐔"
+        </div>
+      </article>
+
+      <!-- 2. Sir Isaac Newton -->
+      <article class="prof-card prof-card-newton" onclick="playProfJiggle(this)">
+        <div class="prof-img-wrap">
+          <div class="prof-toy-badge">🍎</div>
+          <img class="prof-img" src="{% static 'images/mathematicians/newton.jpg' %}" alt="Isaac Newton">
+        </div>
+        <h3 class="prof-name">Newton</h3>
+        <p class="prof-quirk">Apple Dodging Expert</p>
+        <div class="prof-speech">
+          "1 apple = Gravity. 100 apples = Free apple pie! 🥧"
+        </div>
+      </article>
+
+      <!-- 3. Srinivasa Ramanujan -->
+      <article class="prof-card prof-card-ramanujan" onclick="playProfJiggle(this)">
+        <div class="prof-img-wrap">
+          <div class="prof-toy-badge">∞</div>
+          <img class="prof-img" src="{% static 'images/mathematicians/ramanujan.jpg' %}" alt="Srinivasa Ramanujan">
+        </div>
+        <h3 class="prof-name">Ramanujan</h3>
+        <p class="prof-quirk">Infinity Whisperer</p>
+        <div class="prof-speech">
+          "1729 is the taxicab of the multiverse! 🚕"
+        </div>
+      </article>
+
+      <!-- 4. Leonhard Euler -->
+      <article class="prof-card prof-card-euler" onclick="playProfJiggle(this)">
+        <div class="prof-img-wrap">
+          <div class="prof-toy-badge">e</div>
+          <img class="prof-img" src="{% static 'images/mathematicians/euler.jpg' %}" alt="Leonhard Euler">
+        </div>
+        <h3 class="prof-name">Euler</h3>
+        <p class="prof-quirk">Formula Speedrunner</p>
+        <div class="prof-speech">
+          "e^(iπ) + 1 = 0 is the cleanest flex in history! ☕"
+        </div>
+      </article>
+
+      <!-- 5. Pythagoras -->
+      <article class="prof-card prof-card-pythagoras" onclick="playProfJiggle(this)">
+        <div class="prof-img-wrap">
+          <div class="prof-toy-badge">📐</div>
+          <img class="prof-img" src="{% static 'images/mathematicians/pythagoras.jpg' %}" alt="Pythagoras">
+        </div>
+        <h3 class="prof-name">Pythagoras</h3>
+        <p class="prof-quirk">Right Triangle Overlord</p>
+        <div class="prof-speech">
+          "Respect the Hypotenuse & never touch beans! 📐"
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- ════════ EDITORIAL ARTICLES & CHRONICLES ════════ -->
+  <div class="flex items-center justify-between gap-4 mb-6">
+    <div>
+      <h2 class="text-3xl font-black text-ink">
+        <span class="multicolor-word-4">STUDENT ESSAYS</span> & DISCOVERIES
+      </h2>
+      <p class="font-mono text-sm text-ink-soft mt-1">Deep dives, algorithm breakthroughs and club journals.</p>
+    </div>
+    <span class="blog-tag-pill" style="background: var(--sky);">📚 READ & LEARN</span>
+  </div>
+
+  <div class="blog-editorial-grid">
+    {% for post in posts %}
+      {% include 'partials/blog_card.html' %}
+    {% empty %}
+      <div class="col-span-full paper-card text-center p-14 border-4 border-ink shadow-[8px_8px_0_var(--ink)]">
+        <div class="text-6xl mb-4">📖</div>
+        <h3 class="text-3xl font-bold font-mono">
+          <span class="multicolor-word-2">THE INK</span> IS STILL DRYING!
+        </h3>
+        <p class="marker mt-3 text-lg">Our student alchemists are writing articles on quantum algorithms, chaos theory, and number theory.</p>
+        <div class="mt-8 flex justify-center gap-4 flex-wrap">
+          <a class="btn" href="{% url 'puzzles:current' %}" style="box-shadow: 4px 4px 0 var(--ink);">
+            <span>⚔️ Solve Live Puzzles →</span>
+          </a>
+          <a class="btn" style="background: var(--yellow); box-shadow: 4px 4px 0 var(--ink);" href="{% url 'events:list' %}">
+            <span>🎪 Explore Events Gallery →</span>
+          </a>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  function playProfJiggle(card) {
+    card.style.transform = 'translateY(-14px) scale(1.1) rotate(' + (Math.random() > 0.5 ? 4 : -4) + 'deg)';
+    setTimeout(() => {
+      card.style.transform = '';
+    }, 450);
+  }
+</script>
+{% endblock %}
