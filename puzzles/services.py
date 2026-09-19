@@ -16,11 +16,26 @@ def answers_match(value, answer):
 
 
 @transaction.atomic
-def process_puzzle(puzzle):
+def process_puzzle(puzzle, force=False):
     puzzle = Puzzle.objects.select_for_update().get(pk=puzzle.pk)
-    if puzzle.is_processed or timezone.now() < puzzle.end_time:
+    if puzzle.is_processed:
         return None
+    if timezone.now() < puzzle.end_time:
+        if force:
+            puzzle.end_time = timezone.now()
+            puzzle.save(update_fields=("end_time",))
+        else:
+            return None
     submissions = {item.user_id: item for item in Submission.objects.filter(puzzle=puzzle).select_related("user", "user__profile")}
+    
+    # Ensure every submitting user has a profile so points and leaderboard update reliably
+    for sub in submissions.values():
+        if not hasattr(sub.user, "profile"):
+            StudentProfile.objects.get_or_create(
+                user=sub.user,
+                defaults={"branch": "COMPS", "year": "FE"}
+            )
+
     winner_submission = Submission.objects.filter(puzzle=puzzle, is_correct=True).select_related("user").order_by("submitted_at").first()
     if winner_submission:
         puzzle.winner = winner_submission.user

@@ -23,7 +23,7 @@ def recalculate_ranks():
 
 
 def record_monthly_winner(year, month):
-    score = MonthlyScore.objects.filter(year=year, month=month).first()
+    score = MonthlyScore.objects.filter(year=year, month=month).order_by("-points", "-correct_answers").first()
     if not score:
         return None
     winner, created = MonthlyWinner.objects.get_or_create(year=year, month=month, defaults={

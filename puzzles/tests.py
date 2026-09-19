@@ -67,3 +67,31 @@ class PuzzleLifecycleTests(TestCase):
         process_puzzle(puzzle)
         self.user.profile.refresh_from_db()
         self.assertEqual(self.user.profile.points, 10)
+
+    def test_admin_process_button_triggers_puzzle_processing(self):
+        admin_user = User.objects.create_superuser("admin_tester", "admin@dbit.ac.in", "adminpass123")
+        self.client.login(username="admin_tester", password="adminpass123")
+        puzzle = self.create_puzzle(timezone.now() - timedelta(hours=2))
+        Submission.objects.create(user=self.user, puzzle=puzzle, submitted_value="3.14", is_correct=True)
+        
+        # Call the admin process URL
+        response = self.client.get(f"/admin/puzzles/puzzle/process/{puzzle.pk}/", follow=True)
+        self.assertEqual(response.status_code, 200)
+        puzzle.refresh_from_db()
+        self.assertTrue(puzzle.is_processed)
+        self.assertEqual(puzzle.winner, self.user)
+        self.user.profile.refresh_from_db()
+        self.assertEqual(self.user.profile.points, 10)
+
+    def test_admin_process_all_expired_url(self):
+        admin_user = User.objects.create_superuser("admin_tester2", "admin2@dbit.ac.in", "adminpass123")
+        self.client.login(username="admin_tester2", password="adminpass123")
+        p1 = self.create_puzzle(timezone.now() - timedelta(hours=30))
+        Submission.objects.create(user=self.user, puzzle=p1, submitted_value="3.14", is_correct=True)
+        
+        response = self.client.get("/admin/puzzles/puzzle/process-all/", follow=True)
+        self.assertEqual(response.status_code, 200)
+        p1.refresh_from_db()
+        self.assertTrue(p1.is_processed)
+        self.assertEqual(p1.winner, self.user)
+
