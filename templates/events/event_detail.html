@@ -54,7 +54,7 @@
               <div class="event-date-day">{{ event.date|date:'d' }}</div>
             </div>
 
-            <img class="event-photo-img" src="{{ event.image.url }}" alt="{{ event.title }} event photo">
+            <img class="event-photo-img" src="{{ event.image.url }}" alt="{{ event.title }} event photo" loading="lazy" decoding="async">
 
             <div class="event-zoom-badge">
               <span>🔍</span>

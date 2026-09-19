@@ -3,7 +3,7 @@
   <p class="eyebrow">{{ post.published_at|date:'d M Y' }} · Club journal</p>
   <h1>{{ post.title }}</h1>
   <p class="mt-8 max-w-2xl text-2xl font-medium">{{ post.excerpt }}</p>{% if post.featured_image %}<figure
-    class="image-cutout alt h-[26rem] mt-12 max-w-3xl"><img src="{{ post.featured_image.url }}" alt="{{ post.title }}">
+    class="image-cutout alt h-[26rem] mt-12 max-w-3xl"><img src="{{ post.featured_image.url }}" alt="{{ post.title }}" loading="lazy" decoding="async">
   </figure>{% endif %}<div class="paper-card mt-12 max-w-3xl whitespace-pre-line text-lg leading-relaxed">{{
     post.content }}</div>
 </article>{% endblock %}

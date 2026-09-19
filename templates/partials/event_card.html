@@ -11,7 +11,7 @@
         <div class="event-date-day">{{ event.date|date:'d' }}</div>
       </div>
 
-      <img class="event-photo-img" src="{{ event.image.url }}" alt="{{ event.title }}">
+      <img class="event-photo-img" src="{{ event.image.url }}" alt="{{ event.title }}" loading="lazy" decoding="async">
       
       <!-- Hover Zoom Badge -->
       <div class="event-zoom-badge">

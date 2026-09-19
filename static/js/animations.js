@@ -916,7 +916,7 @@
     fab.title = "Meet the 3D Math Squad!";
     fab.innerHTML = `
       <div class="math-squad-avatar">
-        <img src="/static/images/mathematicians/einstein.jpg" alt="Math Squad">
+        <img src="/static/images/mathematicians/einstein.jpg" alt="Math Squad" loading="lazy" decoding="async">
       </div>
       <span class="math-squad-label">🧙‍♂️ Math Squad</span>
     `;
@@ -931,7 +931,7 @@
       listHtml += `
         <div class="math-squad-item" data-id="${m.id}" title="Click to summon ${m.name}!">
           <div class="math-squad-item-img">
-            <img src="${m.img}" alt="${m.name}">
+            <img src="${m.img}" alt="${m.name}" loading="lazy" decoding="async">
           </div>
           <div class="math-squad-item-info">
             <div class="math-squad-item-name">${m.name}</div>

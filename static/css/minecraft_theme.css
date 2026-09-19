@@ -1267,3 +1267,25 @@
   0%, 100% { filter: brightness(1); }
   50% { filter: brightness(1.25); }
 }
+
+/* ── MINECRAFT MOBILE PERFORMANCE OPTIMIZATION ── */
+@media (max-width: 768px), (pointer: coarse) {
+  .mc-btn,
+  .mc-sound-toggle,
+  .mc-hotbar-slot,
+  .mc-pedestal-card,
+  .mc-row-item,
+  .mc-archive-card,
+  .mc-anvil-box {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+  }
+
+  .mc-row-item,
+  .mc-archive-card {
+    content-visibility: auto;
+    contain-intrinsic-size: 80px;
+  }
+}

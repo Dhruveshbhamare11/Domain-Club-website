@@ -5,7 +5,7 @@
   <!-- Featured Cover Image or Doodle Placeholder -->
   {% if post.featured_image %}
     <a class="blog-card-cover" href="{{ post.get_absolute_url }}" title="Read {{ post.title }}">
-      <img class="blog-card-img" src="{{ post.featured_image.url }}" alt="{{ post.title }}">
+      <img class="blog-card-img" src="{{ post.featured_image.url }}" alt="{{ post.title }}" loading="lazy" decoding="async">
     </a>
   {% else %}
     <a class="blog-card-cover text-decoration-none" href="{{ post.get_absolute_url }}">

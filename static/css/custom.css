@@ -49,8 +49,21 @@
 }
 
 /* ── RESET & BASE ── */
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; }
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+a, button, input, select, textarea, [role="button"] {
+  touch-action: manipulation;
+}
 
 body {
   background: var(--paper);
@@ -58,6 +71,7 @@ body {
   font-family: var(--font-body);
   font-weight: 600;
   line-height: 1.6;
+  overflow-x: hidden;
   overflow-x: hidden;
   position: relative;
 }
@@ -2500,17 +2514,29 @@ body.page-hidden .math-squad-fab {
     display: none !important;
   }
 
-  /* Optimize composite layers for smooth 60fps scrolling */
+  /* Optimize composite layers for smooth 60fps scrolling & zero lag */
   .site-nav,
   .paper-card,
   .btn,
   .event-poster,
+  .event-photo-card,
+  .blog-article-card,
+  .prof-card,
   .badge-sticker,
   .article-card,
   .hero-mascot-board,
-  .mascot-character {
+  .mascot-character,
+  .math-squad-fab {
     transform: translateZ(0);
     backface-visibility: hidden;
+    will-change: auto;
+  }
+
+  /* Lazy rendering off-screen cards for lightning fast page loads */
+  .event-photo-card,
+  .blog-article-card {
+    content-visibility: auto;
+    contain-intrinsic-size: 320px;
   }
 }
 
