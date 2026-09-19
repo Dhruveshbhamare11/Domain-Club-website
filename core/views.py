@@ -8,15 +8,47 @@ from .models import TeamMember
 
 
 def home(request):
-    from puzzles.models import Puzzle
-    from accounts.models import StudentProfile
-    from events.models import Event
-    from blog.models import BlogPost
+    puzzle = None
+    leaders = []
+    events = []
+    posts = []
+    team_members = []
+    
+    try:
+        from puzzles.models import Puzzle
+        puzzle = Puzzle.objects.filter(start_time__lte=timezone.now(), end_time__gt=timezone.now()).first()
+    except Exception:
+        pass
+
+    try:
+        from accounts.models import StudentProfile
+        leaders = StudentProfile.objects.select_related("user").order_by("cached_rank")[:5]
+    except Exception:
+        pass
+
+    try:
+        from events.models import Event
+        events = Event.objects.filter(date__gte=timezone.localdate())[:3]
+    except Exception:
+        pass
+
+    try:
+        from blog.models import BlogPost
+        posts = BlogPost.objects.filter(published=True)[:3]
+    except Exception:
+        pass
+
+    try:
+        team_members = TeamMember.objects.all()[:4]
+    except Exception:
+        pass
+
     return render(request, "core/home.html", {
-        "puzzle": Puzzle.objects.filter(start_time__lte=timezone.now(), end_time__gt=timezone.now()).first(),
-        "leaders": StudentProfile.objects.select_related("user").order_by("cached_rank")[:5],
-        "events": Event.objects.filter(date__gte=timezone.localdate())[:3],
-        "posts": BlogPost.objects.filter(published=True)[:3], "team": TeamMember.objects.all()[:4],
+        "puzzle": puzzle,
+        "leaders": leaders,
+        "events": events,
+        "posts": posts,
+        "team": team_members,
     })
 
 
