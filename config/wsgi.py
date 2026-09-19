@@ -37,5 +37,19 @@ try:
 except Exception as e:
     print(f"[WSGI Init] collectstatic notice: {e}")
 
+# Automatic superuser creation if none exists
+try:
+    from django.contrib.auth import get_user_model
+    User = get_user_model()
+    if not User.objects.filter(is_superuser=True).exists():
+        admin_user = os.getenv("DJANGO_SUPERUSER_USERNAME", "dhruvesh")
+        admin_email = os.getenv("DJANGO_SUPERUSER_EMAIL", "nanapatil3636@gmail.com")
+        admin_pass = os.getenv("DJANGO_SUPERUSER_PASSWORD", "DomainClub@2026!")
+        User.objects.create_superuser(username=admin_user, email=admin_email, password=admin_pass)
+        print(f"[WSGI Init] Superuser '{admin_user}' initialized successfully!")
+except Exception as e:
+    print(f"[WSGI Init] Superuser create notice: {e}")
+
+
 
 
