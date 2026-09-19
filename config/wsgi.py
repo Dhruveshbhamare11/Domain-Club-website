@@ -11,10 +11,31 @@ try:
 except Exception as e:
     print(f"[WSGI Init] Migration notice: {e}")
 
+# Automatic data seeding if Team is empty
+try:
+    from core.models import TeamMember
+    if TeamMember.objects.count() == 0:
+        from django.core.management import call_command
+        call_command("loaddata", "core/fixtures/initial_team.json")
+        print("[WSGI Init] Loaded 16 team members successfully!")
+except Exception as e:
+    print(f"[WSGI Init] TeamMember load notice: {e}")
+
+# Automatic data seeding if Badges are empty
+try:
+    from badges.models import Badge
+    if Badge.objects.count() == 0:
+        from django.core.management import call_command
+        call_command("loaddata", "badges/fixtures/initial_badges.json")
+        print("[WSGI Init] Loaded badges successfully!")
+except Exception as e:
+    print(f"[WSGI Init] Badge load notice: {e}")
+
 try:
     from django.core.management import call_command
     call_command("collectstatic", interactive=False, clear=False)
 except Exception as e:
     print(f"[WSGI Init] collectstatic notice: {e}")
+
 
 

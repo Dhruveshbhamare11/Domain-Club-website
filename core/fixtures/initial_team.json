@@ -1,0 +1,274 @@
+[
+{
+  "model": "core.teammember",
+  "pk": 2,
+  "fields": {
+    "name": "Mohammed Musham Hasan",
+    "role": "Chairperson",
+    "branch_year": "EXTC-TE",
+    "photo": "team/WhatsApp_Image_2026-09-16_at_12.58.49_AM.jpeg",
+    "bio": "There is no duty we so much underrate as the duty of being happy.",
+    "social_link": "https://www.instagram.com/musham.zafrul?stkn=MWNlODIxY3F0aXEyag==",
+    "anime_quote": "My soldiers, rage!",
+    "anime_character": "Erwin Smith",
+    "special_power": "Strategic Genius",
+    "bounty_or_power": "None",
+    "order": 1
+  }
+},
+{
+  "model": "core.teammember",
+  "pk": 3,
+  "fields": {
+    "name": "DHRUVESH BHAMARE",
+    "role": "ASST. WEB HEAD",
+    "branch_year": "COMPS /SE",
+    "photo": "team/WhatsApp_Image_2026-09-17_at_8.56.25_PM.jpeg",
+    "bio": "Just vibing 🌊\r\nQuiet soul ✨",
+    "social_link": "https://www.instagram.com/dhruvesh_bhamare/",
+    "anime_quote": "Ab m itna bhi kuch khas nhi,tarif karne ke liye shukriya kazama😅😁😂",
+    "anime_character": "SHINCHAN",
+    "special_power": "Unlimited Mischief",
+    "bounty_or_power": "Mummy se daant: Unlimited",
+    "order": 2
+  }
+},
+{
+  "model": "core.teammember",
+  "pk": 4,
+  "fields": {
+    "name": "Aneesh Mhasawade",
+    "role": "Puzzle Head",
+    "branch_year": "COMPS SE",
+    "photo": "team/WhatsApp_Image_2026-09-17_at_9.04.26_PM.jpeg",
+    "bio": "",
+    "social_link": "https://www.instagram.com/aneeshog?stkn=M3cxZDh0dDVrZWdm&utm_source=qr",
+    "anime_quote": "I put the hot in psychotic",
+    "anime_character": "Dexter",
+    "special_power": "Big Brain 🧠",
+    "bounty_or_power": "Genius Level: Over 9000",
+    "order": 3
+  }
+},
+{
+  "model": "core.teammember",
+  "pk": 5,
+  "fields": {
+    "name": "Shradha Dhamale",
+    "role": "Secretary",
+    "branch_year": "COMPS SE",
+    "photo": "team/WhatsApp_Image_2026-09-17_at_10.43.23_PM.jpeg",
+    "bio": "My hobbies include starting things and developing lore",
+    "social_link": "https://www.instagram.com/shradha._.10?stkn=MXg2OTFudDhwdXpocA==",
+    "anime_quote": "Set your heart ablaze",
+    "anime_character": "Itachi Uchiha",
+    "special_power": "Amaterasu — Infinite Recursion",
+    "bounty_or_power": "My hobbies include starting things and developing lore",
+    "order": 4
+  }
+},
+{
+  "model": "core.teammember",
+  "pk": 6,
+  "fields": {
+    "name": "Aryan Maurya",
+    "role": "Asst. Pr Head",
+    "branch_year": "Comps SE",
+    "photo": "team/WhatsApp_Image_2026-09-17_at_8.09.42_PM_1.jpeg",
+    "bio": "",
+    "social_link": "https://www.instagram.com/nahharyan?stkn=amJpZnRzeTkzNjVk",
+    "anime_quote": "ÜN ÜN ÜN ÜN ÜN",
+    "anime_character": "Regirock",
+    "special_power": "lucky Star",
+    "bounty_or_power": "6789998212",
+    "order": 5
+  }
+},
+{
+  "model": "core.teammember",
+  "pk": 7,
+  "fields": {
+    "name": "SK.Rehan Malik",
+    "role": "Asst. Puzzle Head",
+    "branch_year": "COMPS SE",
+    "photo": "team/WhatsApp_Image_2026-09-17_at_9.13.11_PM.jpeg",
+    "bio": "Mathematics isn’t just about numbers—it’s about finding patterns, solving problems, and thinking beyond the obvious!",
+    "social_link": "https://www.instagram.com/ig__malik.7?stkn=MXR5M2lzejVweG9peA==",
+    "anime_quote": "The answer is always hidden in the pattern.",
+    "anime_character": "Shikamaru Nara",
+    "special_power": "Shadow Imitation Jutsu + 200 IQ",
+    "bounty_or_power": "200+ IQ",
+    "order": 0
+  }
+},
+{
+  "model": "core.teammember",
+  "pk": 8,
+  "fields": {
+    "name": "Devashree Pawar",
+    "role": "social media head",
+    "branch_year": "Comps SE",
+    "photo": "team/WhatsApp_Image_2026-09-17_at_10_TacDrnR.06.07_PM.jpeg",
+    "bio": "I have beef with my alarm clock.",
+    "social_link": "https://www.instagram.com/daywooooo?stkn=MXduYjVyOXk3MzR4bg==",
+    "anime_quote": "The bells of the gion monastery in India echo",
+    "anime_character": "Yuji Itadori",
+    "special_power": "Deadly cursed techniques",
+    "bounty_or_power": "Here for the lore",
+    "order": 0
+  }
+},
+{
+  "model": "core.teammember",
+  "pk": 9,
+  "fields": {
+    "name": "Mihir Toke",
+    "role": "Event Head",
+    "branch_year": "Comps TE",
+    "photo": "team/WhatsApp_Image_2026-09-17_at_10.04.59_PM.jpeg",
+    "bio": "Professional overthinker with a side quest in coding",
+    "social_link": "https://www.instagram.com/mihirtoke2610/",
+    "anime_quote": "I’m with you till the end of the line",
+    "anime_character": "Captain America",
+    "special_power": "Being the responsible one 😂",
+    "bounty_or_power": "Shield + Unlimited Determination",
+    "order": 0
+  }
+},
+{
+  "model": "core.teammember",
+  "pk": 10,
+  "fields": {
+    "name": "Kshyanika R Behera",
+    "role": "Asst. PR Head",
+    "branch_year": "EXTC SE",
+    "photo": "",
+    "bio": "Professionally overthinking a two-word reply.",
+    "social_link": "https://www.instagram.com/kshyanikabehera_2007?stkn=ZTBmaTBoOXlsaHpk",
+    "anime_quote": "“I never go back on my word.”",
+    "anime_character": "Hinata Hyuga (Naruto)",
+    "special_power": "Byakugan",
+    "bounty_or_power": "Byakugan",
+    "order": 0
+  }
+},
+{
+  "model": "core.teammember",
+  "pk": 11,
+  "fields": {
+    "name": "Prajakta Shinde",
+    "role": "Asst. Social Media Head",
+    "branch_year": "Mech SE",
+    "photo": "team/WhatsApp_Image_2026-09-17_at_10.17.32_PM.jpeg",
+    "bio": "Making machines work while barely functioning myself.",
+    "social_link": "https://www.instagram.com/prajaktaa_2406?stkn=MTAxZml5bm9qdXQxZQ%3D%3D&utm_source=qr",
+    "anime_quote": "I don’t need to be the strongest. I just need to be me.",
+    "anime_character": "Buttercup ( Powerpuff girls)",
+    "special_power": "Turning anger into strength",
+    "bounty_or_power": "Making machines work while barely functioning myself.",
+    "order": 0
+  }
+},
+{
+  "model": "core.teammember",
+  "pk": 12,
+  "fields": {
+    "name": "Ishaan Garud",
+    "role": "Asst. Pr Head",
+    "branch_year": "COMPS SE",
+    "photo": "team/WhatsApp_Image_2026-09-17_at_10.31.55_PM.jpeg",
+    "bio": "I've been a programmer longer than I've been not a programmer!",
+    "social_link": "https://www.instagram.com/ishaan_garud3097?stkn=MW5iZW44eTZscWx0cg==",
+    "anime_quote": "Bro is just trying to survive school 😭",
+    "anime_character": "Spiderman",
+    "special_power": "Overthinking + Web-slinging",
+    "bounty_or_power": "Wanted for being late everywhere",
+    "order": 0
+  }
+},
+{
+  "model": "core.teammember",
+  "pk": 13,
+  "fields": {
+    "name": "SHUBHAM GHARAT",
+    "role": "Design Head",
+    "branch_year": "COMPS SE",
+    "photo": "team/WhatsApp_Image_2026-09-17_at_10.33.34_PM.jpeg",
+    "bio": "If you think you understand my next move, you’re already too late",
+    "social_link": "https://www.instagram.com/shubham_gharat_05?stkn=MTA0YXhiZXdncHVhYw==",
+    "anime_quote": "Intelligence is my weapon. Execution is my answer.”",
+    "anime_character": "Light Yagami",
+    "special_power": "High intellect & supernatural execution",
+    "bounty_or_power": "High intellect & supernatural execution",
+    "order": 0
+  }
+},
+{
+  "model": "core.teammember",
+  "pk": 14,
+  "fields": {
+    "name": "Prashant Ghuge",
+    "role": "TREASURE",
+    "branch_year": "IT SE",
+    "photo": "team/WhatsApp_Image_2026-09-16_at_9.30.46_AM.jpeg",
+    "bio": "IT engineering student passionate about web development, software development, AI, and emerging technologies. Experienced in building web based projects and actively involved in technical initiatives, hackathons, and student club activities.",
+    "social_link": "https://www.instagram.com/prashant._1247?stkn=MTl2MXdrajR6dzk3cA==",
+    "anime_quote": "“Whatever you lose, you’ll find it again. But what you throw away you’ll never get back.”",
+    "anime_character": "Kenshin Himura",
+    "special_power": "Tech Catalyst — Transforming ideas into impactful projects",
+    "bounty_or_power": "Tech Catalyst —Transforming ideas into impactful projects",
+    "order": 0
+  }
+},
+{
+  "model": "core.teammember",
+  "pk": 16,
+  "fields": {
+    "name": "Prachiti Solkar",
+    "role": "Assistant Design Head",
+    "branch_year": "EXTC — SE",
+    "photo": "team/WhatsApp_Image_2026-09-17_at_10_XlCfWt7.46.53_PM.jpeg",
+    "bio": "",
+    "social_link": "https://www.instagram.com/prachiti_s06",
+    "anime_quote": "A lesson without pain is meaningless.",
+    "anime_character": "Edward Elric",
+    "special_power": "Photographic Memory",
+    "bounty_or_power": "9000+",
+    "order": 0
+  }
+},
+{
+  "model": "core.teammember",
+  "pk": 17,
+  "fields": {
+    "name": "Ayush Jage",
+    "role": "Asst. Design Head",
+    "branch_year": "IT SE",
+    "photo": "team/WhatsApp_Image_2026-09-17_at_11.01.41_PM.jpeg",
+    "bio": "Let the world shall know Pain",
+    "social_link": "https://www.instagram.com/cg_ayushj?stkn=OTliMjV4cWp6ZTdv",
+    "anime_quote": "If you win, you live. If you lose, you die. If you don't fight, you can't win!",
+    "anime_character": "Eren Yeager",
+    "special_power": "Founding Titan",
+    "bounty_or_power": "Let the world shall know Pain",
+    "order": 0
+  }
+},
+{
+  "model": "core.teammember",
+  "pk": 18,
+  "fields": {
+    "name": "Ayush Tejpal Bangera",
+    "role": "ASSISTANT PUZZLE HEAD",
+    "branch_year": "EXTC-SE",
+    "photo": "team/WhatsApp_Image_2026-09-17_at_11_TZiA2uc.29.29_PM.jpeg",
+    "bio": "",
+    "social_link": "https://www.instagram.com/ayushtejpalbangera%E2%81%A0%EF%BF%BD",
+    "anime_quote": "Believe it!",
+    "anime_character": "Saitama",
+    "special_power": "Unlimited Luck + One-Punch Procrastination 😂",
+    "bounty_or_power": "Zero Patience",
+    "order": 0
+  }
+}
+]

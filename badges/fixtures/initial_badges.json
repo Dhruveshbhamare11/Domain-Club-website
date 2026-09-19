@@ -1,0 +1,62 @@
+[
+{
+  "model": "badges.badge",
+  "pk": 1,
+  "fields": {
+    "code": "FIRST_WIN",
+    "name": "Speed Demon",
+    "description": "Fastest correct solver of a puzzle.",
+    "icon_name": "⚡"
+  }
+},
+{
+  "model": "badges.badge",
+  "pk": 2,
+  "fields": {
+    "code": "STREAK_3",
+    "name": "On Fire",
+    "description": "Solve three puzzles correctly in a row.",
+    "icon_name": "🔥"
+  }
+},
+{
+  "model": "badges.badge",
+  "pk": 3,
+  "fields": {
+    "code": "STREAK_5",
+    "name": "Unstoppable",
+    "description": "Solve five puzzles correctly in a row.",
+    "icon_name": "🚀"
+  }
+},
+{
+  "model": "badges.badge",
+  "pk": 4,
+  "fields": {
+    "code": "STREAK_10",
+    "name": "Mathematical Machine",
+    "description": "Solve ten puzzles correctly in a row.",
+    "icon_name": "🏆"
+  }
+},
+{
+  "model": "badges.badge",
+  "pk": 5,
+  "fields": {
+    "code": "MONTHLY_WINNER",
+    "name": "Math Champion",
+    "description": "Finish first in a completed monthly competition.",
+    "icon_name": "👑"
+  }
+},
+{
+  "model": "badges.badge",
+  "pk": 6,
+  "fields": {
+    "code": "PERFECT_MONTH",
+    "name": "Perfect Month",
+    "description": "Correctly solve every processed puzzle in a month.",
+    "icon_name": "⭐"
+  }
+}
+]
