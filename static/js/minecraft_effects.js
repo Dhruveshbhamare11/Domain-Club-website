@@ -25,9 +25,13 @@
 
   // --- 8-Bit Web Audio Sound Synthesizers ---
 
+  let lastClickTime = 0;
   // 1. Classic Minecraft Button Click (Wood/Stone click)
   function playMcClick() {
     if (!soundEnabled) return;
+    const now = Date.now();
+    if (now - lastClickTime < 60) return; // Prevent audio buffer spam
+    lastClickTime = now;
     try {
       const ctx = getAudioContext();
       if (!ctx) return;
@@ -166,36 +170,40 @@
   }
 
   // --- XP Particle Sparkle Spawner ---
+  // --- XP Particle Sparkle Spawner (Desktop only to prevent mobile lag) ---
   function spawnXpParticle(x, y) {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if ("ontouchstart" in window || window.innerWidth < 768) return; // Zero lag on mobile taps
+
     const orb = document.createElement('div');
     orb.className = 'mc-xp-orb-particle';
     orb.style.cssText = `
       position: fixed;
       left: ${x}px;
       top: ${y}px;
-      width: 10px;
-      height: 10px;
-      background: radial-gradient(circle, #80ff00 30%, #55ff55 70%, transparent 100%);
+      width: 8px;
+      height: 8px;
+      background: radial-gradient(circle, #80ff00 40%, #55ff55 80%, transparent 100%);
       border-radius: 50%;
       pointer-events: none;
       z-index: 9999;
-      box-shadow: 0 0 10px #80ff00;
+      box-shadow: 0 0 8px #80ff00;
       transform: translate(-50%, -50%);
-      transition: all 0.6s cubic-bezier(0.1, 0.8, 0.3, 1);
+      transition: all 0.5s cubic-bezier(0.1, 0.8, 0.3, 1);
     `;
     document.body.appendChild(orb);
 
-    const deltaX = (Math.random() - 0.5) * 80;
-    const deltaY = -Math.random() * 60 - 20;
+    const deltaX = (Math.random() - 0.5) * 60;
+    const deltaY = -Math.random() * 50 - 15;
 
     requestAnimationFrame(() => {
-      orb.style.transform = `translate(calc(-50% + ${deltaX}px), calc(-50% + ${deltaY}px)) scale(0.3)`;
+      orb.style.transform = `translate(calc(-50% + ${deltaX}px), calc(-50% + ${deltaY}px)) scale(0.2)`;
       orb.style.opacity = '0';
     });
 
     setTimeout(() => {
       if (orb.parentNode) orb.parentNode.removeChild(orb);
-    }, 650);
+    }, 550);
   }
 
   // --- DOM Initializations ---
@@ -207,8 +215,10 @@
       const btn = e.target.closest('.mc-btn, .mc-hotbar-slot, .mc-rank-box, .mc-archive-card');
       if (btn) {
         playMcClick();
-        const rect = btn.getBoundingClientRect();
-        spawnXpParticle(e.clientX || (rect.left + rect.width / 2), e.clientY || (rect.top + rect.height / 2));
+        if (window.innerWidth >= 768 && !("ontouchstart" in window)) {
+          const rect = btn.getBoundingClientRect();
+          spawnXpParticle(e.clientX || (rect.left + rect.width / 2), e.clientY || (rect.top + rect.height / 2));
+        }
       }
 
       // Sound toggle button click
@@ -218,13 +228,15 @@
       }
     });
 
-    // Hover XP sparkle on Pedestals
-    const pedestals = document.querySelectorAll('.mc-pedestal-card');
-    pedestals.forEach(p => {
-      p.addEventListener('mouseenter', () => {
-        playMcXp();
+    // Hover XP sparkle on Pedestals (fine pointer only)
+    if (window.matchMedia("(pointer: fine)").matches) {
+      const pedestals = document.querySelectorAll('.mc-pedestal-card');
+      pedestals.forEach(p => {
+        p.addEventListener('mouseenter', () => {
+          playMcXp();
+        });
       });
-    });
+    }
 
     // --- Search & Hotbar Filter for Leaderboard ---
     const searchInput = document.getElementById('mc-student-search');
@@ -251,8 +263,12 @@
       });
     }
 
+    let searchDebounce = null;
     if (searchInput) {
-      searchInput.addEventListener('input', filterLeaderboard);
+      searchInput.addEventListener('input', () => {
+        if (searchDebounce) clearTimeout(searchDebounce);
+        searchDebounce = setTimeout(filterLeaderboard, 50);
+      });
     }
 
     hotbarSlots.forEach(slot => {

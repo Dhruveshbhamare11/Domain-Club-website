@@ -3,8 +3,6 @@
    Authentic Voxel GUI, 3D Block Pedestals, Crafting Grid & Quest Chamber
    ========================================================================== */
 
-@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&family=Silkscreen:wght@400;700&family=Fredoka:wght@500;600;700&family=Nunito:wght@500;600;700;800;900&display=swap');
-
 :root {
   /* Minecraft Block & Item Palette */
   --mc-grass-top: #5c8e32;
@@ -63,31 +61,11 @@
 .mc-realm-page {
   position: relative;
   min-height: 100vh;
-  padding: 2.5rem 1.25rem 6rem;
-  background-color: #12151b;
-  background-image: 
-    radial-gradient(circle at 15% 15%, rgba(77, 237, 244, 0.08) 0%, transparent 40%),
-    radial-gradient(circle at 85% 30%, rgba(155, 75, 244, 0.1) 0%, transparent 45%),
-    radial-gradient(circle at 50% 80%, rgba(80, 200, 120, 0.06) 0%, transparent 50%),
-    linear-gradient(rgba(18, 21, 27, 0.94), rgba(18, 21, 27, 0.94)),
-    repeating-linear-gradient(0deg, transparent, transparent 16px, rgba(255, 255, 255, 0.015) 16px, rgba(255, 255, 255, 0.015) 32px),
-    repeating-linear-gradient(90deg, transparent, transparent 16px, rgba(255, 255, 255, 0.015) 16px, rgba(255, 255, 255, 0.015) 32px);
+  padding: 2.25rem 1rem 5.5rem;
+  background: #12151b linear-gradient(180deg, #151a22 0%, #101217 100%);
   color: #e4e8f0;
   font-family: var(--font-mc-body);
   overflow-x: hidden;
-}
-
-/* Pixel Grid Overlay */
-.mc-realm-page::before {
-  content: "";
-  position: absolute;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background-size: 32px 32px;
-  background-image: 
-    linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
-  pointer-events: none;
-  z-index: 0;
 }
 
 .mc-container {
@@ -173,8 +151,7 @@
   border-radius: 4px;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-  animation: mcPulseGlow 3s infinite ease-in-out;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
 }
 
 .mc-hero-title {
@@ -496,8 +473,8 @@
   position: absolute;
   top: -24px;
   font-size: 2rem;
-  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.6));
-  animation: mcFloatAnim 3s infinite ease-in-out;
+  text-shadow: 0 4px 6px rgba(0, 0, 0, 0.6);
+  transform: translateZ(0);
 }
 
 /* Avatar Face / Mob Skin */
@@ -602,13 +579,13 @@
 }
 
 .mc-streak-fire {
-  color: #ff9100;
+  color: #ffaa00;
   font-family: var(--font-mc-pixel);
   font-size: 0.65rem;
   display: flex;
   align-items: center;
   gap: 0.25rem;
-  animation: mcFireGlow 1.5s infinite alternate;
+  text-shadow: 0 0 8px rgba(255, 170, 0, 0.4);
 }
 
 /* Points / Emerald Counter on Pedestal */
@@ -1094,8 +1071,7 @@
     #6d20cc 14px
   );
   border-radius: 2px;
-  box-shadow: 0 0 8px rgba(155, 75, 244, 0.6);
-  animation: mcBossBarPulse 2s infinite ease-in-out;
+  box-shadow: 0 0 6px rgba(155, 75, 244, 0.5);
 }
 
 /* ==========================================================================
@@ -1245,28 +1221,8 @@
 }
 
 /* ==========================================================================
-   KEYFRAME ANIMATIONS
+   MINECRAFT PERFORMANCE OPTIMIZATIONS
    ========================================================================== */
-
-@keyframes mcFloatAnim {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-8px); }
-}
-
-@keyframes mcPulseGlow {
-  0%, 100% { box-shadow: 0 0 10px rgba(252, 238, 75, 0.3); }
-  50% { box-shadow: 0 0 20px rgba(252, 238, 75, 0.7); }
-}
-
-@keyframes mcFireGlow {
-  0% { transform: scale(1); filter: drop-shadow(0 0 4px #ff5500); }
-  100% { transform: scale(1.08); filter: drop-shadow(0 0 10px #ffaa00); }
-}
-
-@keyframes mcBossBarPulse {
-  0%, 100% { filter: brightness(1); }
-  50% { filter: brightness(1.25); }
-}
 
 /* ── MINECRAFT MOBILE PERFORMANCE OPTIMIZATION ── */
 @media (max-width: 768px), (pointer: coarse) {

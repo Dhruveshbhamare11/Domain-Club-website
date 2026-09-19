@@ -72,6 +72,9 @@
 
   function shouldShowPortal() {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return false;
+    // Only show on home page
+    const path = window.location.pathname;
+    if (path !== "/" && path !== "") return false;
     // Check if replay requested via hash or if first time in session
     if (window.location.hash === "#intro" || window.location.search.includes("intro=1")) return true;
     return !sessionStorage.getItem("mathclub_intro_seen");
@@ -1307,6 +1310,14 @@
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
   document.addEventListener("DOMContentLoaded", () => {
+    // If on Minecraft page, only initialize lightweight global nav & squad dock
+    const isMinecraftPage = !!document.querySelector(".mc-realm-page");
+    if (isMinecraftPage) {
+      initNavbarScroll();
+      initFloatingMathSquad();
+      return;
+    }
+
     createPortal();
     initScrollReveals();
     initParticles();
