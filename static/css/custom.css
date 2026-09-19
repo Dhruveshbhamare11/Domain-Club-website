@@ -4947,39 +4947,52 @@ body.page-hidden .math-squad-fab {
 }
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   Responsive Comic Action Toasts (Mobile Optimization)
+   Responsive Comic Action Toasts (Small & Sleek Pill Banner)
    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 .comic-action-toast,
 .massive-celebration-toast {
+  position: fixed !important;
+  top: max(0.6rem, env(safe-area-inset-top, 0.6rem)) !important;
+  left: 50% !important;
+  padding: 0.35rem 0.85rem !important;
+  font-size: 0.85rem !important;
+  border: 2px solid var(--ink) !important;
+  border-radius: 12px !important;
+  box-shadow: 3px 3px 0 var(--ink) !important;
+  max-width: 88vw !important;
+  width: max-content !important;
+  line-height: 1.25 !important;
   user-select: none;
   -webkit-user-select: none;
   box-sizing: border-box;
+  z-index: 9999999 !important;
 }
 
-@media (max-width: 768px) {
-  .comic-action-toast {
-    top: max(0.5rem, env(safe-area-inset-top, 0.5rem)) !important;
-    padding: 0.35rem 0.85rem !important;
-    font-size: 0.88rem !important;
-    border-width: 2.5px !important;
-    border-radius: 14px !important;
-    box-shadow: 3.5px 3.5px 0 var(--ink) !important;
-    max-width: 88vw !important;
-    width: max-content !important;
-    line-height: 1.2 !important;
-  }
-  .comic-action-toast strong {
-    font-size: 0.92rem !important;
-  }
+.comic-action-toast strong,
+.comic-action-toast span {
+  font-size: 0.88rem !important;
+}
+
+.comic-action-toast div {
+  font-size: 0.72rem !important;
+  margin-top: 1px !important;
+}
+
+@media (min-width: 769px) {
+  .comic-action-toast,
   .massive-celebration-toast {
-    top: max(0.5rem, env(safe-area-inset-top, 0.5rem)) !important;
-    padding: 0.35rem 0.8rem !important;
-    font-size: 0.9rem !important;
-    border-width: 2.5px !important;
-    border-radius: 12px !important;
-    box-shadow: 3px 3px 0 var(--ink) !important;
-    max-width: 88vw !important;
-    line-height: 1.25 !important;
+    top: 1.2rem !important;
+    padding: 0.45rem 1.1rem !important;
+    font-size: 0.95rem !important;
+    border-radius: 14px !important;
+    box-shadow: 4px 4px 0 var(--ink) !important;
+  }
+  .comic-action-toast strong,
+  .comic-action-toast span {
+    font-size: 0.98rem !important;
+  }
+  .comic-action-toast div {
+    font-size: 0.8rem !important;
   }
 }
 

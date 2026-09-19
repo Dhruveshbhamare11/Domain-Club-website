@@ -9,11 +9,11 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Lilita+One&family=Patrick+Hand&family=Nunito:wght@400;600;700;800;900&family=Indie+Flower&family=Press+Start+2P&family=VT323&family=Silkscreen:wght@400;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="{% static 'css/custom.css' %}?v=9.0">{% block extra_css %}{% endblock %}</head>
+<link rel="stylesheet" href="{% static 'css/custom.css' %}?v=11.0">{% block extra_css %}{% endblock %}</head>
 <body class="min-h-screen">
     <a class="skip-link" href="#main">Skip to content</a>{% include 'partials/navbar.html' %}
     <main id="main">{% include 'partials/messages.html' %}{% block content %}{% endblock %}</main>
     {% include 'partials/footer.html' %}
-    <script src="{% static 'js/main.js' %}?v=9.0"></script>
-    <script src="{% static 'js/animations.js' %}?v=9.0"></script>
+    <script src="{% static 'js/main.js' %}?v=11.0"></script>
+    <script src="{% static 'js/animations.js' %}?v=11.0"></script>
     {% block extra_js %}{% endblock %}</body></html>

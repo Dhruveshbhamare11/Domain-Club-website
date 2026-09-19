@@ -1277,77 +1277,51 @@
     if (existingToast) existingToast.remove();
 
     // 2. Comic Action Toast Banner
+    // 2. Comic Action Toast Banner - Clean, small, sleek pill
     const isMobile = window.innerWidth <= 768;
     const toast = document.createElement("div");
     toast.className = "comic-action-toast";
 
-    if (isMobile) {
-      toast.style.cssText = `
-        position: fixed;
-        top: max(0.5rem, env(safe-area-inset-top, 0.5rem));
-        left: 50%;
-        transform: translateX(-50%) scale(0) rotate(-1deg);
-        background: linear-gradient(135deg, #ffd700, #ff8c00);
-        color: var(--ink);
-        border: 2.5px solid var(--ink);
-        border-radius: 14px;
-        padding: 0.35rem 0.85rem;
-        font-family: 'Lilita One', 'Fredoka', sans-serif;
-        font-size: 0.88rem;
-        font-weight: 900;
-        letter-spacing: 0.02em;
-        box-shadow: 3.5px 3.5px 0 var(--ink);
-        z-index: 999999;
-        pointer-events: auto;
-        cursor: pointer;
-        text-align: center;
-        transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
-        max-width: 88vw;
-        width: max-content;
-        line-height: 1.2;
-        text-shadow: 1px 1px 0 rgba(255,255,255,0.7);
-      `;
-      toast.innerHTML = `💥 <strong style="font-size:0.92rem;">${cleanName}</strong> ACTIVATED<div style="color:#b91c1c; font-size:0.75rem; font-weight:800; margin-top:2px;">🔮 ${cleanPower} ⚡</div>`;
-    } else {
-      toast.style.cssText = `
-        position: fixed;
-        top: 2rem;
-        left: 50%;
-        transform: translateX(-50%) scale(0) rotate(-2deg);
-        background: linear-gradient(135deg, #ffd700, #ff8c00);
-        color: var(--ink);
-        border: 4px solid var(--ink);
-        border-radius: 24px;
-        padding: 0.75rem 2rem;
-        font-family: 'Lilita One', 'Fredoka', sans-serif;
-        font-size: 1.25rem;
-        font-weight: 900;
-        letter-spacing: 0.04em;
-        box-shadow: 7px 7px 0 var(--ink);
-        z-index: 999999;
-        pointer-events: auto;
-        cursor: pointer;
-        text-align: center;
-        transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
-        max-width: 90vw;
-        text-shadow: 1px 1px 0 rgba(255,255,255,0.7);
-      `;
-      toast.innerHTML = `💥 <strong>${cleanName}</strong> ACTIVATED<br><span style="color:#ef4444; -webkit-text-stroke: 1px var(--ink); font-size:1.05rem;">🔮 ${cleanPower}</span> ⚡`;
-    }
+    toast.style.cssText = `
+      position: fixed;
+      top: ${isMobile ? "max(0.6rem, env(safe-area-inset-top, 0.6rem))" : "1.2rem"};
+      left: 50%;
+      transform: translateX(-50%) scale(0);
+      background: linear-gradient(135deg, #ffd700, #ff8c00);
+      color: var(--ink);
+      border: 2px solid var(--ink);
+      border-radius: 12px;
+      padding: ${isMobile ? "0.35rem 0.85rem" : "0.45rem 1.1rem"};
+      font-family: 'Lilita One', 'Fredoka', sans-serif;
+      font-size: ${isMobile ? "0.85rem" : "0.95rem"};
+      font-weight: 900;
+      letter-spacing: 0.02em;
+      box-shadow: 3px 3px 0 var(--ink);
+      z-index: 9999999;
+      pointer-events: auto;
+      cursor: pointer;
+      text-align: center;
+      transition: transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
+      max-width: 88vw;
+      width: max-content;
+      line-height: 1.25;
+      text-shadow: 1px 1px 0 rgba(255,255,255,0.6);
+    `;
+    toast.innerHTML = `💥 <span style="font-size:${isMobile ? "0.88rem" : "0.98rem"}; font-weight:900;">${cleanName}</span> ACTIVATED<div style="color:#b91c1c; font-size:${isMobile ? "0.72rem" : "0.8rem"}; font-weight:800; margin-top:2px;">🔮 ${cleanPower} ⚡</div>`;
 
     // Dismiss on tap/click immediately
     toast.addEventListener("click", () => {
-      toast.style.transform = "translateX(-50%) scale(0) rotate(5deg)";
-      setTimeout(() => toast.remove(), 200);
+      toast.style.transform = "translateX(-50%) scale(0)";
+      setTimeout(() => toast.remove(), 180);
     });
 
     document.body.appendChild(toast);
 
-    setTimeout(() => { toast.style.transform = "translateX(-50%) scale(1) rotate(1deg)"; }, 20);
+    setTimeout(() => { toast.style.transform = "translateX(-50%) scale(1)"; }, 20);
     setTimeout(() => {
-      toast.style.transform = "translateX(-50%) scale(0) rotate(10deg)";
-      setTimeout(() => toast.remove(), 350);
-    }, isMobile ? 2200 : 3000);
+      toast.style.transform = "translateX(-50%) scale(0)";
+      setTimeout(() => toast.remove(), 250);
+    }, isMobile ? 1800 : 2400);
 
     // 3. Manga Sound FX & Kanji particles burst around card
     const MANGA_SFX = ["「ゴゴゴゴ」", "「ドカーン！」", "「ズキューン！」", "「バァァァン！」", "⚡ PLUS ULTRA!", "🔥 BANKAI!", "✨ DOMAIN EXPANSION!"];
