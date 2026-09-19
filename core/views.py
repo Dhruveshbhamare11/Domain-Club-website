@@ -16,7 +16,10 @@ def home(request):
     
     try:
         from puzzles.models import Puzzle
-        puzzle = Puzzle.objects.filter(start_time__lte=timezone.now(), end_time__gt=timezone.now()).first()
+        now = timezone.now()
+        puzzle = Puzzle.objects.filter(end_time__gt=now).order_by("-start_time").first()
+        if not puzzle:
+            puzzle = Puzzle.objects.order_by("-created_at").first()
     except Exception:
         pass
 

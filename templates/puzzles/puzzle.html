@@ -42,7 +42,7 @@
         <!-- ════════ LEFT COLUMN: ANCIENT ENCHANTED QUEST SCROLL ════════ -->
         <article class="mc-enchanted-scroll">
           <div class="mc-scroll-seal">
-            <span>📜</span> QUEST #{{ puzzle.pk|stringformat:"02d" }} · {% if puzzle.is_active %}ACTIVE TRIAL{% else %}RESOLVED QUEST{% endif %}
+            <span>📜</span> QUEST #{{ puzzle.pk|stringformat:"02d" }} · {% if puzzle.is_active %}ACTIVE TRIAL{% elif puzzle.is_upcoming %}UPCOMING EXPEDITION{% else %}RESOLVED QUEST{% endif %}
           </div>
 
           <h1 class="mc-hero-title" style="font-size: 1.75rem; margin-top: 0.5rem; text-shadow: 2px 2px 0 #000;">
@@ -152,6 +152,21 @@
               </div>
             {% endif %}
 
+          {% elif puzzle.is_upcoming %}
+            <!-- Upcoming Quest Chamber -->
+            <div class="p-6 bg-black/60 border-2 border-cyan-500/70 rounded-lg text-center my-4">
+              <div class="text-4xl mb-3">⏳</div>
+              <div class="font-mono text-xs text-cyan-400 font-bold uppercase tracking-wider mb-2">
+                EXPEDITION UNLOCKS SOON
+              </div>
+              <h2 class="text-lg font-mono text-white mb-2" style="font-family: var(--font-mc-pixel); font-size: 0.95rem;">
+                STARTS {{ puzzle.start_time|date:'M j, g:i A' }}
+              </h2>
+              <p class="text-xs text-slate-300 font-mono leading-relaxed mt-2">
+                The gates to this trial are currently sealed. Submissions will open automatically once the start time arrives.
+              </p>
+            </div>
+
           {% else %}
             <!-- Closed Quest Results Chamber -->
             <div class="p-4 bg-black/60 border-2 border-slate-600 rounded-lg text-center mb-5">
@@ -201,7 +216,7 @@
       </div>
 
       <!-- ════════ REVEALED SOLUTION SCROLL (FOR CLOSED QUESTS) ════════ -->
-      {% if not puzzle.is_active %}
+      {% if puzzle.is_closed %}
         <article class="mc-enchanted-scroll mt-10" style="border-color: var(--mc-gold);">
           <div class="mc-scroll-seal" style="border-color: var(--mc-gold); color: var(--mc-gold);">
             <span>📖</span> THE SCROLL OF WISDOM · COMPLETE SOLUTION

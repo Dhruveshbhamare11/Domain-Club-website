@@ -57,7 +57,7 @@
 
     <div class="mc-archive-grid">
       {% for puzzle in puzzles %}
-      <a class="mc-archive-card stagger-item" href="{% url 'puzzles:detail' puzzle.pk %}">
+      <a class="mc-archive-card" href="{% url 'puzzles:detail' puzzle.pk %}">
         <div>
           <div class="flex items-center justify-between gap-2">
             <span class="mc-badge-tag" style="font-size: 0.55rem; padding: 0.25rem 0.5rem;">

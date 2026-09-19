@@ -1245,3 +1245,18 @@
     contain-intrinsic-size: 80px;
   }
 }
+
+/* ── VISIBILITY GUARANTEE FOR VOXEL CARDS & QUESTS ── */
+.mc-realm-page .stagger-item,
+.mc-realm-page .reveal,
+.mc-realm-page .reveal-left,
+.mc-realm-page .reveal-right,
+.mc-realm-page .scale-in,
+.mc-quest-card,
+.mc-archive-card,
+.mc-row-item,
+.mc-pedestal-card {
+  opacity: 1 !important;
+  transform: none !important;
+  visibility: visible !important;
+}

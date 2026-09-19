@@ -10,10 +10,16 @@ from .services import answers_match
 
 
 def current_puzzle(request):
-    active_puzzles = Puzzle.objects.filter(
-        start_time__lte=timezone.now(), end_time__gt=timezone.now()
-    ).order_by("start_time")
-    return render(request, "puzzles/puzzle_list.html", {"puzzles": active_puzzles})
+    now = timezone.now()
+    # Puzzles that have not ended yet (active or upcoming)
+    active_puzzles = Puzzle.objects.filter(end_time__gt=now).order_by("start_time")
+    
+    # Fallback to recent puzzles if no future-ending puzzle exists, ensuring the board is never empty
+    if not active_puzzles.exists():
+        recent_puzzles = Puzzle.objects.all().order_by("-start_time")[:6]
+        return render(request, "puzzles/puzzle_list.html", {"puzzles": recent_puzzles, "is_fallback": True})
+
+    return render(request, "puzzles/puzzle_list.html", {"puzzles": active_puzzles, "is_fallback": False})
 
 
 def puzzle_detail(request, pk):
@@ -27,8 +33,11 @@ def submit(request, pk):
     if request.method != "POST": return redirect("puzzles:detail", pk=pk)
     puzzle = get_object_or_404(Puzzle, pk=pk)
     now = timezone.now()
-    if not (puzzle.start_time <= now < puzzle.end_time):
-        messages.error(request, "This puzzle is not accepting submissions.")
+    if not puzzle.is_active:
+        if puzzle.is_upcoming:
+            messages.error(request, "This quest has not unlocked yet. Please wait until it begins!")
+        else:
+            messages.error(request, "This puzzle is closed and no longer accepting submissions.")
         return redirect("puzzles:detail", pk=pk)
     if Submission.objects.filter(user=request.user, puzzle=puzzle).exists():
         messages.error(request, "You have already submitted an answer for this puzzle.")

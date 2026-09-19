@@ -30,8 +30,11 @@ class Puzzle(models.Model):
             raise ValidationError({"correct_answer": "Enter a valid integer or decimal."})
 
     def save(self, *args, **kwargs):
-        """Provide the normal duration, but keep a custom local test end time."""
-        if self.end_time is None or not settings.DEBUG:
+        """Provide default duration if none given, but preserve custom admin end times."""
+        from django.utils import timezone
+        if not self.start_time:
+            self.start_time = timezone.now()
+        if self.end_time is None:
             self.end_time = self.start_time + timedelta(hours=24)
         self.full_clean()
         super().save(*args, **kwargs)
@@ -40,7 +43,14 @@ class Puzzle(models.Model):
     def is_active(self):
         from django.utils import timezone
         now = timezone.now()
-        return self.start_time <= now < self.end_time
+        # 5-minute tolerance allows for small client/server clock drifts
+        return self.start_time <= (now + timedelta(minutes=5)) and now < self.end_time
+
+    @property
+    def is_upcoming(self):
+        from django.utils import timezone
+        now = timezone.now()
+        return self.start_time > (now + timedelta(minutes=5))
 
     @property
     def is_closed(self):

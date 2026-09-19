@@ -50,21 +50,37 @@
         <p class="text-slate-400 font-mono text-sm mt-1">One attempt per adventurer. Time is ticking.</p>
       </div>
 
+      {% if is_fallback %}
+      <div class="mc-badge-tag" style="border-color: var(--mc-gold); color: var(--mc-gold);">
+        <span>📜</span> RECENT EXPEDITIONS
+      </div>
+      {% else %}
       <div class="mc-badge-tag" style="border-color: var(--mc-xp-green); color: var(--mc-xp-green);">
         <span>⚡</span> LIVE NOW
       </div>
+      {% endif %}
     </div>
 
     <div class="mc-quest-grid">
       {% for puzzle in puzzles %}
-      <article class="mc-quest-card stagger-item">
+      <article class="mc-quest-card">
         <div>
           <!-- Quest Ribbon -->
           <div class="mc-quest-ribbon">
             <span class="mc-quest-num">QUEST #{{ puzzle.pk|stringformat:"02d" }}</span>
-            <span class="mc-quest-difficulty diff-hardcore">
-              ⚔️ ELITE CHALLENGE
+            {% if puzzle.is_active %}
+            <span class="mc-quest-difficulty diff-normal" style="background: rgba(80, 200, 120, 0.25); color: #50c878; border-color: #50c878;">
+              ⚡ ACTIVE QUEST
             </span>
+            {% elif puzzle.is_upcoming %}
+            <span class="mc-quest-difficulty" style="background: rgba(77, 237, 244, 0.25); color: #4dedf4; border-color: #4dedf4;">
+              ⏳ STARTS SOON
+            </span>
+            {% else %}
+            <span class="mc-quest-difficulty diff-hardcore">
+              🔒 CLOSED
+            </span>
+            {% endif %}
           </div>
 
           <!-- Quest Title -->
@@ -80,20 +96,28 @@
           <!-- Boss Health Bar Countdown -->
           <div class="mc-boss-bar-wrap">
             <div class="mc-boss-bar-header">
+              {% if puzzle.is_active %}
               <span>⏳ CLOSES {{ puzzle.end_time|date:'M j, g:i A' }}</span>
               <span>EXPIRING SOON</span>
+              {% elif puzzle.is_upcoming %}
+              <span>⏳ STARTS {{ puzzle.start_time|date:'M j, g:i A' }}</span>
+              <span>COMING SOON</span>
+              {% else %}
+              <span>🏁 CLOSED {{ puzzle.end_time|date:'M j, g:i A' }}</span>
+              <span>ARCHIVED</span>
+              {% endif %}
             </div>
-            <div class="mc-boss-bar-fill"></div>
+            <div class="mc-boss-bar-fill" {% if not puzzle.is_active %}style="width: 100%; background: #4a5568;"{% endif %}></div>
           </div>
         </div>
 
         <!-- Action Button -->
-        <div class="mt-4 pt-4 border-t border-yellow-900/40 flex items-center justify-between gap-4">
+        <div class="mt-4 pt-4 border-t border-yellow-900/40 flex items-center justify-between gap-4 flex-wrap">
           <div class="text-xs font-mono text-emerald-400 flex items-center gap-1">
             <span>💎</span> REWARD: +50 XP & EMERALDS
           </div>
-          <a class="mc-btn mc-btn-green" href="{% url 'puzzles:detail' puzzle.pk %}">
-            <span>EMBARK ON QUEST →</span>
+          <a class="mc-btn {% if puzzle.is_active %}mc-btn-green{% else %}mc-btn-diamond{% endif %}" href="{% url 'puzzles:detail' puzzle.pk %}">
+            <span>{% if puzzle.is_active %}EMBARK ON QUEST →{% elif puzzle.is_upcoming %}PREVIEW QUEST →{% else %}VIEW SOLUTION →{% endif %}</span>
           </a>
         </div>
       </article>

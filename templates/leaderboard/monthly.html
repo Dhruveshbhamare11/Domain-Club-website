@@ -52,7 +52,7 @@
 
       <div class="mc-table-body">
         {% for score in scores %}
-        <article class="mc-row-item stagger-item">
+        <article class="mc-row-item">
           <div class="flex items-center">
             <span class="mc-rank-box {% if forloop.counter <= 3 %}rank-top10{% endif %}">
               #{{ forloop.counter|stringformat:"02d" }}
@@ -132,7 +132,7 @@
 
       <div class="mc-archive-grid">
         {% for winner in winners %}
-        <article class="mc-archive-card stagger-item" style="border-color: var(--mc-gold);">
+        <article class="mc-archive-card" style="border-color: var(--mc-gold);">
           <div class="flex items-center justify-between gap-3">
             <span class="mc-badge-tag" style="background: rgba(252, 238, 75, 0.15); border-color: var(--mc-gold); color: var(--mc-gold);">
               🌟 SEASON {{ winner.month }}/{{ winner.year }}
