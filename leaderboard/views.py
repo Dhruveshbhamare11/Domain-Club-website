@@ -2,10 +2,15 @@ from django.utils import timezone
 from django.shortcuts import render
 from accounts.models import StudentProfile
 from .models import MonthlyScore, MonthlyWinner
+from .services import recalculate_ranks
 
 
 def all_time(request):
-    return render(request, "leaderboard/all_time.html", {"profiles": StudentProfile.objects.select_related("user").order_by("cached_rank", "user__username")})
+    recalculate_ranks()
+    profiles = StudentProfile.objects.select_related("user").order_by(
+        "-points", "-best_streak", "-current_streak", "cached_rank", "user__username"
+    )
+    return render(request, "leaderboard/all_time.html", {"profiles": profiles})
 
 
 def monthly(request):

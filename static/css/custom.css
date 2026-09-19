@@ -4946,6 +4946,42 @@ body.page-hidden .math-squad-fab {
   border-color: transparent transparent var(--ink) transparent;
 }
 
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   Responsive Comic Action Toasts (Mobile Optimization)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.comic-action-toast,
+.massive-celebration-toast {
+  user-select: none;
+  -webkit-user-select: none;
+  box-sizing: border-box;
+}
+
+@media (max-width: 768px) {
+  .comic-action-toast {
+    top: max(0.5rem, env(safe-area-inset-top, 0.5rem)) !important;
+    padding: 0.35rem 0.85rem !important;
+    font-size: 0.88rem !important;
+    border-width: 2.5px !important;
+    border-radius: 14px !important;
+    box-shadow: 3.5px 3.5px 0 var(--ink) !important;
+    max-width: 88vw !important;
+    width: max-content !important;
+    line-height: 1.2 !important;
+  }
+  .comic-action-toast strong {
+    font-size: 0.92rem !important;
+  }
+  .massive-celebration-toast {
+    top: max(0.5rem, env(safe-area-inset-top, 0.5rem)) !important;
+    padding: 0.35rem 0.8rem !important;
+    font-size: 0.9rem !important;
+    border-width: 2.5px !important;
+    border-radius: 12px !important;
+    box-shadow: 3px 3px 0 var(--ink) !important;
+    max-width: 88vw !important;
+    line-height: 1.25 !important;
+  }
+}
 
 
 

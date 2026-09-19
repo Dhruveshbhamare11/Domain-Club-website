@@ -22,7 +22,7 @@
   <!-- Team Grid with 3D Flip Cards -->
   <div class="team-grid mt-12">
     {% for member in team %}
-    <article class="team-flip-card stagger-item" data-member-id="{{ member.id }}" data-member-name="{{ member.name|escapejs }}" data-member-power="{{ member.special_power|default:'Domain Expansion: Infinite Logic'|escapejs }}">
+    <article class="team-flip-card stagger-item" data-member-id="{{ member.id }}" data-member-name="{{ member.name }}" data-member-power="{{ member.special_power|default:'Domain Expansion: Infinite Logic' }}">
       <div class="team-flip-inner">
 
         <!-- ════════ FRONT FACE: Standalone 3D Animated Pokéball ════════ -->

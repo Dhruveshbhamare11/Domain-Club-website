@@ -16,10 +16,17 @@ def update_monthly_score(submission):
 
 
 def recalculate_ranks():
-    profiles = StudentProfile.objects.select_related("user").order_by("-points", "-best_streak", "user__username")
+    profiles = list(StudentProfile.objects.select_related("user").order_by(
+        "-points", "-best_streak", "-current_streak", "user__date_joined", "user__username"
+    ))
+    to_update = []
     for rank, profile in enumerate(profiles, 1):
-        profile.cached_rank = rank
-        profile.save(update_fields=("cached_rank",))
+        if profile.cached_rank != rank:
+            profile.cached_rank = rank
+            to_update.append(profile)
+    if to_update:
+        StudentProfile.objects.bulk_update(to_update, ["cached_rank"])
+    return profiles
 
 
 def record_monthly_winner(year, month):

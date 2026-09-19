@@ -395,9 +395,41 @@
 }
 
 @media (min-width: 768px) {
-  .mc-podium-grid {
+  .mc-podium-grid,
+  .mc-podium-grid.mc-podium-count-3 {
     grid-template-columns: 1fr 1.15fr 1fr;
     gap: 1.5rem;
+  }
+
+  /* 2 players: Centered 2-column podium with #1 (Diamond) leading and #2 (Gold) following */
+  .mc-podium-grid.mc-podium-count-2 {
+    grid-template-columns: repeat(2, minmax(280px, 340px));
+    justify-content: center;
+    gap: 2rem;
+  }
+  .mc-podium-grid.mc-podium-count-2 .mc-pedestal-first {
+    order: 1;
+    transform: translateY(-15px);
+  }
+  .mc-podium-grid.mc-podium-count-2 .mc-pedestal-first:hover {
+    transform: translateY(-23px);
+  }
+  .mc-podium-grid.mc-podium-count-2 .mc-pedestal-second {
+    order: 2;
+    transform: none;
+  }
+  .mc-podium-grid.mc-podium-count-2 .mc-pedestal-second:hover {
+    transform: translateY(-8px);
+  }
+
+  /* 1 player: Single centered champion throne */
+  .mc-podium-grid.mc-podium-count-1 {
+    grid-template-columns: minmax(280px, 360px);
+    justify-content: center;
+  }
+  .mc-podium-grid.mc-podium-count-1 .mc-pedestal-first {
+    order: 1;
+    transform: translateY(-10px);
   }
 }
 

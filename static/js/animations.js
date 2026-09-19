@@ -1043,35 +1043,46 @@
   }
 
   function spawnMassiveCelebration(symbol, quoteText) {
+    const isMobile = window.innerWidth <= 768;
+    const existing = document.querySelector(".massive-celebration-toast");
+    if (existing) existing.remove();
+
     // Show comic toast banner
     const toast = document.createElement("div");
+    toast.className = "massive-celebration-toast";
     toast.style.cssText = `
       position: fixed;
-      top: 2.5rem;
+      top: ${isMobile ? "max(0.6rem, env(safe-area-inset-top, 0.6rem))" : "2.5rem"};
       left: 50%;
       transform: translateX(-50%) scale(0);
       background: var(--yellow);
       color: var(--ink);
-      border: 3.5px solid var(--ink);
-      border-radius: 20px;
-      padding: 0.8rem 1.8rem;
+      border: ${isMobile ? "2.5px" : "3.5px"} solid var(--ink);
+      border-radius: ${isMobile ? "12px" : "20px"};
+      padding: ${isMobile ? "0.35rem 0.8rem" : "0.8rem 1.8rem"};
       font-family: 'Patrick Hand', cursive;
-      font-size: 1.25rem;
+      font-size: ${isMobile ? "0.92rem" : "1.25rem"};
       font-weight: 700;
-      box-shadow: 6px 6px 0 var(--ink);
+      box-shadow: ${isMobile ? "3px 3px 0 var(--ink)" : "6px 6px 0 var(--ink)"};
       z-index: 999999;
-      pointer-events: none;
+      pointer-events: auto;
+      cursor: pointer;
       transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-      max-width: 90vw;
+      max-width: ${isMobile ? "88vw" : "90vw"};
       text-align: center;
+      line-height: 1.25;
     `;
     toast.textContent = quoteText;
+    toast.addEventListener("click", () => {
+      toast.style.transform = "translateX(-50%) scale(0)";
+      setTimeout(() => toast.remove(), 200);
+    });
     document.body.appendChild(toast);
     setTimeout(() => { toast.style.transform = "translateX(-50%) scale(1)"; }, 20);
     setTimeout(() => {
       toast.style.transform = "translateX(-50%) scale(0)";
-      setTimeout(() => toast.remove(), 400);
-    }, 3200);
+      setTimeout(() => toast.remove(), 350);
+    }, isMobile ? 2200 : 3200);
 
     // Burst of symbol
     for (let i = 0; i < 25; i++) {
@@ -1167,20 +1178,20 @@
     }
   };
 
-  // Helper: Spawn Floating Action Comic SFX Tag
   function spawnPokeballBadge(rect, text, color = "#ffd700", yOffset = -80) {
+    const isMobile = window.innerWidth <= 768;
     const tag = document.createElement("span");
     tag.className = "confetti-piece";
     tag.textContent = text;
     tag.style.left = (rect.left + rect.width / 2) + "px";
-    tag.style.top = (rect.top + 80) + "px";
+    tag.style.top = (rect.top + (isMobile ? 40 : 80)) + "px";
     tag.style.fontFamily = "'Lilita One', 'Fredoka', cursive";
-    tag.style.fontSize = "1.25rem";
+    tag.style.fontSize = isMobile ? "0.95rem" : "1.25rem";
     tag.style.fontWeight = "900";
     tag.style.color = color;
-    tag.style.textShadow = "2.5px 2.5px 0 var(--ink), 0 0 15px rgba(255, 215, 0, 0.8)";
-    tag.style.setProperty("--tx", (Math.random() - 0.5) * 60 + "px");
-    tag.style.setProperty("--ty", yOffset + "px");
+    tag.style.textShadow = isMobile ? "1.5px 1.5px 0 var(--ink)" : "2.5px 2.5px 0 var(--ink), 0 0 15px rgba(255, 215, 0, 0.8)";
+    tag.style.setProperty("--tx", (Math.random() - 0.5) * (isMobile ? 30 : 60) + "px");
+    tag.style.setProperty("--ty", (isMobile ? yOffset * 0.6 : yOffset) + "px");
     tag.style.setProperty("--tr", (Math.random() * 20 - 10) + "deg");
     tag.style.zIndex = "99999";
     document.body.appendChild(tag);
@@ -1248,38 +1259,95 @@
       }, 50);
     }
 
+    // Clean text and unicode escapes (such as \u002D for hyphens)
+    const cleanName = (memberName || "CREW MEMBER")
+      .replace(/\\u002D/gi, "-")
+      .replace(/\\u([0-9a-fA-F]{4})/g, (_, c) => String.fromCharCode(parseInt(c, 16)))
+      .replace(/&quot;/g, '"')
+      .replace(/&#39;/g, "'");
+
+    const cleanPower = (specialPower || "Domain Expansion: Infinite Logic")
+      .replace(/\\u002D/gi, "-")
+      .replace(/\\u([0-9a-fA-F]{4})/g, (_, c) => String.fromCharCode(parseInt(c, 16)))
+      .replace(/&quot;/g, '"')
+      .replace(/&#39;/g, "'");
+
+    // Remove any currently displayed toast so they don't stack
+    const existingToast = document.querySelector(".comic-action-toast");
+    if (existingToast) existingToast.remove();
+
     // 2. Comic Action Toast Banner
+    const isMobile = window.innerWidth <= 768;
     const toast = document.createElement("div");
-    toast.style.cssText = `
-      position: fixed;
-      top: 2rem;
-      left: 50%;
-      transform: translateX(-50%) scale(0) rotate(-2deg);
-      background: linear-gradient(135deg, #ffd700, #ff8c00);
-      color: var(--ink);
-      border: 4px solid var(--ink);
-      border-radius: 24px;
-      padding: 0.9rem 2.2rem;
-      font-family: 'Lilita One', 'Fredoka', sans-serif;
-      font-size: 1.35rem;
-      font-weight: 900;
-      letter-spacing: 0.04em;
-      box-shadow: 8px 8px 0 var(--ink);
-      z-index: 999999;
-      pointer-events: none;
-      text-align: center;
-      transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
-      max-width: 92vw;
-      text-shadow: 1px 1px 0 rgba(255,255,255,0.7);
-    `;
-    toast.innerHTML = `💥 <strong>${memberName}</strong> ACTIVATED<br><span style="color:#ef4444; -webkit-text-stroke: 1px var(--ink); font-size:1.1rem;">🔮 ${specialPower}</span> ⚡`;
+    toast.className = "comic-action-toast";
+
+    if (isMobile) {
+      toast.style.cssText = `
+        position: fixed;
+        top: max(0.5rem, env(safe-area-inset-top, 0.5rem));
+        left: 50%;
+        transform: translateX(-50%) scale(0) rotate(-1deg);
+        background: linear-gradient(135deg, #ffd700, #ff8c00);
+        color: var(--ink);
+        border: 2.5px solid var(--ink);
+        border-radius: 14px;
+        padding: 0.35rem 0.85rem;
+        font-family: 'Lilita One', 'Fredoka', sans-serif;
+        font-size: 0.88rem;
+        font-weight: 900;
+        letter-spacing: 0.02em;
+        box-shadow: 3.5px 3.5px 0 var(--ink);
+        z-index: 999999;
+        pointer-events: auto;
+        cursor: pointer;
+        text-align: center;
+        transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+        max-width: 88vw;
+        width: max-content;
+        line-height: 1.2;
+        text-shadow: 1px 1px 0 rgba(255,255,255,0.7);
+      `;
+      toast.innerHTML = `💥 <strong style="font-size:0.92rem;">${cleanName}</strong> ACTIVATED<div style="color:#b91c1c; font-size:0.75rem; font-weight:800; margin-top:2px;">🔮 ${cleanPower} ⚡</div>`;
+    } else {
+      toast.style.cssText = `
+        position: fixed;
+        top: 2rem;
+        left: 50%;
+        transform: translateX(-50%) scale(0) rotate(-2deg);
+        background: linear-gradient(135deg, #ffd700, #ff8c00);
+        color: var(--ink);
+        border: 4px solid var(--ink);
+        border-radius: 24px;
+        padding: 0.75rem 2rem;
+        font-family: 'Lilita One', 'Fredoka', sans-serif;
+        font-size: 1.25rem;
+        font-weight: 900;
+        letter-spacing: 0.04em;
+        box-shadow: 7px 7px 0 var(--ink);
+        z-index: 999999;
+        pointer-events: auto;
+        cursor: pointer;
+        text-align: center;
+        transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+        max-width: 90vw;
+        text-shadow: 1px 1px 0 rgba(255,255,255,0.7);
+      `;
+      toast.innerHTML = `💥 <strong>${cleanName}</strong> ACTIVATED<br><span style="color:#ef4444; -webkit-text-stroke: 1px var(--ink); font-size:1.05rem;">🔮 ${cleanPower}</span> ⚡`;
+    }
+
+    // Dismiss on tap/click immediately
+    toast.addEventListener("click", () => {
+      toast.style.transform = "translateX(-50%) scale(0) rotate(5deg)";
+      setTimeout(() => toast.remove(), 200);
+    });
+
     document.body.appendChild(toast);
 
     setTimeout(() => { toast.style.transform = "translateX(-50%) scale(1) rotate(1deg)"; }, 20);
     setTimeout(() => {
       toast.style.transform = "translateX(-50%) scale(0) rotate(10deg)";
-      setTimeout(() => toast.remove(), 400);
-    }, 3000);
+      setTimeout(() => toast.remove(), 350);
+    }, isMobile ? 2200 : 3000);
 
     // 3. Manga Sound FX & Kanji particles burst around card
     const MANGA_SFX = ["「ゴゴゴゴ」", "「ドカーン！」", "「ズキューン！」", "「バァァァン！」", "⚡ PLUS ULTRA!", "🔥 BANKAI!", "✨ DOMAIN EXPANSION!"];

@@ -242,11 +242,13 @@
     const searchInput = document.getElementById('mc-student-search');
     const hotbarSlots = document.querySelectorAll('.mc-hotbar-slot');
     const tableRows = document.querySelectorAll('.mc-row-item');
+    const noResults = document.getElementById('mc-no-filter-results');
 
     let currentBranchFilter = 'ALL';
 
     function filterLeaderboard() {
       const query = (searchInput ? searchInput.value : '').toLowerCase().trim();
+      let visibleCount = 0;
 
       tableRows.forEach(row => {
         const name = (row.getAttribute('data-name') || '').toLowerCase();
@@ -257,10 +259,19 @@
 
         if (matchesBranch && matchesQuery) {
           row.style.display = 'grid';
+          visibleCount++;
         } else {
           row.style.display = 'none';
         }
       });
+
+      if (noResults) {
+        if (visibleCount === 0 && tableRows.length > 0) {
+          noResults.style.display = 'block';
+        } else {
+          noResults.style.display = 'none';
+        }
+      }
     }
 
     let searchDebounce = null;

@@ -25,7 +25,9 @@ def home(request):
 
     try:
         from accounts.models import StudentProfile
-        leaders = StudentProfile.objects.select_related("user").order_by("cached_rank")[:5]
+        leaders = StudentProfile.objects.select_related("user").order_by(
+            "-points", "-best_streak", "-current_streak", "cached_rank"
+        )[:5]
     except Exception:
         pass
 

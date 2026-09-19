@@ -9,3 +9,8 @@ from .models import StudentProfile
 def create_profile(sender, instance, created, **kwargs):
     if created:
         StudentProfile.objects.get_or_create(user=instance, defaults={"branch": "COMPS", "year": "FE"})
+        try:
+            from leaderboard.services import recalculate_ranks
+            recalculate_ranks()
+        except Exception:
+            pass

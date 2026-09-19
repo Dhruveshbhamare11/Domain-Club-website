@@ -51,8 +51,9 @@
         <h2 class="mc-podium-title mt-3">PODIUM OF LEGENDS</h2>
       </div>
 
-      <div class="mc-podium-grid">
-        {% for profile in profiles|slice:':3' %}
+      {% with top_profiles=profiles|slice:':3' %}
+      <div class="mc-podium-grid mc-podium-count-{{ top_profiles|length }}">
+        {% for profile in top_profiles %}
           {% if forloop.counter == 1 %}
             <!-- 🥇 #1 DIAMOND THRONE -->
             <article class="mc-pedestal-card mc-pedestal-first">
@@ -164,6 +165,7 @@
           {% endif %}
         {% endfor %}
       </div>
+      {% endwith %}
     </section>
     {% endif %}
 
@@ -201,19 +203,24 @@
       </div>
 
       <div class="mc-table-body" id="mc-leaderboard-rows">
-        {% for profile in profiles|slice:'3:' %}
-          {% include 'partials/leaderboard_row.html' with rank=forloop.counter|add:3 %}
+        {% for profile in profiles %}
+          {% include 'partials/leaderboard_row.html' with rank=forloop.counter %}
         {% empty %}
-          {% if not profiles %}
-            <div class="p-12 text-center">
-              <div class="text-5xl mb-3">⛏️</div>
-              <p class="font-mono text-xl text-slate-300">The Leaderboard realm awaits its first solver.</p>
-              <a href="{% url 'puzzles:current' %}" class="mc-btn mc-btn-green mt-5">
-                <span>SOLVE LIVE PUZZLE NOW →</span>
-              </a>
-            </div>
-          {% endif %}
+          <div class="p-12 text-center">
+            <div class="text-5xl mb-3">⛏️</div>
+            <p class="font-mono text-xl text-slate-300">The Leaderboard realm awaits its first solver.</p>
+            <a href="{% url 'puzzles:current' %}" class="mc-btn mc-btn-green mt-5">
+              <span>SOLVE LIVE PUZZLE NOW →</span>
+            </a>
+          </div>
         {% endfor %}
+
+        <!-- Empty state when search or branch filter matches nothing -->
+        <div id="mc-no-filter-results" class="p-12 text-center" style="display: none;">
+          <div class="text-4xl mb-3">🔍</div>
+          <p class="font-mono text-lg text-slate-300">No adventurers found matching this guild or search query.</p>
+          <p class="font-mono text-sm text-slate-400 mt-1">Try selecting ALL REALMS or clearing the search input.</p>
+        </div>
       </div>
     </section>
 

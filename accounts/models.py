@@ -18,7 +18,7 @@ class StudentProfile(models.Model):
     cached_rank = models.PositiveIntegerField(null=True, blank=True)
 
     class Meta:
-        ordering = ("cached_rank", "user__username")
+        ordering = ("-points", "-best_streak", "-current_streak", "cached_rank", "user__username")
 
     def __str__(self):
         return self.user.get_full_name() or self.user.username
