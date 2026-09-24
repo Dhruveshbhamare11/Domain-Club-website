@@ -76,17 +76,21 @@ ASGI_APPLICATION = "config.asgi.application"
 # Database Configuration (Supabase PostgreSQL / Cloud DB / SQLite fallback)
 DATABASE_URL = os.getenv("DATABASE_URL", "").strip()
 if DATABASE_URL:
-    is_transaction_pooler = ":6543" in DATABASE_URL
-    # Session mode (port 5432) or standard connection supports persistent conn_max_age (300s).
-    # This avoids full SSL/TLS handshakes on every web request, drastically speeding up response times.
-    conn_max_age_default = 0 if is_transaction_pooler else 300
-    conn_max_age = int(os.getenv("DB_CONN_MAX_AGE", str(conn_max_age_default)))
+    # Automatically route Supabase pooler to port 6543 (Transaction Mode)
+    # This completely eliminates EMAXCONNSESSION (pool_size: 15 limit) on Vercel serverless!
+    if "pooler.supabase.com:5432" in DATABASE_URL:
+        DATABASE_URL = DATABASE_URL.replace("pooler.supabase.com:5432", "pooler.supabase.com:6543")
+
+    os.environ["DATABASE_URL"] = DATABASE_URL
+    is_pooler = "pooler" in DATABASE_URL or ":6543" in DATABASE_URL
+    # Transaction poolers require conn_max_age=0 so PgBouncer reclaims connections immediately
+    conn_max_age = 0 if is_pooler else int(os.getenv("DB_CONN_MAX_AGE", "0"))
     DATABASES = {
-        "default": dj_database_url.config(
-            default=DATABASE_URL,
+        "default": dj_database_url.parse(
+            DATABASE_URL,
             conn_max_age=conn_max_age,
-            conn_health_checks=True,
-            disable_server_side_cursors=is_transaction_pooler,
+            conn_health_checks=not is_pooler,
+            disable_server_side_cursors=is_pooler,
             ssl_require=True if ("supabase" in DATABASE_URL or "postgres" in DATABASE_URL) else False,
         )
     }

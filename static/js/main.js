@@ -101,14 +101,7 @@ document.addEventListener(
   { passive: true }
 );
 
-// 4. Idle Prefetch of Primary Menu Links
-if ("requestIdleCallback" in window) {
-  window.requestIdleCallback(() => prefetchNavLinks(), { timeout: 1500 });
-} else {
-  window.addEventListener("load", () => {
-    setTimeout(prefetchNavLinks, 800);
-  });
-}
+
 
 // 5. Rapid Visual Feedback on Link Navigation
 const progressBar = document.createElement("div");

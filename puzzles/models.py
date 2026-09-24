@@ -32,12 +32,23 @@ class Puzzle(models.Model):
     def save(self, *args, **kwargs):
         """Provide default duration if none given, but preserve custom admin end times."""
         from django.utils import timezone
+        from django.core.cache import cache
         if not self.start_time:
             self.start_time = timezone.now()
         if self.end_time is None:
             self.end_time = self.start_time + timedelta(hours=24)
         self.full_clean()
         super().save(*args, **kwargs)
+        cache.delete("current_puzzles_data")
+        cache.delete("home_page_data")
+        cache.delete("archived_puzzles_list")
+
+    def delete(self, *args, **kwargs):
+        from django.core.cache import cache
+        super().delete(*args, **kwargs)
+        cache.delete("current_puzzles_data")
+        cache.delete("home_page_data")
+        cache.delete("archived_puzzles_list")
 
     @property
     def is_active(self):
