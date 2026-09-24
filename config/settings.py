@@ -53,6 +53,7 @@ INSTALLED_APPS = [
 ]
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "django.middleware.gzip.GZipMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -75,13 +76,17 @@ ASGI_APPLICATION = "config.asgi.application"
 # Database Configuration (Supabase PostgreSQL / Cloud DB / SQLite fallback)
 DATABASE_URL = os.getenv("DATABASE_URL", "").strip()
 if DATABASE_URL:
-    is_pooler = ":6543" in DATABASE_URL or "pooler" in DATABASE_URL
+    is_transaction_pooler = ":6543" in DATABASE_URL
+    # Session mode (port 5432) or standard connection supports persistent conn_max_age (300s).
+    # This avoids full SSL/TLS handshakes on every web request, drastically speeding up response times.
+    conn_max_age_default = 0 if is_transaction_pooler else 300
+    conn_max_age = int(os.getenv("DB_CONN_MAX_AGE", str(conn_max_age_default)))
     DATABASES = {
         "default": dj_database_url.config(
             default=DATABASE_URL,
-            conn_max_age=0 if is_pooler else 600,
-            conn_health_checks=not is_pooler,
-            disable_server_side_cursors=is_pooler,
+            conn_max_age=conn_max_age,
+            conn_health_checks=True,
+            disable_server_side_cursors=is_transaction_pooler,
             ssl_require=True if ("supabase" in DATABASE_URL or "postgres" in DATABASE_URL) else False,
         )
     }

@@ -108,7 +108,7 @@
     portal.appendChild(backdrop);
 
     // 2. Scatter 3D floating mathematical glyphs (reduced count on mobile for smooth GPU performance)
-    const glyphCount = window.innerWidth < 768 ? 10 : 20;
+    const glyphCount = window.innerWidth < 768 ? 6 : 14;
     for (let i = 0; i < glyphCount; i++) {
       const sym = document.createElement("span");
       sym.className = "portal-symbol";
@@ -418,7 +418,7 @@
   const REVEAL_SELECTORS = ".reveal, .reveal-left, .reveal-right, .scale-in, .stagger-item, .paper-card, .puzzle-poster, .event-poster, .article-card, .badge-sticker, .btn, .page-heading, .hero h1, .hero-copy, .hero-stamp";
 
   function initScrollReveals() {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches || window.innerWidth < 768) {
       document.querySelectorAll(REVEAL_SELECTORS).forEach((el) => {
         el.classList.add("visible");
       });
@@ -429,27 +429,12 @@
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            const el = entry.target;
-            const parent = el.parentElement;
-            let delay = 0;
-
-            if (parent) {
-              const siblings = Array.from(parent.children).filter((c) =>
-                c.matches && c.matches(REVEAL_SELECTORS)
-              );
-              const siblingIdx = siblings.indexOf(el);
-              if (siblingIdx > 0) delay = siblingIdx * 100;
-            }
-
-            setTimeout(() => {
-              el.classList.add("visible");
-            }, delay);
-
-            observer.unobserve(el);
+            entry.target.classList.add("visible");
+            observer.unobserve(entry.target);
           }
         });
       },
-      { threshold: 0.08, rootMargin: "0px 0px -30px 0px" }
+      { threshold: 0.05, rootMargin: "0px 0px 50px 0px" }
     );
 
     document.querySelectorAll(REVEAL_SELECTORS).forEach((el) => {
@@ -726,7 +711,20 @@
       document.head.appendChild(style);
     }
 
-    setInterval(spawnDoodle, 1200);
+    let rainInterval = null;
+    const footerObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          if (!rainInterval) rainInterval = setInterval(spawnDoodle, 1600);
+        } else {
+          if (rainInterval) {
+            clearInterval(rainInterval);
+            rainInterval = null;
+          }
+        }
+      });
+    }, { threshold: 0.05 });
+    footerObserver.observe(footer);
   }
 
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

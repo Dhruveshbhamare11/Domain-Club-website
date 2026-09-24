@@ -6,7 +6,6 @@ from .services import recalculate_ranks
 
 
 def all_time(request):
-    recalculate_ranks()
     profiles = StudentProfile.objects.select_related("user").order_by(
         "-points", "-best_streak", "-current_streak", "cached_rank", "user__username"
     )
