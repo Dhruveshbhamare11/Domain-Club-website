@@ -18,6 +18,11 @@ python3 -m pip install -r requirements.txt \
 echo "--> [Vercel Build] Collecting static files..."
 python3 manage.py collectstatic --noinput --clear
 
+echo "--> [Vercel Build] Mirroring static paths for CDN compatibility..."
+cp -rn staticfiles_build/static/* staticfiles_build/ 2>/dev/null || true
+mkdir -p staticfiles
+cp -rn staticfiles_build/static/* staticfiles/ 2>/dev/null || true
+
 echo "--> [Vercel Build] Build finished successfully!"
 
 
