@@ -1,14 +1,21 @@
 #!/usr/bin/env bash
-# Vercel Build Script for Django
 set -e
 
-echo "--> [Vercel Build] Installing python dependencies..."
-python3 -m pip install -r requirements.txt
+echo "--> [Vercel Build] Determining python binary..."
+if command -v python3.11 &> /dev/null; then
+    PYTHON=python3.11
+elif command -v python3 &> /dev/null; then
+    PYTHON=python3
+else
+    PYTHON=python
+fi
+
+echo "--> [Vercel Build] Using $PYTHON"
+$PYTHON -m pip install --upgrade pip || true
+$PYTHON -m pip install -r requirements.txt
 
 echo "--> [Vercel Build] Collecting static files..."
-python3 manage.py collectstatic --noinput --clear
+$PYTHON manage.py collectstatic --noinput --clear
 
-echo "--> [Vercel Build] Applying database migrations..."
-python3 manage.py migrate --noinput || true
+echo "--> [Vercel Build] Finished successfully!"
 
-echo "--> [Vercel Build] Completed successfully!"
