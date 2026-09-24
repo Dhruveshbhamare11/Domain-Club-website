@@ -1294,6 +1294,65 @@
 }
 
 /* ==========================================================================
+   MINECRAFT QUEST EMPTY STATE & ANNOUNCEMENT BOX
+   ========================================================================== */
+.mc-empty-quest-box {
+  grid-column: 1 / -1;
+  background: #181c26 linear-gradient(180deg, #1e2433 0%, #131620 100%);
+  border: 4px solid #363e52;
+  border-radius: 14px;
+  box-shadow: 
+    0 12px 36px rgba(0, 0, 0, 0.65),
+    inset 0 0 0 1.5px rgba(255, 255, 255, 0.08),
+    0 0 25px rgba(77, 237, 244, 0.12);
+  padding: 3.5rem 2.25rem;
+  text-align: center;
+  max-width: 620px;
+  margin: 1.5rem auto;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.mc-empty-quest-icon {
+  font-size: 3.8rem;
+  line-height: 1;
+  margin-bottom: 1.25rem;
+  display: inline-block;
+  filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.7));
+}
+
+.mc-empty-quest-title {
+  font-family: var(--font-mc-pixel);
+  font-size: clamp(1.05rem, 3.8vw, 1.45rem);
+  line-height: 1.45;
+  color: #ffffff;
+  letter-spacing: -0.3px;
+  margin: 0 auto 0.85rem;
+  max-width: 95%;
+  text-shadow: 
+    2px 2px 0px #000000,
+    0 0 20px rgba(77, 237, 244, 0.4);
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
+
+.mc-empty-quest-desc {
+  font-family: var(--font-mc-body);
+  font-size: clamp(0.92rem, 2.8vw, 1.05rem);
+  line-height: 1.65;
+  color: #cbd5e1;
+  max-width: 480px;
+  margin: 0 auto 1.5rem;
+  font-weight: 500;
+}
+
+.mc-empty-quest-action {
+  display: inline-flex;
+  justify-content: center;
+  margin-top: 0.5rem;
+}
+
+/* ==========================================================================
    COMPREHENSIVE MOBILE RESPONSIVENESS & TYPOGRAPHY FIXES (MAX-WIDTH: 767PX)
    Fixes layout clipping, word wrapping, button widths, and leaderboard tables
    ========================================================================== */
@@ -1682,4 +1741,46 @@
     border-width: 2.5px !important;
     border-radius: 8px !important;
   }
+
+  /* 9. Mobile Empty Quest State Box Fix */
+  .mc-empty-quest-box {
+    padding: 1.85rem 1.15rem 1.75rem !important;
+    margin: 1rem auto 1.5rem !important;
+    border-width: 3px !important;
+    border-radius: 10px !important;
+    max-width: 100% !important;
+    box-shadow: 
+      0 8px 24px rgba(0, 0, 0, 0.6),
+      inset 0 0 0 1px rgba(255, 255, 255, 0.08) !important;
+  }
+
+  .mc-empty-quest-icon {
+    font-size: 2.75rem !important;
+    margin-bottom: 0.75rem !important;
+  }
+
+  .mc-empty-quest-title {
+    font-size: clamp(0.92rem, 4.4vw, 1.15rem) !important;
+    line-height: 1.4 !important;
+    margin-bottom: 0.65rem !important;
+    max-width: 100% !important;
+  }
+
+  .mc-empty-quest-desc {
+    font-size: 0.9rem !important;
+    line-height: 1.55 !important;
+    margin-bottom: 1.25rem !important;
+    max-width: 100% !important;
+  }
+
+  .mc-empty-quest-box .mc-btn {
+    font-size: clamp(0.66rem, 2.7vw, 0.78rem) !important;
+    padding: 0.75rem 1.15rem !important;
+    width: 100% !important;
+    max-width: 300px !important;
+    white-space: normal !important;
+    word-break: break-word !important;
+    line-height: 1.35 !important;
+  }
 }
+

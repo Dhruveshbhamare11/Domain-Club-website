@@ -5,7 +5,7 @@
 {% block meta_description %}Solve weekly mathematical puzzles, earn XP and claim bounties at DBIT Mathematics Club.{% endblock %}
 
 {% block extra_css %}
-<link rel="stylesheet" href="{% static 'css/minecraft_theme.css' %}?v=2.0">
+<link rel="stylesheet" href="{% static 'css/minecraft_theme.css' %}?v=3.0">
 {% endblock %}
 
 {% block content %}
@@ -23,17 +23,19 @@
     </div>
 
     {% if not puzzle %}
-      <div class="p-8 md:p-16 text-center bg-[#181c26] border-4 border-[#363e52] rounded-xl shadow-2xl">
-        <div class="text-5xl md:text-6xl mb-4">🛡️</div>
-        <h1 class="text-2xl md:text-3xl font-mono text-white mb-2" style="font-family: var(--font-mc-pixel);">
+      <div class="mc-empty-quest-box">
+        <div class="mc-empty-quest-icon">🛡️</div>
+        <h1 class="mc-empty-quest-title">
           NO ACTIVE QUEST FOUND
         </h1>
-        <p class="text-slate-300 font-mono text-sm md:text-base max-w-lg mx-auto">
+        <p class="mc-empty-quest-desc">
           This mathematical expedition has either expired or returned to the ancient library.
         </p>
-        <a class="mc-btn mc-btn-portal mt-6" href="{% url 'puzzles:archive' %}">
-          <span>BROWSE STRONGHOLD ARCHIVE →</span>
-        </a>
+        <div class="mc-empty-quest-action">
+          <a class="mc-btn mc-btn-portal" href="{% url 'puzzles:archive' %}">
+            <span>BROWSE STRONGHOLD ARCHIVE →</span>
+          </a>
+        </div>
       </div>
     {% else %}
 
