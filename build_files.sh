@@ -7,7 +7,13 @@ echo "--> [Vercel Build] Python version:"
 python3 --version
 
 echo "--> [Vercel Build] Installing dependencies from requirements.txt..."
-python3 -m pip install -r requirements.txt --break-system-packages
+python3 -m pip install -r requirements.txt \
+    --break-system-packages \
+    --no-warn-script-location \
+    --root-user-action=ignore \
+    --disable-pip-version-check \
+    --no-color \
+    --progress-bar off
 
 echo "--> [Vercel Build] Collecting static files..."
 python3 manage.py collectstatic --noinput --clear
