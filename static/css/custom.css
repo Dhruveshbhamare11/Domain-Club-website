@@ -1923,10 +1923,21 @@ body.page-hidden .math-squad-fab {
 }
 
 .puzzle-title {
-  font-size: clamp(2.6rem, 6vw, 5.2rem);
-  line-height: 0.78;
-  max-width: 8ch;
-  text-shadow: 2px 2px 0 rgba(0,0,0,0.2);
+  color: #ffffff !important;
+  font-size: clamp(2rem, 5vw, 3.6rem);
+  line-height: 1.1;
+  max-width: 18ch;
+  text-shadow: 2px 2px 0 rgba(0,0,0,0.8), 3px 3px 0 var(--orange);
+  word-break: break-word;
+  margin-top: 0.5rem;
+}
+
+.puzzle-poster .puzzle-title {
+  color: #ffffff !important;
+}
+
+.puzzle-poster p {
+  color: var(--paper);
 }
 
 .puzzle-meta {
@@ -2779,9 +2790,12 @@ body.page-hidden .math-squad-fab {
   }
 
   .puzzle-title {
-    font-size: clamp(1.8rem, 8vw, 3rem);
+    color: #ffffff !important;
+    font-size: clamp(1.8rem, 7vw, 2.6rem);
     max-width: 100%;
-    line-height: 0.85;
+    line-height: 1.1;
+    text-shadow: 2px 2px 0 rgba(0,0,0,0.8);
+    word-break: break-word;
   }
 
   .puzzle-meta {
