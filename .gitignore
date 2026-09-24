@@ -8,6 +8,7 @@ venv/
 media/profile_pics/*
 !media/profile_pics/.gitkeep
 staticfiles/
+staticfiles_build/
 .idea/
 .vscode/
 .DS_Store
