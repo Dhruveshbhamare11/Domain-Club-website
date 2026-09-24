@@ -96,8 +96,8 @@ else:
 AUTH_PASSWORD_VALIDATORS = [
     {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator", "OPTIONS": {"min_length": 6}},
 ]
-LANGUAGE_CODE = "en-us"
-TIME_ZONE = os.getenv("TIME_ZONE", "Asia/Kolkata")
+LANGUAGE_CODE = os.getenv("LANGUAGE_CODE", "en-us").strip() or "en-us"
+TIME_ZONE = os.getenv("TIME_ZONE", "Asia/Kolkata").strip() or "Asia/Kolkata"
 USE_I18N = True
 USE_TZ = True
 STATIC_URL = "/static/"
