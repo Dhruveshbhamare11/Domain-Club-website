@@ -1350,10 +1350,22 @@
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
   document.addEventListener("DOMContentLoaded", () => {
+    const isMobile = window.innerWidth < 768 || "ontouchstart" in window;
+
     // If on Minecraft page, only initialize lightweight global nav & squad dock
     const isMinecraftPage = !!document.querySelector(".mc-realm-page");
     if (isMinecraftPage) {
       document.querySelectorAll(".stagger-item, .reveal, .reveal-left, .reveal-right, .scale-in").forEach((el) => {
+        el.classList.add("visible");
+      });
+      initNavbarScroll();
+      initFloatingMathSquad();
+      return;
+    }
+
+    if (isMobile) {
+      // High-speed mobile profile: immediate content visibility, 0 canvas thrashing, 120 FPS scrolling
+      document.querySelectorAll(".stagger-item, .reveal, .reveal-left, .reveal-right, .scale-in, .paper-card, .puzzle-poster, .event-poster, .article-card").forEach((el) => {
         el.classList.add("visible");
       });
       initNavbarScroll();
