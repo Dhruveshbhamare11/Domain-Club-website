@@ -5,7 +5,7 @@
 {% block meta_description %}Solve weekly mathematical puzzles, earn XP and claim bounties at DBIT Mathematics Club.{% endblock %}
 
 {% block extra_css %}
-<link rel="stylesheet" href="{% static 'css/minecraft_theme.css' %}?v=1.0">
+<link rel="stylesheet" href="{% static 'css/minecraft_theme.css' %}?v=2.0">
 {% endblock %}
 
 {% block content %}
@@ -13,9 +13,9 @@
   <div class="mc-container">
 
     <!-- Top Navigation Breadcrumb -->
-    <div class="flex items-center justify-between gap-4 mb-6">
-      <a href="{% url 'puzzles:current' %}" class="mc-btn" style="padding: 0.6rem 1rem; font-size: 0.65rem;">
-        <span>← BACK TO QUEST BOARD</span>
+    <div class="flex flex-wrap items-center justify-between gap-3 mb-6">
+      <a href="{% url 'puzzles:current' %}" class="mc-btn mc-breadcrumb-btn" style="padding: 0.6rem 0.9rem; font-size: clamp(0.55rem, 2.2vw, 0.65rem);">
+        <span>← QUEST BOARD</span>
       </a>
       <button type="button" class="mc-sound-toggle" title="Toggle 8-bit Minecraft Sound FX">
         <span>🔊 AUDIO: ON</span>
@@ -23,12 +23,12 @@
     </div>
 
     {% if not puzzle %}
-      <div class="p-16 text-center bg-[#181c26] border-4 border-[#363e52] rounded-xl shadow-2xl">
-        <div class="text-6xl mb-4">🛡️</div>
-        <h1 class="text-3xl font-mono text-white mb-2" style="font-family: var(--font-mc-pixel);">
+      <div class="p-8 md:p-16 text-center bg-[#181c26] border-4 border-[#363e52] rounded-xl shadow-2xl">
+        <div class="text-5xl md:text-6xl mb-4">🛡️</div>
+        <h1 class="text-2xl md:text-3xl font-mono text-white mb-2" style="font-family: var(--font-mc-pixel);">
           NO ACTIVE QUEST FOUND
         </h1>
-        <p class="text-slate-300 font-mono text-base max-w-lg mx-auto">
+        <p class="text-slate-300 font-mono text-sm md:text-base max-w-lg mx-auto">
           This mathematical expedition has either expired or returned to the ancient library.
         </p>
         <a class="mc-btn mc-btn-portal mt-6" href="{% url 'puzzles:archive' %}">
@@ -45,7 +45,7 @@
             <span>📜</span> QUEST #{{ puzzle.pk|stringformat:"02d" }} · {% if puzzle.is_active %}ACTIVE TRIAL{% elif puzzle.is_upcoming %}UPCOMING EXPEDITION{% else %}RESOLVED QUEST{% endif %}
           </div>
 
-          <h1 class="mc-hero-title" style="font-size: 1.75rem; margin-top: 0.5rem; text-shadow: 2px 2px 0 #000;">
+          <h1 class="mc-hero-title mc-puzzle-title">
             {{ puzzle.title }}
           </h1>
 
@@ -132,7 +132,7 @@
                     </div>
                   {% endif %}
 
-                  <button class="mc-btn mc-btn-green w-full mt-3 py-4 text-sm" type="submit" onclick="if(window.McAudio) window.McAudio.playCraft();">
+                  <button class="mc-btn mc-btn-green w-full mt-3 py-3.5 px-3 text-xs md:text-sm" type="submit" onclick="if(window.McAudio) window.McAudio.playCraft();">
                     <span>⚒️ CRAFT & SUBMIT ANSWER →</span>
                   </button>
                 </form>

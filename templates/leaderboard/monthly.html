@@ -5,7 +5,7 @@
 {% block meta_description %}Monthly Mathematics Club DBIT leaderboard, champion awards and quest scores.{% endblock %}
 
 {% block extra_css %}
-<link rel="stylesheet" href="{% static 'css/minecraft_theme.css' %}?v=1.0">
+<link rel="stylesheet" href="{% static 'css/minecraft_theme.css' %}?v=2.0">
 {% endblock %}
 
 {% block content %}
@@ -83,7 +83,7 @@
                 {% if score.user.profile.year %}
                   <span class="mc-tag-year">{{ score.user.profile.year }}</span>
                 {% endif %}
-                <span class="text-xs text-emerald-400 font-mono">{{ score.correct_answers }} Correct Solves</span>
+                <span class="mc-solves-tag text-xs text-emerald-400 font-mono">{{ score.correct_answers }} Solved</span>
               </div>
             </div>
           </div>

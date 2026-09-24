@@ -1292,3 +1292,394 @@
   transform: none !important;
   visibility: visible !important;
 }
+
+/* ==========================================================================
+   COMPREHENSIVE MOBILE RESPONSIVENESS & TYPOGRAPHY FIXES (MAX-WIDTH: 767PX)
+   Fixes layout clipping, word wrapping, button widths, and leaderboard tables
+   ========================================================================== */
+
+@media (max-width: 767px) {
+  /* 1. Global Page & Containers */
+  .mc-realm-page {
+    padding: 1.15rem 0.65rem 4rem !important;
+    overflow-x: hidden !important;
+    width: 100% !important;
+    max-width: 100vw !important;
+  }
+
+  .mc-container {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    overflow-x: hidden !important;
+  }
+
+  /* 2. Hero Banners & Headers */
+  .mc-hero-banner {
+    margin-bottom: 1.5rem !important;
+    border-width: 3px !important;
+    border-radius: 8px !important;
+  }
+
+  .mc-hero-img-bg {
+    height: auto !important;
+    min-height: 220px !important;
+  }
+
+  .mc-hero-content {
+    padding: 1.15rem 0.85rem !important;
+    gap: 1rem !important;
+  }
+
+  .mc-hero-title {
+    font-size: clamp(1.15rem, 5.2vw, 1.55rem) !important;
+    line-height: 1.3 !important;
+    letter-spacing: -0.5px !important;
+    word-break: break-word !important;
+  }
+
+  .mc-hero-subtitle {
+    font-size: clamp(1.05rem, 3.8vw, 1.25rem) !important;
+    line-height: 1.35 !important;
+    margin-top: 0.25rem !important;
+  }
+
+  .mc-badge-tag {
+    font-size: clamp(0.52rem, 2.2vw, 0.62rem) !important;
+    padding: 0.25rem 0.5rem !important;
+    letter-spacing: 0 !important;
+    max-width: 100% !important;
+    white-space: normal !important;
+  }
+
+  .mc-hero-actions {
+    display: flex !important;
+    flex-direction: column !important;
+    width: 100% !important;
+    gap: 0.5rem !important;
+  }
+
+  .mc-hero-actions .mc-btn,
+  .mc-hero-actions .mc-sound-toggle {
+    width: 100% !important;
+    justify-content: center !important;
+    text-align: center !important;
+  }
+
+  /* 3. Universal Buttons */
+  .mc-btn {
+    font-size: clamp(0.58rem, 2.4vw, 0.7rem) !important;
+    padding: 0.65rem 0.85rem !important;
+    line-height: 1.3 !important;
+    letter-spacing: 0 !important;
+    white-space: normal !important;
+    text-align: center !important;
+  }
+
+  .mc-sound-toggle {
+    padding: 0.55rem 0.85rem !important;
+    font-size: 0.62rem !important;
+  }
+
+  /* 4. Puzzle Solver Page & Enchanted Scroll */
+  .mc-solver-grid {
+    grid-template-columns: 1fr !important;
+    gap: 1.5rem !important;
+    margin-top: 1rem !important;
+  }
+
+  .mc-enchanted-scroll {
+    padding: 1.25rem 0.85rem !important;
+    border-width: 3px !important;
+    border-radius: 8px !important;
+  }
+
+  .mc-scroll-seal {
+    font-size: clamp(0.52rem, 2.2vw, 0.62rem) !important;
+    padding: 0.3rem 0.55rem !important;
+    max-width: 100% !important;
+    white-space: normal !important;
+    line-height: 1.35 !important;
+  }
+
+  .mc-puzzle-title,
+  .mc-enchanted-scroll .mc-hero-title {
+    font-size: clamp(1.15rem, 5vw, 1.55rem) !important;
+    line-height: 1.35 !important;
+    word-break: break-word !important;
+    overflow-wrap: break-word !important;
+  }
+
+  .mc-scroll-content {
+    font-size: clamp(0.95rem, 3.8vw, 1.1rem) !important;
+    line-height: 1.65 !important;
+    margin-top: 1rem !important;
+    word-break: break-word !important;
+    overflow-wrap: break-word !important;
+  }
+
+  .mc-crafting-chamber {
+    padding: 1.25rem 0.85rem !important;
+    border-width: 3px !important;
+    border-radius: 8px !important;
+  }
+
+  .mc-chamber-title {
+    font-size: clamp(0.75rem, 3vw, 0.95rem) !important;
+    flex-wrap: wrap !important;
+    gap: 0.4rem !important;
+    margin-bottom: 1rem !important;
+  }
+
+  .mc-crafting-slot {
+    padding: 0.85rem !important;
+    margin: 1rem 0 !important;
+  }
+
+  .mc-answer-input {
+    font-size: clamp(0.85rem, 3.2vw, 1.05rem) !important;
+    padding: 0.75rem 0.65rem !important;
+    letter-spacing: 0 !important;
+  }
+
+  .mc-answer-input::placeholder {
+    font-size: 0.75rem !important;
+  }
+
+  #countdown {
+    font-size: clamp(1.5rem, 6vw, 2.2rem) !important;
+    letter-spacing: 1px !important;
+  }
+
+  /* 5. 3D Podium Arena */
+  .mc-podium-arena {
+    padding: 1.5rem 0.75rem 1.25rem !important;
+    margin: 1.75rem 0 2rem !important;
+    border-width: 2px !important;
+    border-radius: 10px !important;
+  }
+
+  .mc-podium-header {
+    margin-bottom: 1.5rem !important;
+  }
+
+  .mc-podium-title {
+    font-size: clamp(1.05rem, 4.5vw, 1.45rem) !important;
+  }
+
+  .mc-podium-grid {
+    grid-template-columns: 1fr !important;
+    gap: 1.25rem !important;
+  }
+
+  .mc-pedestal-card {
+    padding: 1.25rem 0.75rem 1rem !important;
+    border-width: 2px !important;
+    border-radius: 8px !important;
+  }
+
+  .mc-trophy-crown {
+    font-size: 2.25rem !important;
+    top: -16px !important;
+  }
+
+  .mc-avatar-icon {
+    font-size: 2.5rem !important;
+  }
+
+  .mc-rank-ribbon {
+    font-size: clamp(0.58rem, 2.4vw, 0.7rem) !important;
+    padding: 0.25rem 0.6rem !important;
+  }
+
+  .mc-player-name {
+    font-size: clamp(1.05rem, 4.2vw, 1.25rem) !important;
+    max-width: 100% !important;
+  }
+
+  .mc-player-meta {
+    font-size: 1rem !important;
+  }
+
+  .mc-points-box {
+    padding: 0.45rem 0.4rem !important;
+    gap: 0.25rem !important;
+  }
+
+  .mc-points-val {
+    font-size: clamp(0.85rem, 3.5vw, 1rem) !important;
+  }
+
+  .mc-points-label {
+    font-size: 0.5rem !important;
+  }
+
+  /* 6. Controls, Hotbar & Search */
+  .mc-control-bar {
+    padding: 0.85rem !important;
+    gap: 0.75rem !important;
+    margin-bottom: 1.5rem !important;
+    border-width: 2px !important;
+  }
+
+  .mc-search-box {
+    max-width: 100% !important;
+    width: 100% !important;
+  }
+
+  .mc-search-input {
+    font-size: 1.15rem !important;
+    padding: 0.55rem 0.85rem 0.55rem 2.3rem !important;
+  }
+
+  .mc-search-icon {
+    left: 0.7rem !important;
+    font-size: 0.95rem !important;
+  }
+
+  .mc-hotbar {
+    display: flex !important;
+    overflow-x: auto !important;
+    flex-wrap: nowrap !important;
+    gap: 0.35rem !important;
+    padding: 0.35rem !important;
+    -webkit-overflow-scrolling: touch !important;
+    scrollbar-width: none !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  .mc-hotbar::-webkit-scrollbar {
+    display: none !important;
+  }
+
+  .mc-hotbar-slot {
+    font-size: 0.58rem !important;
+    padding: 0.45rem 0.65rem !important;
+    white-space: nowrap !important;
+    flex-shrink: 0 !important;
+  }
+
+  /* 7. Leaderboard Panel & Rows (Mobile Grid Redesign) */
+  .mc-leaderboard-panel {
+    border-width: 2px !important;
+    border-radius: 8px !important;
+  }
+
+  .mc-panel-head {
+    grid-template-columns: 36px 1fr auto !important;
+    gap: 0.5rem !important;
+    padding: 0.65rem 0.55rem !important;
+    font-size: 0.55rem !important;
+  }
+
+  .mc-row-item {
+    grid-template-columns: 36px 1fr auto !important;
+    gap: 0.5rem !important;
+    padding: 0.75rem 0.55rem !important;
+    align-items: center !important;
+  }
+
+  .mc-rank-box {
+    width: 34px !important;
+    height: 30px !important;
+    font-size: 0.62rem !important;
+    border-radius: 4px !important;
+    border-width: 1.5px !important;
+  }
+
+  .mc-player-cell {
+    gap: 0.45rem !important;
+    min-width: 0 !important;
+    overflow: hidden !important;
+  }
+
+  .mc-mini-head {
+    width: 32px !important;
+    height: 32px !important;
+    font-size: 1.1rem !important;
+    flex-shrink: 0 !important;
+    border-radius: 4px !important;
+    border-width: 1.5px !important;
+  }
+
+  .mc-player-details {
+    min-width: 0 !important;
+    overflow: hidden !important;
+    flex: 1 !important;
+  }
+
+  .mc-row-name {
+    font-size: 0.95rem !important;
+    line-height: 1.25 !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+  }
+
+  .mc-row-tags {
+    gap: 0.25rem !important;
+    margin-top: 0.2rem !important;
+    font-size: 0.7rem !important;
+    flex-wrap: wrap !important;
+  }
+
+  .mc-tag-branch,
+  .mc-tag-year {
+    padding: 0.12rem 0.35rem !important;
+    font-size: 0.48rem !important;
+  }
+
+  .mc-score-cell {
+    min-width: 68px !important;
+    align-items: flex-end !important;
+    text-align: right !important;
+  }
+
+  .mc-score-val {
+    font-size: clamp(0.72rem, 3.2vw, 0.92rem) !important;
+    gap: 0.2rem !important;
+  }
+
+  .mc-score-unit {
+    font-size: 0.45rem !important;
+    margin-top: 0.1rem !important;
+  }
+
+  /* 8. Quest Cards on List and Archive Pages */
+  .mc-quest-grid {
+    grid-template-columns: 1fr !important;
+    gap: 1.25rem !important;
+    margin-top: 1.25rem !important;
+  }
+
+  .mc-quest-card {
+    padding: 1.25rem 0.9rem !important;
+    border-width: 3px !important;
+    border-radius: 8px !important;
+  }
+
+  .mc-quest-title {
+    font-size: clamp(1.05rem, 4.5vw, 1.25rem) !important;
+    line-height: 1.35 !important;
+    margin-bottom: 0.75rem !important;
+  }
+
+  .mc-quest-desc {
+    font-size: 0.95rem !important;
+    line-height: 1.5 !important;
+    margin-bottom: 1rem !important;
+  }
+
+  .mc-archive-grid {
+    grid-template-columns: 1fr !important;
+    gap: 1rem !important;
+  }
+
+  .mc-archive-card {
+    padding: 1.25rem 0.85rem !important;
+    border-width: 2.5px !important;
+    border-radius: 8px !important;
+  }
+}

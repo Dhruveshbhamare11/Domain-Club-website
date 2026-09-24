@@ -1,6 +1,6 @@
 import os
 from pathlib import Path
-from urllib.parse import urlparse
+import dj_database_url
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -12,7 +12,12 @@ if env_file.exists():
             line = line.strip()
             if line and not line.startswith("#") and "=" in line:
                 k, v = line.split("=", 1)
-                os.environ.setdefault(k.strip(), v.strip())
+                k = k.strip()
+                v = v.strip()
+                if (v.startswith('"') and v.endswith('"')) or (v.startswith("'") and v.endswith("'")):
+                    v = v[1:-1]
+                if k not in os.environ or not os.environ[k]:
+                    os.environ[k] = v
 
 SECRET_KEY = os.getenv("SECRET_KEY", "unsafe-development-key-change-me")
 DEBUG = os.getenv("DEBUG", "True").lower() == "true"
@@ -21,6 +26,10 @@ if ALLOWED_HOSTS_RAW:
     ALLOWED_HOSTS = [host.strip() for host in ALLOWED_HOSTS_RAW.split(",") if host.strip()]
 else:
     ALLOWED_HOSTS = ["localhost", "127.0.0.1", ".onrender.com", ".vercel.app", "*"]
+
+for host in [".vercel.app", "localhost", "127.0.0.1"]:
+    if host not in ALLOWED_HOSTS:
+        ALLOWED_HOSTS.append(host)
 
 CSRF_TRUSTED_ORIGINS_RAW = os.getenv("CSRF_TRUSTED_ORIGINS", "")
 if CSRF_TRUSTED_ORIGINS_RAW:
@@ -32,6 +41,9 @@ else:
         "http://localhost:8000",
         "http://127.0.0.1:8000",
     ]
+
+if "https://*.vercel.app" not in CSRF_TRUSTED_ORIGINS:
+    CSRF_TRUSTED_ORIGINS.append("https://*.vercel.app")
 
 INSTALLED_APPS = [
     "django.contrib.admin", "django.contrib.auth", "django.contrib.contenttypes",
@@ -60,12 +72,26 @@ TEMPLATES = [{
 WSGI_APPLICATION = "config.wsgi.application"
 ASGI_APPLICATION = "config.asgi.application"
 
-DATABASE_URL = os.getenv("DATABASE_URL", "")
-if DATABASE_URL.startswith("postgres"):
-    parsed = urlparse(DATABASE_URL)
-    DATABASES = {"default": {"ENGINE": "django.db.backends.postgresql", "NAME": parsed.path.lstrip("/"), "USER": parsed.username, "PASSWORD": parsed.password, "HOST": parsed.hostname, "PORT": parsed.port or 5432}}
+# Database Configuration (Supabase PostgreSQL / Cloud DB / SQLite fallback)
+DATABASE_URL = os.getenv("DATABASE_URL", "").strip()
+if DATABASE_URL:
+    is_pooler = ":6543" in DATABASE_URL or "pooler" in DATABASE_URL
+    DATABASES = {
+        "default": dj_database_url.config(
+            default=DATABASE_URL,
+            conn_max_age=0 if is_pooler else 600,
+            conn_health_checks=not is_pooler,
+            disable_server_side_cursors=is_pooler,
+            ssl_require=True if ("supabase" in DATABASE_URL or "postgres" in DATABASE_URL) else False,
+        )
+    }
 else:
-    DATABASES = {"default": {"ENGINE": "django.db.backends.sqlite3", "NAME": BASE_DIR / "db.sqlite3"}}
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "db.sqlite3",
+        }
+    }
 
 AUTH_PASSWORD_VALIDATORS = [
     {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator", "OPTIONS": {"min_length": 6}},
@@ -77,7 +103,10 @@ USE_TZ = True
 STATIC_URL = "/static/"
 STATICFILES_DIRS = [BASE_DIR / "static"]
 STATIC_ROOT = BASE_DIR / "staticfiles"
-os.makedirs(STATIC_ROOT, exist_ok=True)
+try:
+    os.makedirs(STATIC_ROOT, exist_ok=True)
+except OSError:
+    pass
 
 STORAGES = {
     "default": {
