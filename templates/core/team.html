@@ -91,6 +91,7 @@
                 {% endif %}
               </span>
               <h3 class="pokeball-role-name">THE {{ member.role|upper }}</h3>
+              <p class="text-base font-bold text-ink-strong mt-0.5" style="color: #2b1810; font-family: 'Lilita One', cursive; letter-spacing: 0.5px;">{{ member.name }}</p>
               {% if member.branch_year %}
                 <span class="pokeball-branch-tag">{{ member.branch_year }}</span>
               {% else %}
@@ -162,7 +163,9 @@
               <span class="poster-meet">Meet</span> <span class="poster-team">Our Team</span>
             </div>
             <div class="poster-photo-inner">
-              {% if member.photo %}
+              {% if member.avatar %}
+                <img class="team-member-img" src="{{ member.avatar }}" alt="{{ member.name }}">
+              {% elif member.photo %}
                 <img class="team-member-img" src="{{ member.photo.url }}" alt="{{ member.name }}">
               {% else %}
                 <div class="team-member-placeholder">

@@ -67,12 +67,50 @@ def about(request):
     return render(request, "core/about.html")
 
 
+from django.views.decorators.cache import cache_control
+from django.http import HttpResponse, JsonResponse
+
+
+@cache_control(no_cache=True, must_revalidate=True)
 def team(request):
     team_members = cache.get("team_all_members")
     if team_members is None:
         team_members = list(TeamMember.objects.all())
         cache.set("team_all_members", team_members, 120)
     return render(request, "core/team.html", {"team": team_members})
+
+
+def team_api(request):
+    """
+    Public JSON API for team members.
+    Enables external or standalone frontends (like GDGC Minecraft homepage)
+    to dynamically fetch and render team members managed via Django Admin.
+    """
+    team_members = cache.get("team_all_members")
+    if team_members is None:
+        team_members = list(TeamMember.objects.all())
+        cache.set("team_all_members", team_members, 120)
+
+    data = [
+        {
+            "id": m.id,
+            "name": m.name,
+            "role": m.role,
+            "branch_year": m.branch_year,
+            "avatar": m.avatar,
+            "bio": m.bio,
+            "social_link": m.social_link,
+            "anime_character": m.anime_character,
+            "anime_quote": m.anime_quote,
+            "special_power": m.special_power,
+            "bounty_or_power": m.bounty_or_power,
+            "order": m.order,
+        }
+        for m in team_members
+    ]
+    response = JsonResponse({"team": data}, safe=False)
+    response["Access-Control-Allow-Origin"] = "*"
+    return response
 
 
 def contact(request):

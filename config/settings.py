@@ -138,8 +138,26 @@ CACHES = {
         "TIMEOUT": 60,
     }
 }
+# Resilient File Storage for Vercel Serverless / Read-Only Filesystems
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
+try:
+    MEDIA_ROOT.mkdir(parents=True, exist_ok=True)
+    _test_check = MEDIA_ROOT / ".write_test"
+    _test_check.touch(exist_ok=True)
+    _test_check.unlink(missing_ok=True)
+except (OSError, PermissionError):
+    MEDIA_ROOT = Path("/tmp/media")
+    MEDIA_ROOT.mkdir(parents=True, exist_ok=True)
+
+STORAGES = {
+    "default": {
+        "BACKEND": "config.storage.SafeFileSystemStorage",
+    },
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 LOGIN_URL = "accounts:login"
 AUTHENTICATION_BACKENDS = ["accounts.backends.EmailOrUsernameBackend"]
