@@ -10,4 +10,9 @@ def post_list(request):
     return render(request, "blog/blogs.html", {"posts": posts})
 
 def post_detail(request, slug):
-    return render(request, "blog/blog_detail.html", {"post": get_object_or_404(BlogPost, slug=slug, published=True)})
+    cache_key = f"blog_detail_{slug}"
+    post = cache.get(cache_key)
+    if post is None:
+        post = get_object_or_404(BlogPost, slug=slug, published=True)
+        cache.set(cache_key, post, 120)
+    return render(request, "blog/blog_detail.html", {"post": post})

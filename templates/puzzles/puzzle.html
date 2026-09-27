@@ -110,7 +110,7 @@
                   </p>
                 </div>
               {% else %}
-                <form id="submission-form" method="post" action="{% url 'puzzles:submit' puzzle.pk %}" class="mt-4">
+                <form id="submission-form" method="post" action="{% url 'puzzles:submit' puzzle.pk %}" class="mt-4" onsubmit="return handlePuzzleSubmit(this);">
                   {% csrf_token %}
                   
                   <div class="mc-crafting-slot">
@@ -134,10 +134,29 @@
                     </div>
                   {% endif %}
 
-                  <button class="mc-btn mc-btn-green w-full mt-3 py-3.5 px-3 text-xs md:text-sm" type="submit" onclick="if(window.McAudio) window.McAudio.playCraft();">
+                  <button id="craft-submit-btn" class="mc-btn mc-btn-green w-full mt-3 py-3.5 px-3 text-xs md:text-sm" type="submit">
                     <span>⚒️ CRAFT & SUBMIT ANSWER →</span>
                   </button>
                 </form>
+                <script>
+                  function handlePuzzleSubmit(form) {
+                    if (form.dataset.submitting === 'true') {
+                      return false;
+                    }
+                    form.dataset.submitting = 'true';
+                    const btn = document.getElementById('craft-submit-btn');
+                    if (btn) {
+                      btn.disabled = true;
+                      btn.style.opacity = '0.75';
+                      btn.style.cursor = 'wait';
+                      btn.innerHTML = '<span>⏳ FORGING IN OBSIDIAN...</span>';
+                    }
+                    if (window.McAudio) {
+                      try { window.McAudio.playCraft(); } catch(e) {}
+                    }
+                    return true;
+                  }
+                </script>
               {% endif %}
             {% else %}
               <div class="p-5 bg-black/60 border-2 border-yellow-600/80 rounded-lg text-center my-4">

@@ -85,15 +85,22 @@ if DATABASE_URL:
     is_pooler = "pooler" in DATABASE_URL or ":6543" in DATABASE_URL
     # Transaction poolers require conn_max_age=0 so PgBouncer reclaims connections immediately
     conn_max_age = 0 if is_pooler else int(os.getenv("DB_CONN_MAX_AGE", "0"))
-    DATABASES = {
-        "default": dj_database_url.parse(
-            DATABASE_URL,
-            conn_max_age=conn_max_age,
-            conn_health_checks=not is_pooler,
-            disable_server_side_cursors=is_pooler,
-            ssl_require=True if ("supabase" in DATABASE_URL or "postgres" in DATABASE_URL) else False,
-        )
-    }
+
+    db_config = dj_database_url.parse(
+        DATABASE_URL,
+        conn_max_age=conn_max_age,
+        conn_health_checks=not is_pooler,
+        disable_server_side_cursors=is_pooler,
+        ssl_require=True if ("supabase" in DATABASE_URL or "postgres" in DATABASE_URL) else False,
+    )
+    # Fail fast under high concurrency spikes instead of hanging worker threads
+    db_config.setdefault("OPTIONS", {})
+    db_config["OPTIONS"].setdefault("connect_timeout", 5)
+    if is_pooler:
+        # Prevent any stuck transaction from exhausting pool connections
+        db_config["OPTIONS"].setdefault("options", "-c statement_timeout=8000")
+
+    DATABASES = {"default": db_config}
 else:
     DATABASES = {
         "default": {
@@ -117,14 +124,6 @@ try:
 except OSError:
     pass
 
-STORAGES = {
-    "default": {
-        "BACKEND": "django.core.files.storage.FileSystemStorage",
-    },
-    "staticfiles": {
-        "BACKEND": "whitenoise.storage.CompressedStaticFilesStorage",
-    },
-}
 WHITENOISE_USE_FINDERS = False
 WHITENOISE_AUTOREFRESH = DEBUG
 WHITENOISE_MANIFEST_STRICT = False
@@ -135,9 +134,20 @@ CACHES = {
     "default": {
         "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
         "LOCATION": "domain-club-fast-cache",
-        "TIMEOUT": 60,
+        "TIMEOUT": 120,
+        "OPTIONS": {
+            "MAX_ENTRIES": 3000,
+            "CULL_FREQUENCY": 4,
+        },
     }
 }
+
+# Ultra-High Concurrency Session Engine (In-Memory Cache with DB persistence fallback)
+# Eliminates redundant DB queries on every authenticated request while keeping sessions persistent
+SESSION_ENGINE = "django.contrib.sessions.backends.cached_db"
+SESSION_COOKIE_AGE = 1209600  # 14 days (students stay logged in)
+SESSION_SAVE_EVERY_REQUEST = False
+
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
 

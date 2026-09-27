@@ -1,6 +1,12 @@
 {
   "version": 2,
   "regions": ["bom1"],
+  "functions": {
+    "config/wsgi.py": {
+      "memory": 1024,
+      "maxDuration": 15
+    }
+  },
   "builds": [
     {
       "src": "config/wsgi.py",

@@ -19,6 +19,11 @@ class StudentProfile(models.Model):
 
     class Meta:
         ordering = ("-points", "-best_streak", "-current_streak", "cached_rank", "user__username")
+        indexes = [
+            models.Index(fields=("-points", "-best_streak", "-current_streak", "cached_rank")),
+            models.Index(fields=("branch", "-points")),
+            models.Index(fields=("cached_rank",)),
+        ]
 
     def __str__(self):
         return self.user.get_full_name() or self.user.username

@@ -9,12 +9,6 @@ if (toggle && menu) {
     toggle.setAttribute("aria-expanded", String(!expanded));
     menu.classList.toggle("is-open", !expanded);
 
-    // When menu opens, prefetch all menu destinations immediately
-    if (!expanded) {
-      prefetchNavLinks();
-    }
-  });
-
   // Close menu immediately on selecting a link
   menu.querySelectorAll("a").forEach((link) => {
     link.addEventListener("click", () => {
@@ -24,7 +18,7 @@ if (toggle && menu) {
   });
 }
 
-// 2. High-Speed Link Prefetch Engine (Instantaneous Page Transitions)
+// 2. High-Speed Link Prefetch Engine (Throttled for concurrency protection)
 const prefetchedUrls = new Set();
 
 function prefetchUrl(url) {
@@ -52,17 +46,7 @@ function prefetchUrl(url) {
   document.head.appendChild(link);
 }
 
-function prefetchNavLinks() {
-  const navLinks = document.querySelectorAll(".nav-links a, .site-nav a");
-  navLinks.forEach((a) => {
-    const href = a.getAttribute("href");
-    if (href && !href.startsWith("#") && !href.includes("logout") && !href.includes("admin")) {
-      prefetchUrl(href);
-    }
-  });
-}
-
-// 3. Touchstart & Mouseover Prefetching: Trigger download before click
+// 3. Intent-based Mouseover Prefetching: only prefetch if hovered for >250ms
 let hoverTimer = null;
 document.addEventListener(
   "mouseover",
@@ -72,9 +56,10 @@ document.addEventListener(
     const href = link.getAttribute("href");
     if (!href || href.startsWith("#") || href.includes("logout") || href.includes("admin")) return;
 
+    if (hoverTimer) clearTimeout(hoverTimer);
     hoverTimer = setTimeout(() => {
       prefetchUrl(href);
-    }, 60);
+    }, 250);
   },
   { passive: true }
 );
@@ -83,20 +68,6 @@ document.addEventListener(
   "mouseout",
   () => {
     if (hoverTimer) clearTimeout(hoverTimer);
-  },
-  { passive: true }
-);
-
-// Mobile touch: finger down triggers prefetch instantly
-document.addEventListener(
-  "touchstart",
-  (e) => {
-    const link = e.target.closest("a");
-    if (!link) return;
-    const href = link.getAttribute("href");
-    if (href && !href.startsWith("#") && !href.includes("logout") && !href.includes("admin")) {
-      prefetchUrl(href);
-    }
   },
   { passive: true }
 );

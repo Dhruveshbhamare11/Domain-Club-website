@@ -42,13 +42,18 @@ class Puzzle(models.Model):
         cache.delete("current_puzzles_data")
         cache.delete("home_page_data")
         cache.delete("archived_puzzles_list")
+        if self.pk:
+            cache.delete(f"puzzle_obj_{self.pk}")
 
     def delete(self, *args, **kwargs):
         from django.core.cache import cache
+        pk = self.pk
         super().delete(*args, **kwargs)
         cache.delete("current_puzzles_data")
         cache.delete("home_page_data")
         cache.delete("archived_puzzles_list")
+        if pk:
+            cache.delete(f"puzzle_obj_{pk}")
 
     @property
     def is_active(self):

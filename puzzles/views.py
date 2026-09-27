@@ -26,15 +26,24 @@ def current_puzzle(request):
 
 
 def puzzle_detail(request, pk):
-    puzzle = get_object_or_404(Puzzle, pk=pk)
+    puzzle_cache_key = f"puzzle_obj_{pk}"
+    puzzle = cache.get(puzzle_cache_key)
+    if puzzle is None:
+        puzzle = get_object_or_404(Puzzle, pk=pk)
+        cache.set(puzzle_cache_key, puzzle, 60)
     submission = request.user.submissions.filter(puzzle=puzzle).first() if request.user.is_authenticated else None
     return render(request, "puzzles/puzzle.html", {"puzzle": puzzle, "submission": submission, "form": SubmissionForm()})
 
 
 @login_required
 def submit(request, pk):
-    if request.method != "POST": return redirect("puzzles:detail", pk=pk)
-    puzzle = get_object_or_404(Puzzle, pk=pk)
+    if request.method != "POST":
+        return redirect("puzzles:detail", pk=pk)
+    puzzle_cache_key = f"puzzle_obj_{pk}"
+    puzzle = cache.get(puzzle_cache_key)
+    if puzzle is None:
+        puzzle = get_object_or_404(Puzzle, pk=pk)
+        cache.set(puzzle_cache_key, puzzle, 60)
     now = timezone.now()
     if not puzzle.is_active:
         if puzzle.is_upcoming:
@@ -47,13 +56,21 @@ def submit(request, pk):
         return redirect("puzzles:detail", pk=pk)
     form = SubmissionForm(request.POST)
     if not form.is_valid():
-        return render(request, "puzzles/puzzle.html", {"puzzle": puzzle, "form": form, "submission": None})
+        submission = request.user.submissions.filter(puzzle=puzzle).first()
+        return render(request, "puzzles/puzzle.html", {"puzzle": puzzle, "form": form, "submission": submission})
     try:
-        submission = Submission.objects.create(user=request.user, puzzle=puzzle, submitted_value=form.cleaned_data["answer"], is_correct=answers_match(form.cleaned_data["answer"], puzzle.correct_answer))
+        from django.db import transaction
+        with transaction.atomic():
+            submission = Submission.objects.create(
+                user=request.user,
+                puzzle=puzzle,
+                submitted_value=form.cleaned_data["answer"],
+                is_correct=answers_match(form.cleaned_data["answer"], puzzle.correct_answer),
+            )
     except IntegrityError:
         messages.error(request, "You have already submitted an answer for this puzzle.")
     else:
-        messages.success(request, "Answer submitted. Results are revealed when the puzzle closes.")
+        messages.success(request, "Answer submitted! Results are revealed when the puzzle closes.")
     return redirect("puzzles:detail", pk=pk)
 
 

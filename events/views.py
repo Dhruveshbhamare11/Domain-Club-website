@@ -10,4 +10,9 @@ def event_list(request):
     return render(request, "events/events.html", {"events": events})
 
 def event_detail(request, slug):
-    return render(request, "events/event_detail.html", {"event": get_object_or_404(Event, slug=slug)})
+    cache_key = f"event_detail_{slug}"
+    event = cache.get(cache_key)
+    if event is None:
+        event = get_object_or_404(Event, slug=slug)
+        cache.set(cache_key, event, 120)
+    return render(request, "events/event_detail.html", {"event": event})
