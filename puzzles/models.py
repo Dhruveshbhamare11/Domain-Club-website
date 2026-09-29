@@ -73,6 +73,12 @@ class Puzzle(models.Model):
         from django.utils import timezone
         return timezone.now() >= self.end_time
 
+    @property
+    def winner_name(self):
+        if self.winner:
+            return self.winner.get_full_name() or self.winner.username
+        return ""
+
     def __str__(self): return self.title
 
 

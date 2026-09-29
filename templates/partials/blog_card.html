@@ -42,7 +42,7 @@
     <!-- Card Action Footer -->
     <div class="blog-card-footer">
       <div class="text-xs font-bold text-ink-soft font-mono flex items-center gap-1">
-        <span>✍️</span> {{ post.author.get_full_name|default:post.author.username|default:"Domain Squad" }}
+        <span>✍️</span> {{ post.author_name|default:"Domain Squad" }}
       </div>
 
       <a class="btn-read-article" href="{{ post.get_absolute_url }}">
