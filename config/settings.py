@@ -148,8 +148,17 @@ SESSION_ENGINE = "django.contrib.sessions.backends.cached_db"
 SESSION_COOKIE_AGE = 1209600  # 14 days (students stay logged in)
 SESSION_SAVE_EVERY_REQUEST = False
 
+# Resilient File Storage for Vercel Serverless / Read-Only Filesystems
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
+try:
+    MEDIA_ROOT.mkdir(parents=True, exist_ok=True)
+    _test_check = MEDIA_ROOT / ".write_test"
+    _test_check.touch(exist_ok=True)
+    _test_check.unlink(missing_ok=True)
+except (OSError, PermissionError):
+    MEDIA_ROOT = Path("/tmp/media")
+    MEDIA_ROOT.mkdir(parents=True, exist_ok=True)
 
 STORAGES = {
     "default": {
