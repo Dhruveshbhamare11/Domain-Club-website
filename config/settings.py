@@ -21,15 +21,13 @@ if env_file.exists():
 
 SECRET_KEY = os.getenv("SECRET_KEY", "unsafe-development-key-change-me")
 DEBUG = os.getenv("DEBUG", "True").lower() == "true"
+ALLOWED_HOSTS = ["*"]
 ALLOWED_HOSTS_RAW = os.getenv("ALLOWED_HOSTS", "")
 if ALLOWED_HOSTS_RAW:
-    ALLOWED_HOSTS = [host.strip() for host in ALLOWED_HOSTS_RAW.split(",") if host.strip()]
-else:
-    ALLOWED_HOSTS = ["localhost", "127.0.0.1", ".onrender.com", ".vercel.app", "*"]
-
-for host in [".vercel.app", "localhost", "127.0.0.1"]:
-    if host not in ALLOWED_HOSTS:
-        ALLOWED_HOSTS.append(host)
+    for host in ALLOWED_HOSTS_RAW.split(","):
+        host = host.strip()
+        if host and host not in ALLOWED_HOSTS:
+            ALLOWED_HOSTS.append(host)
 
 CSRF_TRUSTED_ORIGINS_RAW = os.getenv("CSRF_TRUSTED_ORIGINS", "")
 if CSRF_TRUSTED_ORIGINS_RAW:
